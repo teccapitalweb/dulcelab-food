@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es-MX" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DulceLab Food | Capacitación Gastronómica y Emprendimiento</title>
+<meta name="description" content="Aprende, crea y convierte tu talento en un negocio. Consultora mexicana de capacitación gastronómica y emprendimiento.">
+<meta name="theme-color" content="#FFF3E5">
+<meta name="author" content="DulceLab Food · TEC CAPITAL Group">
+
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:site_name" content="DulceLab Food">
+<meta property="og:title" content="DulceLab Food | Capacitación Gastronómica y Emprendimiento">
+<meta property="og:description" content="Aprende, crea y convierte tu talento en un negocio. Consultora mexicana de capacitación gastronómica y emprendimiento.">
+<meta property="og:image" content="assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DulceLab Food | Capacitación Gastronómica y Emprendimiento">
+<meta name="twitter:description" content="Aprende, crea y convierte tu talento en un negocio. Consultora mexicana de capacitación gastronómica y emprendimiento.">
+<meta name="twitter:image" content="assets/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>
+  // Evita el flash de tema: se aplica antes del primer pintado.
+  try {
+    var t = localStorage.getItem('dlf-theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<!-- ============ SPRITE DE ICONOS SVG (trazo 1.5) ============ -->
+<svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <symbol id="i-whisk" viewBox="0 0 24 24">
+      <path d="M12 2.5v6.6"/>
+      <path d="M12 9.1c-3.4 1.7-4.9 6-2.9 10.4a3.2 3.2 0 0 0 5.8 0c2-4.4.5-8.7-2.9-10.4Z"/>
+      <path d="M12 9.5v11.5"/>
+    </symbol>
+    <symbol id="i-hat" viewBox="0 0 24 24">
+      <path d="M7 16h10a3.9 3.9 0 0 0 1.1-7.6 3.7 3.7 0 0 0-5.1-3.5 3.8 3.8 0 0 0-6 0A3.7 3.7 0 0 0 5.9 8.4 3.9 3.9 0 0 0 7 16Z"/>
+      <path d="M7 16v4.2a.8.8 0 0 0 .8.8h8.4a.8.8 0 0 0 .8-.8V16"/>
+    </symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24">
+      <path d="M9.3 2.9h5.4"/>
+      <path d="M10.5 2.9v6.3L5.6 18a2 2 0 0 0 1.7 3h9.4a2 2 0 0 0 1.7-3l-4.9-8.8V2.9"/>
+      <path d="M7.7 15.2h8.6"/>
+      <path d="M10.8 17.9h.01M13.4 19.1h.01"/>
+    </symbol>
+    <symbol id="i-piping" viewBox="0 0 24 24">
+      <path d="M4 3.6c5.6.4 10.4 3.3 13.6 8.3l-5.4 5.4C7.2 14.1 4.4 9.2 4 3.6Z"/>
+      <path d="m17.6 11.9 2.3 2.3a1.6 1.6 0 0 1 0 2.3l-3 3a1.6 1.6 0 0 1-2.3 0l-2.3-2.3"/>
+      <path d="m8.2 7.8 3.4 3.4"/>
+    </symbol>
+    <symbol id="i-wheat" viewBox="0 0 24 24">
+      <path d="M12 21.2v-9.4"/>
+      <path d="M12 11.8c-2.6 0-4-1.6-4-4.1 2.6 0 4 1.6 4 4.1Z"/>
+      <path d="M12 11.8c2.6 0 4-1.6 4-4.1-2.6 0-4 1.6-4 4.1Z"/>
+      <path d="M12 16.6c-2.6 0-4-1.6-4-4.1 2.6 0 4 1.6 4 4.1Z"/>
+      <path d="M12 16.6c2.6 0 4-1.6 4-4.1-2.6 0-4 1.6-4 4.1Z"/>
+      <path d="M12 7.7c-1.6-1.6-1.6-3.5 0-5 1.6 1.5 1.6 3.4 0 5Z"/>
+    </symbol>
+    <symbol id="i-cert" viewBox="0 0 24 24">
+      <path d="M20.4 13.4V5.9a2 2 0 0 0-2-2H5.6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h6.6"/>
+      <rect x="6.2" y="6.6" width="3.6" height="3.6" rx=".7"/>
+      <path d="M6.2 13.3h2.2M12.6 6.6h2.6M12.6 9.6h1.4M12.6 12.6h2"/>
+      <circle cx="17.4" cy="17.1" r="2.9"/>
+      <path d="m15.7 19.5-.5 2.9 2.2-1.2 2.2 1.2-.5-2.9"/>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4.2"/>
+      <path d="M12 2.4v2.2M12 19.4v2.2M4.2 12H2M22 12h-2.2M6.5 6.5 4.9 4.9M19.1 19.1l-1.6-1.6M17.5 6.5l1.6-1.6M4.9 19.1l1.6-1.6"/>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M20.5 14.4A8.6 8.6 0 0 1 9.6 3.5a8.6 8.6 0 1 0 10.9 10.9Z"/>
+    </symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24">
+      <path d="M20.6 11.8a8.5 8.5 0 0 1-12.5 7.6L3.4 20.6l1.3-4.6A8.5 8.5 0 1 1 20.6 11.8Z"/>
+      <path d="M9 8.5c.3 0 .5.2.6.4l.7 1.5c.1.3 0 .6-.2.8l-.4.4c-.2.2-.2.4-.1.6a7 7 0 0 0 2.2 2.2c.2.1.4.1.6-.1l.4-.4c.2-.2.5-.3.8-.2l1.5.7c.2.1.4.3.4.6 0 1-.9 1.8-1.9 1.7-2.7-.3-5.5-3.1-5.8-5.8-.1-1 .7-1.9 1.7-1.9Z"/>
+    </symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24">
+      <path d="M14.6 8.4h2.3V5.2h-2.7c-2.3 0-3.8 1.5-3.8 3.9v1.7H7.8v3.2h2.6V21h3.2v-7h2.5l.5-3.2h-3V9.5c0-.7.3-1.1 1-1.1Z"/>
+    </symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24">
+      <rect x="3.4" y="3.4" width="17.2" height="17.2" rx="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M16.9 7.1h.01"/>
+    </symbol>
+    <symbol id="i-scroll" viewBox="0 0 24 40">
+      <path d="M12 2v24"/>
+      <path d="m6.5 21.5 5.5 5.5 5.5-5.5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<a class="skip-link" href="#hero">Saltar al contenido</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#hero" aria-label="DulceLab Food, inicio">
+      <img class="brand__mark" src="assets/logo.png" alt="Logo DulceLab Food" width="44" height="44">
+      <span class="brand__text">DULCELAB<span class="brand__accent">FOOD</span></span>
+    </a>
+
+    <nav class="nav__links" id="navLinks" aria-label="Navegación principal">
+      <a href="#hero" class="nav__link is-active">Inicio</a>
+      <a href="#quienes-somos" class="nav__link">Quiénes Somos</a>
+      <a href="#cursos" class="nav__link">Cursos</a>
+      <a href="#lineas" class="nav__link">Líneas de Capacitación</a>
+      <a href="#contacto" class="nav__link">Contacto</a>
+      <a class="btn btn--wa nav__wa-mobile" href="https://wa.me/522361096247" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>WhatsApp</span>
+      </a>
+    </nav>
+
+    <div class="nav__actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar modo día/noche" aria-pressed="false">
+        <span class="theme-toggle__orb">
+          <svg class="ico ico--sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+          <svg class="ico ico--moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+        </span>
+      </button>
+      <a class="btn btn--wa nav__wa" href="https://wa.me/522361096247" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>WhatsApp</span>
+      </a>
+      <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="nav-scrim" id="navScrim" hidden></div>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <canvas class="hero__canvas" id="particles" aria-hidden="true"></canvas>
+
+  <div class="hero__stage" aria-hidden="true">
+    <div class="shape shape--1"><span class="shape__glass"><svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg></span></div>
+    <div class="shape shape--2"><span class="shape__glass"><svg class="ico" aria-hidden="true"><use href="#i-flask"></use></svg></span></div>
+    <div class="shape shape--3"><span class="shape__glass"><svg class="ico" aria-hidden="true"><use href="#i-hat"></use></svg></span></div>
+    <div class="shape shape--4"><span class="shape__glass"><svg class="ico" aria-hidden="true"><use href="#i-wheat"></use></svg></span></div>
+  </div>
+
+  <div class="hero__wrap">
+    <div class="hero__card tilt" id="heroCard">
+      <div class="tilt__inner">
+        <p class="hero__eyebrow reveal" style="--d:.05s">
+          <svg class="ico" aria-hidden="true"><use href="#i-piping"></use></svg>
+          Consultora mexicana de capacitación gastronómica y emprendimiento
+        </p>
+
+        <h1 class="hero__title reveal" style="--d:.15s">
+          <span class="hero__title-line">DULCELAB</span>
+          <span class="hero__title-line hero__title-accent">FOOD</span>
+        </h1>
+
+        <p class="hero__slogan reveal" style="--d:.3s">Aprende, crea y convierte tu talento en un negocio.</p>
+
+        <div class="hero__ctas reveal" style="--d:.45s">
+          <a class="btn btn--primary" href="#cursos">Ver Cursos</a>
+          <a class="btn btn--ghost" href="#quienes-somos">Conócenos</a>
+        </div>
+
+        <div class="hero__badge reveal" style="--d:.6s">
+          <svg class="ico" aria-hidden="true"><use href="#i-cert"></use></svg>
+          <span>Certificados digitales con QR y folio válido</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#quienes-somos" aria-label="Desplazarse hacia abajo">
+    <span class="scroll-cue__label">Descubre más</span>
+    <svg class="scroll-cue__ico" viewBox="0 0 24 40" aria-hidden="true"><use href="#i-scroll"></use></svg>
+  </a>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer" id="contacto">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <img class="footer__logo" src="assets/logo.png" alt="Logo DulceLab Food" width="56" height="56" loading="lazy">
+      <div>
+        <p class="footer__name">DULCELAB<span class="brand__accent">FOOD</span></p>
+        <p class="footer__slogan">Aprende, crea y convierte tu talento en un negocio.</p>
+      </div>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__h">Contacto</h2>
+      <a class="footer__contact" href="https://wa.me/522361096247" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        <span>236 109 6247</span>
+      </a>
+    </div>
+
+    <div class="footer__col">
+      <h2 class="footer__h">Síguenos</h2>
+      <div class="footer__social">
+        <a class="social" href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook DulceLab Food">
+          <svg class="ico" aria-hidden="true"><use href="#i-facebook"></use></svg>
+        </a>
+        <a class="social" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram DulceLab Food">
+          <svg class="ico" aria-hidden="true"><use href="#i-instagram"></use></svg>
+        </a>
+      </div>
+      <p class="footer__handle">DULCELAB FOOD</p>
+    </div>
+  </div>
+  <p class="footer__legal">DulceLab Food · TEC CAPITAL Group · 2026</p>
+</footer>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>
