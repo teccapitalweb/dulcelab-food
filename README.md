@@ -7,9 +7,9 @@ gastronómica y emprendimiento (TEC CAPITAL Group).
 
 ## Estado
 
-**Fase 1** — estructura base, navbar glassmorphism con toggle día/noche, hero 3D con
-partículas y footer. Las secciones Quiénes Somos, Cursos y Líneas de Capacitación
-llegan en la Fase 2 (por ahora los links del navbar son anclas).
+**Fase 2** — al hero y el navbar de la Fase 1 se suman Quiénes Somos, Líneas de
+Capacitación, Cursos en Vivo (con lightbox de flyers) y la franja Por Qué DulceLab.
+El navbar tiene scrollspy y todas las anclas apuntan a secciones reales.
 
 ## Stack
 
@@ -43,7 +43,30 @@ Tipografía: Montserrat 800/900 (títulos) y Poppins 300/400/600 (cuerpo).
 python -m http.server 8899
 ```
 
+## Imágenes pendientes
+
+El sitio ya referencia estas rutas. Mientras el archivo no exista se muestra un
+fallback con gradiente de marca, icono e identificación del contenido; al subir el
+archivo con el nombre exacto aparece solo, sin tocar código.
+
+```
+assets/hero-bg.png          Textura opcional del hero (si no existe, el hero queda igual)
+assets/quienes-somos.png    Foto de la sección Quiénes Somos (vertical, ~4:5)
+assets/og-image.png         Open Graph definitiva (1200x630) — hoy hay una provisional
+assets/logo.png             Logo oficial — hoy hay uno provisional
+assets/flyers/diseno-menus.png
+assets/flyers/pan-artesanal.png
+assets/flyers/catering-profesional.png
+assets/flyers/cocina-mexicana.png
+assets/flyers/control-costos.png
+assets/flyers/decoracion-pasteles.png
+```
+
+Los flyers se muestran en formato cuadrado; el lightbox sólo se activa en las cards
+cuyo flyer ya existe.
+
 ## Pendiente
 
-`assets/logo.png` y `assets/og-image.png` son provisionales: reemplazar por los
-oficiales de la marca conservando los mismos nombres de archivo.
+- Conectar el dominio `dulcelabfood.com` y actualizar `og:image` / `twitter:image`
+  (hay un `TODO` en `index.html` junto a cada meta).
+- Enlaces reales de Facebook e Instagram en el footer.

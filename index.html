@@ -16,11 +16,13 @@
 <meta property="og:site_name" content="DulceLab Food">
 <meta property="og:title" content="DulceLab Food | Capacitación Gastronómica y Emprendimiento">
 <meta property="og:description" content="Aprende, crea y convierte tu talento en un negocio. Consultora mexicana de capacitación gastronómica y emprendimiento.">
-<meta property="og:image" content="assets/og-image.png">
+<!-- TODO: cambiar a https://dulcelabfood.com cuando se conecte el dominio -->
+<meta property="og:image" content="https://teccapitalweb.github.io/dulcelab-food/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DulceLab Food | Capacitación Gastronómica y Emprendimiento">
 <meta name="twitter:description" content="Aprende, crea y convierte tu talento en un negocio. Consultora mexicana de capacitación gastronómica y emprendimiento.">
-<meta name="twitter:image" content="assets/og-image.png">
+<!-- TODO: cambiar a https://dulcelabfood.com cuando se conecte el dominio -->
+<meta name="twitter:image" content="https://teccapitalweb.github.io/dulcelab-food/assets/og-image.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +35,8 @@
     if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
+  // Sólo ocultamos el contenido animable si el JS está vivo: sin JS, todo se ve.
+  document.documentElement.classList.add('rv-ready');
 </script>
 </head>
 <body>
@@ -56,9 +60,10 @@
       <path d="M10.8 17.9h.01M13.4 19.1h.01"/>
     </symbol>
     <symbol id="i-piping" viewBox="0 0 24 24">
-      <path d="M4 3.6c5.6.4 10.4 3.3 13.6 8.3l-5.4 5.4C7.2 14.1 4.4 9.2 4 3.6Z"/>
-      <path d="m17.6 11.9 2.3 2.3a1.6 1.6 0 0 1 0 2.3l-3 3a1.6 1.6 0 0 1-2.3 0l-2.3-2.3"/>
-      <path d="m8.2 7.8 3.4 3.4"/>
+      <path d="M6.8 3.4h10.4l-2.4 9.7a2.4 2.4 0 0 1-2.3 1.8h-1a2.4 2.4 0 0 1-2.3-1.8Z"/>
+      <path d="M6.9 6.2h10.2"/>
+      <path d="M10.3 14.9h3.4v2a1.7 1.7 0 0 1-3.4 0Z"/>
+      <path d="M12 18.6c0 .9.7 1.2.7 2.2"/>
     </symbol>
     <symbol id="i-wheat" viewBox="0 0 24 24">
       <path d="M12 21.2v-9.4"/>
@@ -97,6 +102,77 @@
     <symbol id="i-scroll" viewBox="0 0 24 40">
       <path d="M12 2v24"/>
       <path d="m6.5 21.5 5.5 5.5 5.5-5.5"/>
+    </symbol>
+
+    <!-- Fase 2 -->
+    <symbol id="i-target" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8.6"/>
+      <circle cx="12" cy="12" r="4.8"/>
+      <circle cx="12" cy="12" r="1.2"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 24 24">
+      <path d="m12 3.2 2.7 5.6 6.1.9-4.4 4.3 1.1 6.1-5.5-2.9-5.5 2.9 1.1-6.1-4.4-4.3 6.1-.9Z"/>
+    </symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24">
+      <path d="M3.6 3.4v17.2h17"/>
+      <path d="m7 15.8 3.6-4.3 3.1 2.4 4.8-6.1"/>
+      <path d="M15.9 7.8h2.6v2.6"/>
+    </symbol>
+    <symbol id="i-medal" viewBox="0 0 24 24">
+      <circle cx="12" cy="9.2" r="5.9"/>
+      <path d="m12 6.1 1.2 2.4 2.7.4-2 1.9.5 2.6-2.4-1.3-2.4 1.3.5-2.6-2-1.9 2.7-.4Z"/>
+      <path d="m8.3 14.4-1.1 6.8 4.8-2.6 4.8 2.6-1.1-6.8"/>
+    </symbol>
+    <symbol id="i-calendar-star" viewBox="0 0 24 24">
+      <rect x="3.3" y="5" width="17.4" height="15.7" rx="2.2"/>
+      <path d="M3.3 9.6h17.4"/>
+      <path d="M8 3.3v3.4M16 3.3v3.4"/>
+      <path d="m12 12.2 1.1 2.3 2.6.4-1.9 1.8.5 2.5-2.3-1.2-2.3 1.2.5-2.5-1.9-1.8 2.6-.4Z"/>
+    </symbol>
+    <symbol id="i-pot" viewBox="0 0 24 24">
+      <path d="M2.9 9.4h18.2"/>
+      <path d="M4.6 9.4v4.4a5.6 5.6 0 0 0 5.6 5.6h3.6a5.6 5.6 0 0 0 5.6-5.6V9.4"/>
+      <path d="M4.6 11.5H2.9a1.4 1.4 0 0 0 0 2.8h1.7M19.4 11.5h1.7a1.4 1.4 0 0 1 0 2.8h-1.7"/>
+      <path d="M9.2 6.7c0-1.1 1-1.5 1-2.6M13.8 6.7c0-1.1 1-1.5 1-2.6"/>
+    </symbol>
+    <symbol id="i-user-check" viewBox="0 0 24 24">
+      <circle cx="9.6" cy="8" r="3.7"/>
+      <path d="M3.4 20.6v-1a5.6 5.6 0 0 1 5.6-5.6h1.4a5.6 5.6 0 0 1 2.9.8"/>
+      <path d="m14.9 18 1.9 1.9 3.6-4"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 3.5v11.2"/>
+      <path d="m7.7 10.4 4.3 4.3 4.3-4.3"/>
+      <path d="M4.4 17.4v1.6a2 2 0 0 0 2 2h11.2a2 2 0 0 0 2-2v-1.6"/>
+    </symbol>
+    <symbol id="i-live" viewBox="0 0 24 24">
+      <rect x="2.8" y="5.2" width="13.6" height="13.6" rx="2.4"/>
+      <path d="m16.8 10.6 3.4-2.4a.6.6 0 0 1 1 .5v6.6a.6.6 0 0 1-1 .5l-3.4-2.4"/>
+      <path d="m8.2 9.5 3.8 2.5-3.8 2.5Z"/>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24">
+      <path d="M20.6 12a7.6 7.6 0 0 1-8.4 7.6l-4.9 1.4 1.4-4.4A7.6 7.6 0 1 1 20.6 12Z"/>
+      <path d="M9 11h6M9 14h3.6"/>
+    </symbol>
+    <symbol id="i-community" viewBox="0 0 24 24">
+      <circle cx="9" cy="8.4" r="3.3"/>
+      <path d="M3.3 19.9a5.7 5.7 0 0 1 11.4 0"/>
+      <path d="M16.1 5.6a3.3 3.3 0 0 1 0 6.4"/>
+      <path d="M17.3 14.4a5.7 5.7 0 0 1 3.4 5.5"/>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="m6.2 6.2 11.6 11.6M17.8 6.2 6.2 17.8"/>
+    </symbol>
+    <symbol id="i-chev-left" viewBox="0 0 24 24">
+      <path d="M15 4.4 7.4 12 15 19.6"/>
+    </symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24">
+      <path d="M9 4.4 16.6 12 9 19.6"/>
+    </symbol>
+    <symbol id="i-zoom" viewBox="0 0 24 24">
+      <circle cx="10.8" cy="10.8" r="6.7"/>
+      <path d="m20.6 20.6-5.1-5.1"/>
+      <path d="M10.8 8.2v5.2M8.2 10.8h5.2"/>
     </symbol>
   </defs>
 </svg>
@@ -144,6 +220,8 @@
 <!-- ============ HERO ============ -->
 <section class="hero" id="hero">
   <div class="hero__bg" aria-hidden="true"></div>
+  <!-- Textura opcional: JS sólo la activa si assets/hero-bg.png existe -->
+  <div class="hero__texture" id="heroTexture" aria-hidden="true"></div>
   <canvas class="hero__canvas" id="particles" aria-hidden="true"></canvas>
 
   <div class="hero__stage" aria-hidden="true">
@@ -186,7 +264,304 @@
     <svg class="scroll-cue__ico" viewBox="0 0 24 40" aria-hidden="true"><use href="#i-scroll"></use></svg>
   </a>
 </section>
+
+<!-- ============ QUIÉNES SOMOS ============ -->
+<section class="section section--about" id="quienes-somos">
+  <div class="section__inner about">
+    <div class="about__text" data-rv-group>
+      <h2 class="section__title rv">Quiénes <span class="accent">Somos</span></h2>
+
+      <div class="about__cards">
+        <article class="card card--mv rv">
+          <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-target"></use></svg></span>
+          <h3 class="card__title">Misión</h3>
+          <p class="card__body">Impulsar el talento gastronómico mediante cursos, asesorías y capacitaciones prácticas de alta calidad, brindando conocimientos, técnicas y herramientas empresariales que permitan a nuestros alumnos perfeccionar sus habilidades, emprender y convertir su pasión por la repostería y la gastronomía en un negocio rentable.</p>
+        </article>
+
+        <article class="card card--mv rv">
+          <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-star"></use></svg></span>
+          <h3 class="card__title">Visión</h3>
+          <p class="card__body">Ser la consultora de capacitación gastronómica número uno en México, reconocida por la calidad de sus programas, la experiencia de sus especialistas, su innovación educativa y su compromiso con el crecimiento profesional y empresarial de cada alumno.</p>
+        </article>
+      </div>
+
+      <blockquote class="quote rv">
+        <p>La mayoría de nuestros alumnos ya sabe hacer algo delicioso; lo que necesita es técnica profesional y herramientas de negocio para venderlo bien.</p>
+      </blockquote>
+    </div>
+
+    <div class="about__media rv">
+      <figure class="media media--about tilt-soft">
+        <img src="assets/quienes-somos.png" alt="Especialistas de DulceLab Food durante una capacitación"
+             loading="lazy" decoding="async"
+             onload="this.parentNode.classList.add('is-loaded')"
+             onerror="this.parentNode.classList.add('is-broken')">
+        <span class="media__fb" aria-hidden="true">
+          <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+          <span class="media__fb-label">Quiénes Somos</span>
+        </span>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LÍNEAS DE CAPACITACIÓN ============ -->
+<section class="section section--lines" id="lineas">
+  <div class="section__inner">
+    <header class="section__head" data-rv-group>
+      <h2 class="section__title rv">Líneas de <span class="accent">Capacitación</span></h2>
+      <p class="section__sub rv">Seis submarcas, un mismo laboratorio gastronómico</p>
+    </header>
+
+    <div class="grid grid--3" data-rv-group>
+      <article class="card card--line rv">
+        <span class="card__num" aria-hidden="true">01</span>
+        <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-piping"></use></svg></span>
+        <h3 class="card__title">DulceLab Repostería</h3>
+        <p class="card__body">Pasteles, postres, cupcakes, galletas, gelatinas, rellenos y decoración.</p>
+      </article>
+
+      <article class="card card--line rv">
+        <span class="card__num" aria-hidden="true">02</span>
+        <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-wheat"></use></svg></span>
+        <h3 class="card__title">DulceLab Panadería</h3>
+        <p class="card__body">Pan artesanal, masas, fermentación, bollería y productos comerciales.</p>
+      </article>
+
+      <article class="card card--line rv">
+        <span class="card__num" aria-hidden="true">03</span>
+        <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-chart"></use></svg></span>
+        <h3 class="card__title">DulceLab Emprende</h3>
+        <p class="card__body">Costos, fijación de precios, ventas, redes sociales, empaques y administración.</p>
+      </article>
+
+      <article class="card card--line rv">
+        <span class="card__num" aria-hidden="true">04</span>
+        <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-medal"></use></svg></span>
+        <h3 class="card__title">DulceLab Profesional</h3>
+        <p class="card__body">Cursos avanzados, certificaciones, talleres especializados y capacitación empresarial.</p>
+      </article>
+
+      <article class="card card--line rv">
+        <span class="card__num" aria-hidden="true">05</span>
+        <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-calendar-star"></use></svg></span>
+        <h3 class="card__title">DulceLab Temporadas</h3>
+        <p class="card__body">Navidad, Día de Muertos, San Valentín, Día de las Madres y otras temporadas de alta venta.</p>
+      </article>
+
+      <article class="card card--line rv">
+        <span class="card__num" aria-hidden="true">06</span>
+        <span class="card__ico"><svg class="ico" aria-hidden="true"><use href="#i-pot"></use></svg></span>
+        <h3 class="card__title">DulceLab Cocina</h3>
+        <p class="card__body">Cocina mexicana, alimentos para venta y conceptos de comida rentable.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CURSOS EN VIVO ============ -->
+<section class="section section--courses" id="cursos">
+  <div class="section__inner">
+    <header class="section__head" data-rv-group>
+      <h2 class="section__title rv">Cursos en <span class="accent">Vivo</span></h2>
+      <p class="section__sub rv">Inician el 17 de agosto · Modalidad Google Meet · Certificado digital con QR y folio válido</p>
+    </header>
+
+    <div class="grid grid--3" id="coursesGrid" data-rv-group>
+
+      <article class="card card--course rv tilt-card">
+        <button class="course__flyer media" type="button"
+                data-lightbox="assets/flyers/diseno-menus.png"
+                aria-label="Ampliar flyer del curso Diseño Profesional de Menús">
+          <img src="assets/flyers/diseno-menus.png"
+               alt="Flyer del curso Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios"
+               loading="lazy" decoding="async"
+               onload="this.parentNode.classList.add('is-loaded')"
+               onerror="this.parentNode.classList.add('is-broken')">
+          <span class="media__fb" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+            <span class="media__fb-label">Diseño Profesional de Menús</span>
+          </span>
+          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+        </button>
+        <div class="course__body">
+          <h3 class="card__title card__title--course">Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios</h3>
+          <p class="course__chef">Chef Eduardo Lastra Vargas</p>
+          <p class="course__price">$550 <span>MXN</span></p>
+          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+             href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20del%20curso%20Dise%C3%B1o%20Profesional%20de%20Men%C3%BAs%3A%20Planeaci%C3%B3n%2C%20Estructura%20y%20Fijaci%C3%B3n%20de%20Precios">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="card card--course rv tilt-card">
+        <button class="course__flyer media" type="button"
+                data-lightbox="assets/flyers/pan-artesanal.png"
+                aria-label="Ampliar flyer del curso Pan Artesanal con Masa Madre">
+          <img src="assets/flyers/pan-artesanal.png"
+               alt="Flyer del curso Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación"
+               loading="lazy" decoding="async"
+               onload="this.parentNode.classList.add('is-loaded')"
+               onerror="this.parentNode.classList.add('is-broken')">
+          <span class="media__fb" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+            <span class="media__fb-label">Pan Artesanal con Masa Madre</span>
+          </span>
+          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+        </button>
+        <div class="course__body">
+          <h3 class="card__title card__title--course">Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación</h3>
+          <p class="course__chef">Chef Oscar Benitez Elioza</p>
+          <p class="course__price">$550 <span>MXN</span></p>
+          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+             href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20del%20curso%20Pan%20Artesanal%20con%20Masa%20Madre%3A%20T%C3%A9cnicas%20de%20Elaboraci%C3%B3n%20y%20Fermentaci%C3%B3n">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="card card--course rv tilt-card">
+        <button class="course__flyer media" type="button"
+                data-lightbox="assets/flyers/catering-profesional.png"
+                aria-label="Ampliar flyer del curso Catering Profesional">
+          <img src="assets/flyers/catering-profesional.png"
+               alt="Flyer del curso Catering Profesional: Planeación y Operación de Servicios Gastronómicos"
+               loading="lazy" decoding="async"
+               onload="this.parentNode.classList.add('is-loaded')"
+               onerror="this.parentNode.classList.add('is-broken')">
+          <span class="media__fb" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+            <span class="media__fb-label">Catering Profesional</span>
+          </span>
+          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+        </button>
+        <div class="course__body">
+          <h3 class="card__title card__title--course">Catering Profesional: Planeación y Operación de Servicios Gastronómicos</h3>
+          <p class="course__chef">Chef Carlos Efrain Rodriguez Vazquez</p>
+          <p class="course__price">$550 <span>MXN</span></p>
+          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+             href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20del%20curso%20Catering%20Profesional%3A%20Planeaci%C3%B3n%20y%20Operaci%C3%B3n%20de%20Servicios%20Gastron%C3%B3micos">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="card card--course rv tilt-card">
+        <button class="course__flyer media" type="button"
+                data-lightbox="assets/flyers/cocina-mexicana.png"
+                aria-label="Ampliar flyer del curso Cocina Mexicana Tradicional">
+          <img src="assets/flyers/cocina-mexicana.png"
+               alt="Flyer del curso Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones"
+               loading="lazy" decoding="async"
+               onload="this.parentNode.classList.add('is-loaded')"
+               onerror="this.parentNode.classList.add('is-broken')">
+          <span class="media__fb" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+            <span class="media__fb-label">Cocina Mexicana Tradicional</span>
+          </span>
+          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+        </button>
+        <div class="course__body">
+          <h3 class="card__title card__title--course">Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones</h3>
+          <p class="course__chef">Chef Rodrigo Rojas Torres</p>
+          <p class="course__price">$550 <span>MXN</span></p>
+          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+             href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20del%20curso%20Cocina%20Mexicana%20Tradicional%3A%20T%C3%A9cnicas%2C%20Criterios%20y%20Preparaciones">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="card card--course rv tilt-card">
+        <button class="course__flyer media" type="button"
+                data-lightbox="assets/flyers/control-costos.png"
+                aria-label="Ampliar flyer del curso Control Estratégico de Costos">
+          <img src="assets/flyers/control-costos.png"
+               alt="Flyer del curso Control Estratégico de Costos en Negocios de Alimentos y Bebidas"
+               loading="lazy" decoding="async"
+               onload="this.parentNode.classList.add('is-loaded')"
+               onerror="this.parentNode.classList.add('is-broken')">
+          <span class="media__fb" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+            <span class="media__fb-label">Control Estratégico de Costos</span>
+          </span>
+          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+        </button>
+        <div class="course__body">
+          <h3 class="card__title card__title--course">Control Estratégico de Costos en Negocios de Alimentos y Bebidas</h3>
+          <p class="course__chef">Chef Carlos Efrain Rodriguez Vazquez</p>
+          <p class="course__price">$550 <span>MXN</span></p>
+          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+             href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20del%20curso%20Control%20Estrat%C3%A9gico%20de%20Costos%20en%20Negocios%20de%20Alimentos%20y%20Bebidas">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="card card--course rv tilt-card">
+        <button class="course__flyer media" type="button"
+                data-lightbox="assets/flyers/decoracion-pasteles.png"
+                aria-label="Ampliar flyer del curso Decoración Profesional de Pasteles">
+          <img src="assets/flyers/decoracion-pasteles.png"
+               alt="Flyer del curso Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación"
+               loading="lazy" decoding="async"
+               onload="this.parentNode.classList.add('is-loaded')"
+               onerror="this.parentNode.classList.add('is-broken')">
+          <span class="media__fb" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+            <span class="media__fb-label">Decoración Profesional de Pasteles</span>
+          </span>
+          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+        </button>
+        <div class="course__body">
+          <h3 class="card__title card__title--course">Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación</h3>
+          <p class="course__chef">Chef Ismael Galicia Sanchez</p>
+          <p class="course__price">$550 <span>MXN</span></p>
+          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+             href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20del%20curso%20Decoraci%C3%B3n%20Profesional%20de%20Pasteles%3A%20T%C3%A9cnicas%2C%20Acabados%20y%20Presentaci%C3%B3n">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ POR QUÉ DULCELAB ============ -->
+<section class="band" id="por-que">
+  <div class="band__inner" data-rv-group>
+    <p class="band__claim rv">No vendemos recetas: vendemos la capacidad de convertir una receta en un producto rentable.</p>
+
+    <ul class="band__list">
+      <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-user-check"></use></svg><span>Instructores con experiencia comprobable</span></li>
+      <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-cert"></use></svg><span>Constancias digitales con folio y QR</span></li>
+      <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-download"></use></svg><span>Materiales descargables y fichas técnicas</span></li>
+      <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-live"></use></svg><span>Clases en vivo con acceso a grabaciones</span></li>
+      <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg><span>Asesoría posterior al curso</span></li>
+      <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-community"></use></svg><span>Comunidad privada para alumnos</span></li>
+    </ul>
+  </div>
+</section>
 </main>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Flyer del curso" hidden>
+  <button class="lightbox__close" type="button" data-lb="close" aria-label="Cerrar">
+    <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+  </button>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" data-lb="prev" aria-label="Flyer anterior">
+    <svg class="ico" aria-hidden="true"><use href="#i-chev-left"></use></svg>
+  </button>
+  <figure class="lightbox__figure">
+    <img class="lightbox__img" id="lightboxImg" src="" alt="">
+    <figcaption class="lightbox__caption" id="lightboxCaption"></figcaption>
+  </figure>
+  <button class="lightbox__nav lightbox__nav--next" type="button" data-lb="next" aria-label="Flyer siguiente">
+    <svg class="ico" aria-hidden="true"><use href="#i-chev-right"></use></svg>
+  </button>
+</div>
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer" id="contacto">

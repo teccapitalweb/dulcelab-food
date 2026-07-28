@@ -296,7 +296,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   overflow:hidden;
 }
 .hero__bg{
-  position:absolute;inset:-10%;z-index:-3;
+  position:absolute;inset:-10%;z-index:-4;
   background:var(--bg-grad);
   background-size:180% 180%;
   animation:bgDrift 22s ease-in-out infinite alternate;
@@ -311,6 +311,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   pointer-events:none;
 }
 .hero__canvas{position:absolute;inset:0;z-index:-1;width:100%;height:100%;pointer-events:none}
+
+/* Textura opcional del hero: sólo se enciende si assets/hero-bg.png existe */
+.hero__texture{
+  position:absolute;inset:0;z-index:-3;pointer-events:none;
+  background-position:center;background-size:cover;background-repeat:no-repeat;
+  opacity:0;transition:opacity .9s var(--ease);
+}
+.hero__texture.is-on{opacity:.22}
+:root[data-theme="dark"] .hero__texture.is-on{opacity:.15}
 
 /* Shapes 3D flotantes */
 .hero__stage{
@@ -531,6 +540,338 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .hero__card{transform:none !important}
 }
 
+/* =========================================================
+   FASE 2 — Quiénes Somos · Líneas · Cursos · Por qué
+   ========================================================= */
+
+/* ---------- 11. Shell de sección ---------- */
+.section{
+  position:relative;
+  padding:clamp(3.5rem,8vw,6.5rem) clamp(1rem,4vw,2rem);
+}
+.section__inner{max-width:var(--wrap);margin-inline:auto}
+.section__head{text-align:center;margin-bottom:clamp(2rem,4vw,3.2rem)}
+.section__title{
+  font-size:clamp(1.9rem,1.3rem + 2.4vw,3.3rem);
+  letter-spacing:-.03em;margin-bottom:.6rem;text-wrap:balance;
+}
+.accent{color:var(--dorado)}
+:root[data-theme="dark"] .accent{text-shadow:0 0 26px rgba(213,161,61,.4)}
+.section__sub{
+  font-size:clamp(.92rem,.88rem + .3vw,1.08rem);
+  color:var(--text-soft);max-width:56ch;margin-inline:auto;text-wrap:balance;
+}
+
+/* Alternancia sutil de fondo entre secciones */
+.section--lines::before,
+.section--courses::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(132,157,131,.08) 35%,transparent);
+}
+:root[data-theme="dark"] .section--lines::before,
+:root[data-theme="dark"] .section--courses::before{
+  background:linear-gradient(180deg,transparent,rgba(213,161,61,.06) 35%,transparent);
+}
+
+/* ---------- 12. Entrada al hacer scroll ---------- */
+.rv-ready .rv{
+  opacity:0;transform:translateY(26px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+  will-change:transform,opacity;
+}
+.rv-ready .rv.is-in{opacity:1;transform:none;will-change:auto}
+
+/* ---------- 13. Imágenes con fallback ---------- */
+.media{
+  position:relative;overflow:hidden;
+  border-radius:var(--r-md);
+  background:linear-gradient(140deg,#3B2420 0%,#5B2E34 58%,#8E3F53 100%);
+  isolation:isolate;
+}
+.media img{
+  position:relative;z-index:1;
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .5s var(--ease), transform .6s var(--ease);
+}
+.media.is-loaded img{opacity:1}
+.media.is-broken img{display:none}
+.media__fb{
+  position:absolute;inset:0;z-index:0;
+  display:grid;place-content:center;justify-items:center;gap:.7rem;
+  padding:1.2rem;text-align:center;color:rgba(255,243,229,.82);
+}
+.media__fb::before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,rgba(255,243,229,.05) 0 1px,transparent 1px 11px);
+  pointer-events:none;
+}
+.media.is-loaded .media__fb{display:none}
+.media__fb .ico{
+  width:clamp(32px,14%,54px);height:auto;aspect-ratio:1;
+  color:var(--dorado);opacity:.9;
+}
+.media__fb-label{
+  font-family:var(--ff-title);font-weight:800;
+  font-size:clamp(.72rem,.66rem + .3vw,.86rem);
+  letter-spacing:.06em;text-transform:uppercase;line-height:1.35;
+  max-width:22ch;text-wrap:balance;
+}
+
+/* ---------- 14. Card base ---------- */
+.card{
+  position:relative;overflow:hidden;
+  padding:clamp(1.4rem,2.6vw,2rem);
+  border-radius:var(--r-lg);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-brd);
+  -webkit-backdrop-filter:blur(16px) saturate(145%);
+  backdrop-filter:blur(16px) saturate(145%);
+  box-shadow:var(--glass-shadow);
+  transition:transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.card__ico{
+  display:grid;place-items:center;
+  width:48px;height:48px;margin-bottom:1rem;
+  border-radius:14px;
+  color:var(--dorado);
+  background:var(--glass-bg-strong);
+  border:1px solid var(--glass-brd-hi);
+  transition:transform .4s var(--ease), color .4s var(--ease), box-shadow .4s var(--ease);
+}
+.card__ico .ico{width:24px;height:24px}
+.card__title{
+  font-family:var(--ff-title);font-weight:800;
+  font-size:clamp(1.05rem,1rem + .35vw,1.3rem);
+  letter-spacing:-.01em;line-height:1.2;margin-bottom:.55rem;
+}
+.card__body{font-size:.92rem;color:var(--text-soft);line-height:1.7}
+
+/* Misión / Visión */
+.card--mv .card__ico{color:var(--frambuesa)}
+
+/* Líneas de capacitación */
+.card--line{padding-top:clamp(1.6rem,3vw,2.2rem)}
+.card__num{
+  position:absolute;top:-.35em;right:.1em;
+  font-family:var(--ff-title);font-weight:900;
+  font-size:clamp(4.5rem,9vw,6.5rem);line-height:1;
+  color:var(--text);opacity:.06;pointer-events:none;user-select:none;
+  transition:opacity .4s var(--ease), color .4s var(--ease);
+}
+:root[data-theme="dark"] .card__num{color:var(--dorado);opacity:.12}
+.card--line:hover{
+  transform:translateY(-6px);
+  border-color:var(--glass-brd-hi);
+  box-shadow:var(--glass-shadow),var(--glow-dorado);
+}
+.card--line:hover .card__ico{transform:scale(1.12) rotate(-4deg);box-shadow:var(--glow-dorado)}
+.card--line:hover .card__num{opacity:.14}
+:root[data-theme="dark"] .card--line:hover{
+  border-color:rgba(201,75,104,.45);
+  box-shadow:var(--glass-shadow),var(--glow-frambuesa),var(--glow-dorado);
+}
+:root[data-theme="dark"] .card--line:hover .card__num{opacity:.2}
+
+/* ---------- 15. Grids ---------- */
+.grid{display:grid;gap:clamp(1rem,2.2vw,1.6rem)}
+.grid--3{grid-template-columns:1fr}
+
+/* ---------- 16. Quiénes Somos ---------- */
+.about{display:grid;gap:clamp(2rem,4vw,3rem);align-items:center}
+.about__cards{display:grid;gap:clamp(1rem,2vw,1.4rem);margin-top:clamp(1.4rem,3vw,2rem)}
+.quote{
+  position:relative;margin-top:clamp(1.2rem,2.5vw,1.8rem);
+  padding:clamp(1.2rem,2.4vw,1.7rem) clamp(1.2rem,2.4vw,1.9rem);
+  border-radius:var(--r-md);
+  border:1px solid rgba(201,75,104,.42);
+  border-left:3px solid var(--frambuesa);
+  background:var(--glass-bg);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  box-shadow:var(--glass-shadow);
+}
+:root[data-theme="dark"] .quote{box-shadow:var(--glass-shadow),var(--glow-frambuesa)}
+.quote p{
+  font-size:clamp(.98rem,.92rem + .35vw,1.15rem);
+  font-weight:300;font-style:italic;line-height:1.65;text-wrap:balance;
+}
+.about__media{perspective:1200px}
+.media--about{
+  aspect-ratio:4/5;
+  border:1px solid var(--glass-brd-hi);
+  box-shadow:var(--glass-shadow);
+  transform-style:preserve-3d;
+  transition:transform .6s var(--ease), box-shadow .6s var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .media--about:hover{
+    transform:rotateY(-6deg) rotateX(3deg) translateZ(14px);
+    box-shadow:var(--glass-shadow),var(--glow-dorado);
+  }
+  .media--about:hover img{transform:scale(1.04)}
+}
+
+/* ---------- 17. Cursos ---------- */
+.card--course{
+  display:flex;flex-direction:column;
+  padding:0;overflow:hidden;
+  transform-style:preserve-3d;
+}
+.card--course.is-tilting{transition:transform .12s linear}
+.card--course:hover{
+  border-color:var(--glass-brd-hi);
+  box-shadow:var(--glass-shadow),var(--glow-dorado);
+}
+:root[data-theme="dark"] .card--course:hover{
+  box-shadow:var(--glass-shadow),var(--glow-frambuesa),var(--glow-dorado);
+}
+.course__flyer{
+  position:relative;display:block;width:100%;
+  aspect-ratio:1/1;
+  border-radius:0;border:0;
+  border-bottom:1px solid var(--glass-brd);
+  cursor:default;
+}
+.course__flyer.is-loaded{cursor:zoom-in}
+.card--course:hover .course__flyer.is-loaded img{transform:scale(1.06)}
+.course__zoom{
+  position:absolute;z-index:2;right:.7rem;bottom:.7rem;
+  display:grid;place-items:center;width:36px;height:36px;
+  border-radius:50%;color:var(--crema);
+  background:rgba(42,24,21,.55);border:1px solid rgba(255,243,229,.28);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  opacity:0;transform:scale(.85);
+  transition:opacity .35s var(--ease), transform .35s var(--ease);
+}
+.course__flyer.is-loaded:hover .course__zoom,
+.course__flyer.is-loaded:focus-visible .course__zoom{opacity:1;transform:scale(1)}
+.course__body{
+  display:flex;flex-direction:column;flex:1;
+  padding:clamp(1.1rem,2.2vw,1.5rem);
+}
+.card__title--course{font-size:clamp(.98rem,.94rem + .28vw,1.12rem);line-height:1.3}
+.course__chef{
+  font-size:.84rem;color:var(--text-faint);
+  letter-spacing:.02em;margin-bottom:.9rem;
+}
+.course__price{
+  font-family:var(--ff-title);font-weight:900;
+  font-size:1.6rem;line-height:1;color:var(--frambuesa);
+  margin-top:auto;margin-bottom:1rem;
+}
+:root[data-theme="dark"] .course__price{text-shadow:0 0 24px rgba(201,75,104,.45)}
+.course__price span{
+  font-family:var(--ff-body);font-weight:600;font-size:.72rem;
+  letter-spacing:.1em;color:var(--text-faint);margin-left:.3rem;
+  text-shadow:none;
+}
+.btn--block{width:100%;padding:.85rem 1rem;font-size:.85rem}
+.btn--block .ico{width:17px;height:17px}
+
+/* ---------- 18. Franja "Por qué DulceLab" ---------- */
+.band{
+  position:relative;overflow:hidden;
+  padding:clamp(3rem,7vw,5.5rem) clamp(1rem,4vw,2rem);
+  background:linear-gradient(150deg,var(--chocolate-deep) 0%,var(--chocolate) 55%,#4A2C26 100%);
+  color:var(--crema);
+}
+.band::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 70% at 18% 20%, rgba(201,75,104,.18), transparent 70%),
+             radial-gradient(55% 65% at 82% 75%, rgba(213,161,61,.16), transparent 70%);
+}
+:root[data-theme="dark"] .band::before{
+  background:radial-gradient(60% 70% at 18% 20%, rgba(201,75,104,.3), transparent 70%),
+             radial-gradient(55% 65% at 82% 75%, rgba(213,161,61,.26), transparent 70%);
+}
+.band__inner{position:relative;max-width:var(--wrap);margin-inline:auto}
+.band__claim{
+  font-family:var(--ff-title);font-weight:800;
+  font-size:clamp(1.35rem,1rem + 2.1vw,2.5rem);
+  line-height:1.25;letter-spacing:-.02em;text-align:center;text-wrap:balance;
+  max-width:22ch;margin:0 auto clamp(2rem,4vw,3rem);
+}
+.band__list{display:grid;gap:.7rem}
+.badge{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.85rem 1.1rem;border-radius:var(--r-pill);
+  font-size:.85rem;line-height:1.4;color:rgba(255,243,229,.88);
+  background:rgba(255,243,229,.07);
+  border:1px solid rgba(255,243,229,.16);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  transition:transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+}
+.badge .ico{width:21px;height:21px;color:var(--dorado)}
+.badge:hover{
+  transform:translateY(-3px);
+  border-color:rgba(213,161,61,.5);
+  box-shadow:0 0 24px -6px rgba(213,161,61,.45);
+}
+
+/* ---------- 19. Lightbox ---------- */
+.lightbox{
+  position:fixed;inset:0;z-index:300;
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(3.5rem,7vw,4.5rem) clamp(.75rem,4vw,3.5rem);
+  background:rgba(26,15,13,.86);
+  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  opacity:0;transition:opacity .3s var(--ease);
+}
+.lightbox[hidden]{display:none}
+.lightbox.is-open{opacity:1}
+.lightbox__figure{
+  display:flex;flex-direction:column;align-items:center;gap:.9rem;
+  max-width:100%;
+  transform:scale(.94);opacity:0;
+  transition:transform .35s var(--ease), opacity .35s var(--ease);
+}
+.lightbox.is-open .lightbox__figure{transform:none;opacity:1}
+.lightbox__img{
+  max-height:90vh;max-width:min(92vw,900px);
+  width:auto;height:auto;object-fit:contain;
+  border-radius:var(--r-md);
+  border:1px solid rgba(213,161,61,.35);
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.85),0 0 50px -20px rgba(213,161,61,.4);
+}
+.lightbox__caption{
+  font-size:.82rem;color:rgba(255,243,229,.72);
+  text-align:center;max-width:60ch;text-wrap:balance;
+}
+.lightbox__close,.lightbox__nav{
+  position:absolute;z-index:2;
+  display:grid;place-items:center;
+  width:46px;height:46px;border-radius:50%;
+  color:var(--crema);
+  background:rgba(255,243,229,.08);
+  border:1px solid rgba(255,243,229,.22);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  transition:transform .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), background-color .3s var(--ease);
+}
+.lightbox__close:hover,.lightbox__nav:hover{
+  color:var(--frambuesa);border-color:var(--frambuesa);
+  background:rgba(201,75,104,.14);transform:scale(1.08);
+}
+.lightbox__close{top:1rem;right:1rem}
+.lightbox__nav--prev{left:.6rem;top:50%;margin-top:-23px}
+.lightbox__nav--next{right:.6rem;top:50%;margin-top:-23px}
+.lightbox__nav[hidden]{display:none}
+
+/* ---------- 20. Breakpoints Fase 2 ---------- */
+@media (min-width:768px){
+  .grid--3{grid-template-columns:repeat(2,1fr)}
+  .about__cards{grid-template-columns:repeat(2,1fr)}
+  .band__list{grid-template-columns:repeat(2,1fr);gap:.85rem}
+  .lightbox__close{top:1.5rem;right:1.5rem}
+  .lightbox__nav--prev{left:1.5rem}
+  .lightbox__nav--next{right:1.5rem}
+}
+
+@media (min-width:1200px){
+  .grid--3{grid-template-columns:repeat(3,1fr)}
+  .about{grid-template-columns:1.15fr .85fr;gap:clamp(2.5rem,4vw,4rem)}
+  .about__cards{grid-template-columns:repeat(2,1fr)}
+  .band__list{grid-template-columns:repeat(3,1fr)}
+}
+
 /* ---------- 10. Movimiento reducido ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -541,4 +882,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   }
   .reveal,.scroll-cue{opacity:1;transform:none}
   .hero__card{transform:none !important}
+  /* Fase 2: el contenido aparece sin desplazamiento ni tilt */
+  .rv-ready .rv{opacity:1 !important;transform:none !important;transition-delay:0s !important}
+  .card--course,.media--about,.media--about:hover{transform:none !important}
+  .lightbox__figure{transform:none}
 }

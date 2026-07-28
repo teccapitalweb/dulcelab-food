@@ -206,36 +206,217 @@
     }
   }
 
-  /* ---------- 6. Tilt 3D de la card del hero ---------- */
-  var card = document.getElementById('heroCard');
+  /* ---------- 6. Tilt 3D (hero y cards de curso) ---------- */
   var canTilt = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  if (card && canTilt && !reduceMotion.matches) {
-    var MAX_DEG = 7;
+  function attachTilt(el, opts) {
+    var maxDeg = opts.maxDeg;
+    var depth = opts.depth;
+    var persp = opts.perspective || 0;
     var frame = null;
 
     function reset() {
-      card.classList.remove('is-tilting');
-      card.style.transform = '';
+      frame = null;
+      el.classList.remove('is-tilting');
+      el.style.transform = '';
     }
 
-    card.addEventListener('pointermove', function (e) {
+    el.addEventListener('pointermove', function (e) {
       if (e.pointerType !== 'mouse') return;
       if (frame) return;
       frame = requestAnimationFrame(function () {
         frame = null;
-        var rect = card.getBoundingClientRect();
+        var rect = el.getBoundingClientRect();
         var px = (e.clientX - rect.left) / rect.width - 0.5;
         var py = (e.clientY - rect.top) / rect.height - 0.5;
-        card.classList.add('is-tilting');
-        card.style.transform =
-          'rotateY(' + (px * MAX_DEG * 2).toFixed(2) + 'deg) ' +
-          'rotateX(' + (-py * MAX_DEG * 2).toFixed(2) + 'deg) ' +
-          'translateZ(12px)';
+        el.classList.add('is-tilting');
+        el.style.transform =
+          (persp ? 'perspective(' + persp + 'px) ' : '') +
+          'rotateY(' + (px * maxDeg * 2).toFixed(2) + 'deg) ' +
+          'rotateX(' + (-py * maxDeg * 2).toFixed(2) + 'deg) ' +
+          'translateZ(' + depth + 'px)';
       });
     });
 
-    card.addEventListener('pointerleave', reset);
-    card.addEventListener('blur', reset, true);
+    el.addEventListener('pointerleave', reset);
+    el.addEventListener('blur', reset, true);
+  }
+
+  if (canTilt && !reduceMotion.matches) {
+    var heroCard = document.getElementById('heroCard');
+    if (heroCard) attachTilt(heroCard, { maxDeg: 7, depth: 12 });
+
+    var tiltCards = document.querySelectorAll('.tilt-card');
+    for (var ti = 0; ti < tiltCards.length; ti++) {
+      attachTilt(tiltCards[ti], { maxDeg: 4.5, depth: 8, perspective: 900 });
+    }
+  }
+
+  /* ---------- 7. Textura opcional del hero ---------- */
+  var heroTexture = document.getElementById('heroTexture');
+  if (heroTexture) {
+    var probe = new Image();
+    probe.onload = function () {
+      heroTexture.style.backgroundImage = 'url("assets/hero-bg.png")';
+      heroTexture.classList.add('is-on');
+    };
+    probe.src = 'assets/hero-bg.png';
+  }
+
+  /* ---------- 8. Entrada al hacer scroll ---------- */
+  var groups = document.querySelectorAll('[data-rv-group]');
+  for (var gi = 0; gi < groups.length; gi++) {
+    var items = groups[gi].querySelectorAll('.rv');
+    for (var ii = 0; ii < items.length; ii++) {
+      items[ii].style.transitionDelay = Math.min(ii * 80, 480) + 'ms';
+    }
+  }
+
+  var revealables = document.querySelectorAll('.rv');
+
+  function revealAll() {
+    for (var i = 0; i < revealables.length; i++) revealables[i].classList.add('is-in');
+  }
+
+  if ('IntersectionObserver' in window) {
+    var rvObserver = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) {
+          entries[i].target.classList.add('is-in');
+          rvObserver.unobserve(entries[i].target);
+        }
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+
+    for (var ri = 0; ri < revealables.length; ri++) rvObserver.observe(revealables[ri]);
+  } else {
+    revealAll();
+  }
+
+  /* ---------- 9. Scrollspy ---------- */
+  var spy = [];
+  navLinks.forEach(function (link) {
+    var href = link.getAttribute('href') || '';
+    if (href.charAt(0) !== '#' || href.length < 2) return;
+    var target = document.querySelector(href);
+    if (target) spy.push({ link: link, el: target });
+  });
+
+  function docTop(el) {
+    return el.getBoundingClientRect().top + window.scrollY;
+  }
+
+  spy.sort(function (a, b) { return docTop(a.el) - docTop(b.el); });
+
+  function updateSpy() {
+    if (!spy.length) return;
+    var navH = nav ? nav.offsetHeight : 80;
+    var pos = window.scrollY + navH + 32;
+    var current = spy[0];
+
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+      current = spy[spy.length - 1];
+    } else {
+      for (var i = 0; i < spy.length; i++) {
+        if (docTop(spy[i].el) <= pos) current = spy[i];
+      }
+    }
+
+    for (var j = 0; j < spy.length; j++) {
+      spy[j].link.classList.toggle('is-active', spy[j] === current);
+    }
+  }
+
+  var spyTicking = false;
+  window.addEventListener('scroll', function () {
+    if (spyTicking) return;
+    spyTicking = true;
+    requestAnimationFrame(function () { spyTicking = false; updateSpy(); });
+  }, { passive: true });
+  updateSpy();
+
+  /* ---------- 10. Lightbox de flyers ---------- */
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightboxImg');
+  var lbCaption = document.getElementById('lightboxCaption');
+
+  if (lb && lbImg) {
+    var lbPrev = lb.querySelector('[data-lb="prev"]');
+    var lbNext = lb.querySelector('[data-lb="next"]');
+    var lbItems = [];
+    var lbIndex = 0;
+    var lbLastFocus = null;
+
+    function courseTitle(flyer) {
+      var host = flyer.closest('.card--course');
+      var h = host && host.querySelector('.card__title--course');
+      return h ? h.textContent.trim() : 'Flyer del curso';
+    }
+
+    function lbRender() {
+      var flyer = lbItems[lbIndex];
+      if (!flyer) return;
+      var title = courseTitle(flyer);
+      lbImg.src = flyer.getAttribute('data-lightbox');
+      lbImg.alt = 'Flyer del curso ' + title;
+      lbCaption.textContent = title;
+      var many = lbItems.length > 1;
+      if (lbPrev) lbPrev.hidden = !many;
+      if (lbNext) lbNext.hidden = !many;
+    }
+
+    function lbOpen(flyer) {
+      lbItems = [].slice.call(document.querySelectorAll('.course__flyer.is-loaded[data-lightbox]'));
+      lbIndex = lbItems.indexOf(flyer);
+      if (lbIndex < 0) return;
+      lbLastFocus = document.activeElement;
+      lbRender();
+      lb.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () { lb.classList.add('is-open'); });
+      var closeBtn = lb.querySelector('[data-lb="close"]');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function lbClose() {
+      lb.classList.remove('is-open');
+      document.body.style.overflow = '';
+      window.setTimeout(function () {
+        lb.hidden = true;
+        lbImg.src = '';
+      }, 300);
+      if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
+    }
+
+    function lbStep(delta) {
+      if (lbItems.length < 2) return;
+      lbIndex = (lbIndex + delta + lbItems.length) % lbItems.length;
+      lbRender();
+    }
+
+    document.addEventListener('click', function (e) {
+      var flyer = e.target.closest ? e.target.closest('.course__flyer') : null;
+      if (flyer && flyer.classList.contains('is-loaded')) lbOpen(flyer);
+    });
+
+    lb.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-lb]');
+      if (btn) {
+        var role = btn.getAttribute('data-lb');
+        if (role === 'close') lbClose();
+        if (role === 'prev') lbStep(-1);
+        if (role === 'next') lbStep(1);
+        return;
+      }
+      // Clic fuera de la imagen
+      if (!e.target.closest('.lightbox__img')) lbClose();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') lbClose();
+      if (e.key === 'ArrowLeft') lbStep(-1);
+      if (e.key === 'ArrowRight') lbStep(1);
+    });
   }
 })();
