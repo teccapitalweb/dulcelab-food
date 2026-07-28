@@ -186,11 +186,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
 }
 .brand{display:flex;align-items:center;gap:.6rem;min-width:0}
+/* El logo es un wordmark horizontal: alto fijo, ancho libre y sin recorte. */
 .brand__mark{
-  width:40px;height:40px;border-radius:50%;
-  box-shadow:var(--glow-soft);
+  height:34px;width:auto;
+  border-radius:0;
 }
+:root[data-theme="dark"] .brand__mark{filter:drop-shadow(0 0 12px rgba(213,161,61,.3))}
+/* El logo ya dice "DULCE LAB FOOD"; el texto duplicaba la marca. */
 .brand__text{
+  display:none;
   font-family:var(--ff-title);font-weight:900;
   font-size:clamp(.95rem,.85rem + .5vw,1.15rem);
   letter-spacing:.01em;line-height:1;white-space:nowrap;
@@ -464,8 +468,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   display:grid;gap:2.2rem;
 }
 .footer__brand{display:flex;align-items:center;gap:1rem}
-.footer__logo{width:52px;height:52px;border-radius:50%;box-shadow:var(--glow-soft)}
-.footer__name{font-family:var(--ff-title);font-weight:900;font-size:1.1rem;line-height:1.2}
+.footer__logo{height:52px;width:auto;border-radius:0}
+:root[data-theme="dark"] .footer__logo{filter:drop-shadow(0 0 14px rgba(213,161,61,.28))}
+/* Igual que en el navbar: el logo ya es el wordmark. */
+.footer__name{display:none;font-family:var(--ff-title);font-weight:900;font-size:1.1rem;line-height:1.2}
 .footer__slogan{font-size:.86rem;color:var(--text-soft);max-width:32ch;margin-top:.2rem}
 .footer__h{
   font-family:var(--ff-body);font-weight:600;font-size:.74rem;
@@ -510,8 +516,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .nav__wa-mobile{display:none}
   .nav__wa{display:inline-flex}
   .burger{display:none}
-  /* Entre 768 y 1199 el wordmark cede espacio a los links */
-  .brand__text{display:none}
   .footer__inner{grid-template-columns:1.6fr 1fr 1fr;align-items:start;gap:2rem}
   .shape--1{width:96px;height:96px;left:8%}
   .shape--3{width:110px;height:110px;right:9%}
@@ -526,7 +530,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .theme-toggle__orb{width:24px;height:24px;top:3px;left:3px}
   :root[data-theme="dark"] .theme-toggle__orb{transform:translateX(24px)}
   .btn--wa{padding:.7rem 1.15rem;font-size:.86rem}
-  .brand__text{display:inline}
+  .brand__mark{height:38px}
   .hero{padding-top:calc(var(--nav-h) + 3.5rem)}
   .hero__card{padding:3.4rem 3.6rem}
   .shape--1{left:11%}
