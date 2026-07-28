@@ -67,6 +67,5 @@ cuyo flyer ya existe.
 
 ## Pendiente
 
-- Conectar el dominio `dulcelabfood.com` y actualizar `og:image` / `twitter:image`
-  (hay un `TODO` en `index.html` junto a cada meta).
 - Enlaces reales de Facebook e Instagram en el footer.
+- Activar "Enforce HTTPS" en Settings › Pages (el certificado del dominio ya emitió).
