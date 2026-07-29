@@ -52,10 +52,10 @@
 </script>
 <script>
   // Evita el flash de tema: se aplica antes del primer pintado.
+  // La primera visita siempre abre en claro; solo manda la eleccion guardada.
   try {
-    var t = localStorage.getItem('dlf-theme');
-    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-theme',
+      localStorage.getItem('dlf-theme') === 'dark' ? 'dark' : 'light');
   } catch (e) {}
   // Sólo ocultamos el contenido animable si el JS está vivo: sin JS, todo se ve.
   document.documentElement.classList.add('rv-ready');
