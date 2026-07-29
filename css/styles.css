@@ -876,6 +876,138 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .band__list{grid-template-columns:repeat(3,1fr)}
 }
 
+/* =========================================================
+   FASE 3 — Certificados · Contacto · WhatsApp flotante
+   ========================================================= */
+
+/* ---------- 21. Certificados ---------- */
+.section__lead{
+  font-size:clamp(.98rem,.93rem + .35vw,1.12rem);
+  color:var(--text-soft);line-height:1.75;
+  max-width:52ch;margin-bottom:1.6rem;
+}
+.media--cert{
+  aspect-ratio:16/11;
+  border:1px solid var(--glass-brd-hi);
+  box-shadow:var(--glass-shadow);
+  transform-style:preserve-3d;
+  transition:transform .6s var(--ease), box-shadow .6s var(--ease);
+}
+@media (hover:hover) and (pointer:fine){
+  .media--cert:hover{
+    transform:rotateY(6deg) rotateX(3deg) translateZ(14px);
+    box-shadow:var(--glass-shadow),var(--glow-dorado);
+  }
+  .media--cert:hover img{transform:scale(1.04)}
+}
+
+.cert__list{display:grid;gap:.85rem;margin-bottom:1.8rem}
+.cert__list li{
+  display:flex;align-items:flex-start;gap:.75rem;
+  font-size:.93rem;color:var(--text-soft);line-height:1.6;
+}
+.cert__list .ico{width:21px;height:21px;color:var(--salvia);margin-top:.15rem}
+:root[data-theme="dark"] .cert__list .ico{color:var(--dorado)}
+
+.badges{display:flex;flex-wrap:wrap;gap:.6rem}
+.badge--light{
+  color:var(--text-soft);
+  background:var(--glass-bg-strong);
+  border:1px solid var(--glass-brd-hi);
+  box-shadow:var(--glass-shadow);
+  padding:.7rem 1.05rem;font-size:.82rem;
+}
+.badge--light .ico{color:var(--frambuesa)}
+.badge--light:hover{
+  transform:translateY(-3px);
+  border-color:var(--frambuesa);
+  box-shadow:var(--glass-shadow),var(--glow-frambuesa);
+}
+
+/* ---------- 22. Contacto ---------- */
+.section--contact{padding-bottom:clamp(4rem,9vw,7rem)}
+.contact-card{
+  position:relative;overflow:hidden;
+  max-width:760px;margin-inline:auto;text-align:center;
+  padding:clamp(2rem,5vw,3.4rem) clamp(1.3rem,4vw,3rem);
+  border-radius:var(--r-lg);
+  background:var(--glass-bg);
+  border:1px solid var(--glass-brd-hi);
+  -webkit-backdrop-filter:blur(20px) saturate(150%);
+  backdrop-filter:blur(20px) saturate(150%);
+  box-shadow:var(--glass-shadow);
+}
+.contact-card::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(70% 80% at 50% 0%, rgba(201,75,104,.12), transparent 70%);
+}
+:root[data-theme="dark"] .contact-card{
+  box-shadow:var(--glass-shadow),0 0 70px -28px rgba(201,75,104,.6),0 0 90px -40px rgba(213,161,61,.45);
+}
+.contact-card .section__title{margin-bottom:.7rem}
+.contact-card .section__sub{margin-bottom:2rem}
+
+.btn--xl{
+  padding:1.1rem 2.3rem;font-size:1.02rem;
+  gap:.65rem;
+}
+.btn--xl .ico{width:22px;height:22px}
+
+.contact__meta{
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.6rem 1.8rem;margin-top:2.2rem;
+  padding-top:1.6rem;border-top:1px solid var(--line);
+}
+.contact__meta a{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.9rem;color:var(--text-soft);
+  transition:color .3s var(--ease);
+}
+.contact__meta a:hover{color:var(--frambuesa)}
+.contact__meta .ico{color:var(--frambuesa)}
+
+/* ---------- 23. WhatsApp flotante ---------- */
+.fab{
+  position:fixed;z-index:200;
+  right:calc(16px + env(safe-area-inset-right, 0px));
+  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  width:56px;height:56px;border-radius:50%;
+  display:grid;place-items:center;
+  color:var(--frambuesa);
+  background:var(--glass-bg-strong);
+  border:1px solid var(--glass-brd-hi);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);
+  backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:var(--glass-shadow);
+  opacity:0;transform:translateY(12px) scale(.85);pointer-events:none;
+  transition:opacity .35s var(--ease), transform .35s var(--ease), box-shadow .35s var(--ease);
+  will-change:transform,opacity;
+}
+.fab .ico{width:26px;height:26px}
+.fab.is-on{opacity:1;transform:none;pointer-events:auto}
+/* Mientras el lightbox esta abierto el boton estorba */
+.fab.is-muted{opacity:0;transform:scale(.85);pointer-events:none}
+:root[data-theme="dark"] .fab{box-shadow:var(--glass-shadow),var(--glow-frambuesa)}
+.fab.is-on:hover{
+  transform:translateY(-3px);
+  border-color:var(--frambuesa);
+  box-shadow:var(--glass-shadow),0 0 30px -4px rgba(201,75,104,.7);
+}
+@media (min-width:768px){
+  .fab{
+    width:60px;height:60px;
+    right:calc(24px + env(safe-area-inset-right, 0px));
+    bottom:calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ---------- 24. Breakpoints Fase 3 ---------- */
+@media (min-width:1200px){
+  .about--reverse{grid-template-columns:1fr 1fr}
+  /* La imagen va a la izquierda en desktop, pero el texto manda en movil. */
+  .about--reverse .about__media{order:-1}
+}
+
 /* ---------- 10. Movimiento reducido ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -889,5 +1021,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   /* Fase 2: el contenido aparece sin desplazamiento ni tilt */
   .rv-ready .rv{opacity:1 !important;transform:none !important;transition-delay:0s !important}
   .card--course,.media--about,.media--about:hover{transform:none !important}
+  .media--cert,.media--cert:hover{transform:none !important}
   .lightbox__figure{transform:none}
+  .fab.is-on{transform:none !important}
 }

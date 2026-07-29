@@ -32,13 +32,20 @@
 
   /* ---------- 2. Navbar: sombra al hacer scroll ---------- */
   var nav = document.getElementById('nav');
+  var fab = document.getElementById('waFab');
+  var heroEl = document.querySelector('.hero');
   var ticking = false;
+
+  function fabThreshold() {
+    return heroEl ? heroEl.offsetHeight * 0.6 : window.innerHeight * 0.6;
+  }
 
   function onScroll() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function () {
       if (nav) nav.classList.toggle('is-scrolled', window.scrollY > 12);
+      if (fab) fab.classList.toggle('is-on', window.scrollY > fabThreshold());
       ticking = false;
     });
   }
@@ -373,6 +380,7 @@
       lbRender();
       lb.hidden = false;
       document.body.style.overflow = 'hidden';
+      if (fab) fab.classList.add('is-muted');
       requestAnimationFrame(function () { lb.classList.add('is-open'); });
       var closeBtn = lb.querySelector('[data-lb="close"]');
       if (closeBtn) closeBtn.focus();
@@ -381,6 +389,7 @@
     function lbClose() {
       lb.classList.remove('is-open');
       document.body.style.overflow = '';
+      if (fab) fab.classList.remove('is-muted');
       window.setTimeout(function () {
         lb.hidden = true;
         lbImg.src = '';

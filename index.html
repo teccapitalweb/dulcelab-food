@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es-MX" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -8,8 +8,9 @@
 <meta name="theme-color" content="#FFF3E5">
 <meta name="author" content="DulceLab Food · TEC CAPITAL Group">
 
-<link rel="icon" type="image/png" href="assets/logo.png">
-<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_MX">
@@ -27,6 +28,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "DulceLab Food",
+  "alternateName": "DULCE LAB FOOD",
+  "url": "https://dulcelabfood.com/",
+  "logo": "https://dulcelabfood.com/assets/logo.png",
+  "image": "https://dulcelabfood.com/assets/og-image.png",
+  "description": "Consultora mexicana de capacitación gastronómica y emprendimiento. Aprende, crea y convierte tu talento en un negocio.",
+  "telephone": "+52 236 109 6247",
+  "areaServed": "MX",
+  "parentOrganization": { "@type": "Organization", "name": "TEC CAPITAL Group" },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+52 236 109 6247",
+    "contactType": "customer service",
+    "availableLanguage": ["es-MX"]
+  }
+}
+</script>
 <script>
   // Evita el flash de tema: se aplica antes del primer pintado.
   try {
@@ -168,6 +191,17 @@
     <symbol id="i-chev-right" viewBox="0 0 24 24">
       <path d="M9 4.4 16.6 12 9 19.6"/>
     </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24">
+      <path d="M12 2.9 19.8 5.6v5.9c0 4.3-3.1 8.2-7.8 9.6-4.7-1.4-7.8-5.3-7.8-9.6V5.6Z"/>
+      <path d="m8.9 12 2.2 2.2 4-4.3"/>
+    </symbol>
+    <symbol id="i-qr" viewBox="0 0 24 24">
+      <rect x="3.4" y="3.4" width="6.5" height="6.5" rx="1.3"/>
+      <rect x="14.1" y="3.4" width="6.5" height="6.5" rx="1.3"/>
+      <rect x="3.4" y="14.1" width="6.5" height="6.5" rx="1.3"/>
+      <path d="M14.1 14.1h2.8v2.8h-2.8Z"/>
+      <path d="M20.6 14.1h-1.4M20.6 17.9v2.7h-2.7M14.1 20.6h1.4"/>
+    </symbol>
     <symbol id="i-zoom" viewBox="0 0 24 24">
       <circle cx="10.8" cy="10.8" r="6.7"/>
       <path d="m20.6 20.6-5.1-5.1"/>
@@ -291,7 +325,8 @@
 
     <div class="about__media rv">
       <figure class="media media--about tilt-soft">
-        <img src="assets/quienes-somos.png" alt="Especialistas de DulceLab Food durante una capacitación"
+        <img src="assets/quienes-somos.png" width="1000" height="747"
+             alt="Especialistas de DulceLab Food durante una capacitación"
              loading="lazy" decoding="async"
              onload="this.parentNode.classList.add('is-loaded')"
              onerror="this.parentNode.classList.add('is-broken')">
@@ -372,7 +407,7 @@
         <button class="course__flyer media" type="button"
                 data-lightbox="assets/flyers/diseno-menus.png"
                 aria-label="Ampliar flyer del curso Diseño Profesional de Menús">
-          <img src="assets/flyers/diseno-menus.png"
+          <img src="assets/flyers/diseno-menus.png" width="1000" height="1000"
                alt="Flyer del curso Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios"
                loading="lazy" decoding="async"
                onload="this.parentNode.classList.add('is-loaded')"
@@ -398,7 +433,7 @@
         <button class="course__flyer media" type="button"
                 data-lightbox="assets/flyers/pan-artesanal.png"
                 aria-label="Ampliar flyer del curso Pan Artesanal con Masa Madre">
-          <img src="assets/flyers/pan-artesanal.png"
+          <img src="assets/flyers/pan-artesanal.png" width="1000" height="1000"
                alt="Flyer del curso Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación"
                loading="lazy" decoding="async"
                onload="this.parentNode.classList.add('is-loaded')"
@@ -424,7 +459,7 @@
         <button class="course__flyer media" type="button"
                 data-lightbox="assets/flyers/catering-profesional.png"
                 aria-label="Ampliar flyer del curso Catering Profesional">
-          <img src="assets/flyers/catering-profesional.png"
+          <img src="assets/flyers/catering-profesional.png" width="1000" height="1000"
                alt="Flyer del curso Catering Profesional: Planeación y Operación de Servicios Gastronómicos"
                loading="lazy" decoding="async"
                onload="this.parentNode.classList.add('is-loaded')"
@@ -450,7 +485,7 @@
         <button class="course__flyer media" type="button"
                 data-lightbox="assets/flyers/cocina-mexicana.png"
                 aria-label="Ampliar flyer del curso Cocina Mexicana Tradicional">
-          <img src="assets/flyers/cocina-mexicana.png"
+          <img src="assets/flyers/cocina-mexicana.png" width="1000" height="1000"
                alt="Flyer del curso Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones"
                loading="lazy" decoding="async"
                onload="this.parentNode.classList.add('is-loaded')"
@@ -476,7 +511,7 @@
         <button class="course__flyer media" type="button"
                 data-lightbox="assets/flyers/control-costos.png"
                 aria-label="Ampliar flyer del curso Control Estratégico de Costos">
-          <img src="assets/flyers/control-costos.png"
+          <img src="assets/flyers/control-costos.png" width="1000" height="1000"
                alt="Flyer del curso Control Estratégico de Costos en Negocios de Alimentos y Bebidas"
                loading="lazy" decoding="async"
                onload="this.parentNode.classList.add('is-loaded')"
@@ -502,7 +537,7 @@
         <button class="course__flyer media" type="button"
                 data-lightbox="assets/flyers/decoracion-pasteles.png"
                 aria-label="Ampliar flyer del curso Decoración Profesional de Pasteles">
-          <img src="assets/flyers/decoracion-pasteles.png"
+          <img src="assets/flyers/decoracion-pasteles.png" width="1000" height="1000"
                alt="Flyer del curso Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación"
                loading="lazy" decoding="async"
                onload="this.parentNode.classList.add('is-loaded')"
@@ -528,6 +563,43 @@
   </div>
 </section>
 
+<!-- ============ CERTIFICADOS ============ -->
+<section class="section section--certs" id="certificados">
+  <div class="section__inner about about--reverse">
+    <div class="about__text" data-rv-group>
+      <h2 class="section__title rv">Certificación con <span class="accent">Validez</span></h2>
+
+      <p class="section__lead rv">Al terminar cada curso recibes un certificado digital con código QR y folio único, verificable en línea en cualquier momento y listo para compartir con clientes o empleadores.</p>
+
+      <ul class="cert__list rv">
+        <li><svg class="ico" aria-hidden="true"><use href="#i-download"></use></svg><span>Materiales descargables y fichas técnicas de cada curso</span></li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-live"></use></svg><span>Acceso a las grabaciones de las clases en vivo</span></li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg><span>Asesoría posterior con el instructor</span></li>
+      </ul>
+
+      <div class="badges rv">
+        <span class="badge badge--light"><svg class="ico" aria-hidden="true"><use href="#i-shield"></use></svg><span>Folio único verificable</span></span>
+        <span class="badge badge--light"><svg class="ico" aria-hidden="true"><use href="#i-qr"></use></svg><span>Código QR</span></span>
+        <span class="badge badge--light"><svg class="ico" aria-hidden="true"><use href="#i-download"></use></svg><span>Descarga inmediata</span></span>
+      </div>
+    </div>
+
+    <div class="about__media rv">
+      <figure class="media media--cert tilt-soft">
+        <img src="assets/certificados.png" width="1200" height="670"
+             alt="Certificado digital de DulceLab Food con código QR y folio"
+             loading="lazy" decoding="async"
+             onload="this.parentNode.classList.add('is-loaded')"
+             onerror="this.parentNode.classList.add('is-broken')">
+        <span class="media__fb" aria-hidden="true">
+          <svg class="ico" aria-hidden="true"><use href="#i-cert"></use></svg>
+          <span class="media__fb-label">Certificado digital</span>
+        </span>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- ============ POR QUÉ DULCELAB ============ -->
 <section class="band" id="por-que">
   <div class="band__inner" data-rv-group>
@@ -541,6 +613,43 @@
       <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-chat"></use></svg><span>Asesoría posterior al curso</span></li>
       <li class="badge rv"><svg class="ico" aria-hidden="true"><use href="#i-community"></use></svg><span>Comunidad privada para alumnos</span></li>
     </ul>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<section class="section section--contact" id="contacto">
+  <div class="section__inner">
+    <div class="contact-card" data-rv-group>
+      <h2 class="section__title rv">Convierte tu talento en <span class="accent">negocio</span></h2>
+      <p class="section__sub rv">Escríbenos y te asesoramos sin compromiso.</p>
+
+      <a class="btn btn--primary btn--xl rv" target="_blank" rel="noopener"
+         href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20de%20los%20cursos%20de%20DulceLab%20Food">
+        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        <span>Escríbenos por WhatsApp</span>
+      </a>
+
+      <ul class="contact__meta rv">
+        <li>
+          <a href="https://wa.me/522361096247" target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+            <span>236 109 6247</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-facebook"></use></svg>
+            <span>DULCELAB FOOD</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-instagram"></use></svg>
+            <span>DULCELAB FOOD</span>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 </main>
@@ -563,7 +672,7 @@
 </div>
 
 <!-- ============ FOOTER ============ -->
-<footer class="footer" id="contacto">
+<footer class="footer">
   <div class="footer__inner">
     <div class="footer__brand">
       <img class="footer__logo" src="assets/logo.png" alt="Logo DulceLab Food" width="97" height="52" loading="lazy">
@@ -596,6 +705,13 @@
   </div>
   <p class="footer__legal">DulceLab Food · TEC CAPITAL Group · 2026</p>
 </footer>
+
+<!-- ============ WHATSAPP FLOTANTE ============ -->
+<a class="fab" id="waFab" target="_blank" rel="noopener"
+   href="https://wa.me/522361096247?text=Hola%2C%20quiero%20informes%20de%20los%20cursos%20de%20DulceLab%20Food"
+   aria-label="Escríbenos por WhatsApp">
+  <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+</a>
 
 <script src="js/main.js" defer></script>
 </body>
