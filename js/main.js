@@ -223,6 +223,9 @@
     var frame = null;
 
     function reset() {
+      // Hay que cancelar el frame pendiente: si el puntero sale antes de que
+      // corra, el callback vuelve a pintar el tilt y la card queda torcida.
+      if (frame) cancelAnimationFrame(frame);
       frame = null;
       el.classList.remove('is-tilting');
       el.style.transform = '';
@@ -271,14 +274,6 @@
   }
 
   /* ---------- 8. Entrada al hacer scroll ---------- */
-  var groups = document.querySelectorAll('[data-rv-group]');
-  for (var gi = 0; gi < groups.length; gi++) {
-    var items = groups[gi].querySelectorAll('.rv');
-    for (var ii = 0; ii < items.length; ii++) {
-      items[ii].style.transitionDelay = Math.min(ii * 80, 480) + 'ms';
-    }
-  }
-
   var revealables = document.querySelectorAll('.rv');
 
   function revealAll() {
@@ -287,11 +282,16 @@
 
   if ('IntersectionObserver' in window) {
     var rvObserver = new IntersectionObserver(function (entries) {
+      // El escalonado se cuenta sobre lo que entra junto, no sobre el indice
+      // dentro del grupo: si no, las ultimas cards de una reja arrastran un
+      // retardo fijo grande y parecen animarse mas que las primeras.
+      var shown = 0;
       for (var i = 0; i < entries.length; i++) {
-        if (entries[i].isIntersecting) {
-          entries[i].target.classList.add('is-in');
-          rvObserver.unobserve(entries[i].target);
-        }
+        if (!entries[i].isIntersecting) continue;
+        entries[i].target.style.transitionDelay = Math.min(shown * 80, 320) + 'ms';
+        entries[i].target.classList.add('is-in');
+        rvObserver.unobserve(entries[i].target);
+        shown++;
       }
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
