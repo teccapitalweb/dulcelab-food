@@ -28,6 +28,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<style>
+  /* Botón de acceso al Club VIP (club.dulcelabfood.com) — mismo layout que el de WhatsApp, color propio */
+  .btn--vip{background:linear-gradient(135deg,#D5A13D,#B8842A);color:#3B2420;border:none;font-weight:700}
+  .btn--vip:hover{filter:brightness(1.06)}
+  .btn--vip + .btn--wa{margin-left:8px}
+</style>
 
 <script type="application/ld+json">
 {
@@ -207,6 +213,10 @@
       <path d="m20.6 20.6-5.1-5.1"/>
       <path d="M10.8 8.2v5.2M8.2 10.8h5.2"/>
     </symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24">
+      <path d="m3.5 8.4 3.3 2.7L12 5.4l5.2 5.7 3.3-2.7-1.4 9.2H4.9Z"/>
+      <path d="M4.9 20.2h14.2"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -226,6 +236,9 @@
       <a href="#cursos" class="nav__link">Cursos</a>
       <a href="#lineas" class="nav__link">Líneas de Capacitación</a>
       <a href="#contacto" class="nav__link">Contacto</a>
+      <a class="btn btn--vip nav__wa-mobile" href="https://club.dulcelabfood.com/vip-auth.html" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-crown"></use></svg><span>Club VIP</span>
+      </a>
       <a class="btn btn--wa nav__wa-mobile" href="https://wa.me/522361223226" target="_blank" rel="noopener">
         <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>WhatsApp</span>
       </a>
@@ -238,6 +251,9 @@
           <svg class="ico ico--moon" aria-hidden="true"><use href="#i-moon"></use></svg>
         </span>
       </button>
+      <a class="btn btn--vip nav__wa" href="https://club.dulcelabfood.com/vip-auth.html" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-crown"></use></svg><span>Club VIP</span>
+      </a>
       <a class="btn btn--wa nav__wa" href="https://wa.me/522361223226" target="_blank" rel="noopener">
         <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>WhatsApp</span>
       </a>
