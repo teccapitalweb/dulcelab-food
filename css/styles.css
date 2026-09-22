@@ -486,6 +486,11 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   display:grid;gap:2.2rem;
 }
 .footer__brand{display:flex;align-items:center;gap:1rem}
+.footer__inner--simple{display:flex;justify-content:center}
+.footer__inner--simple .footer__brand{text-align:left}
+@media (max-width:520px){
+  .footer__inner--simple .footer__brand{flex-direction:column;text-align:center}
+}
 .footer__logo{height:52px;width:auto;border-radius:0}
 :root[data-theme="dark"] .footer__logo{}
 /* Igual que en el navbar: el logo ya es el wordmark. */
