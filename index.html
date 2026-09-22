@@ -583,19 +583,24 @@
 <section class="section section--vip" id="club-vip">
   <div class="section__inner vip">
     <div class="vip__media rv">
-      <div class="vip__shots">
-        <div class="vip__shot"><img src="assets/vip-preview/panel-inicio.png" alt="Panel VIP: inicio con noticias del sector" loading="lazy" decoding="async"></div>
-        <div class="vip__shot"><img src="assets/vip-preview/panel-costeo.png" alt="Panel VIP: herramienta de costeo de recetas" loading="lazy" decoding="async"></div>
-        <div class="vip__shot"><img src="assets/vip-preview/panel-pdfs.png" alt="Panel VIP: PDFs y material descargable" loading="lazy" decoding="async"></div>
-        <div class="vip__shot"><img src="assets/vip-preview/panel-acceso.png" alt="Panel VIP: acceso de miembros" loading="lazy" decoding="async"></div>
-      </div>
+      <figure class="media media--about tilt-soft" style="aspect-ratio:4/3">
+        <img src="assets/vip-preview.png" width="1672" height="941"
+             alt="Vista del catálogo de cursos dentro del panel VIP de DulceLab Food"
+             loading="lazy" decoding="async"
+             onload="this.parentNode.classList.add('is-loaded')"
+             onerror="this.parentNode.classList.add('is-broken')">
+        <span class="media__fb" aria-hidden="true">
+          <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+          <span class="media__fb-label">DulceLab Food VIP</span>
+        </span>
+      </figure>
     </div>
 
     <div class="vip__text" data-rv-group>
       <p class="vip__eyebrow rv">DulceLab Food VIP</p>
       <h2 class="section__title rv">Tu formación no termina cuando <span class="accent">termina la clase</span>.</h2>
       <p class="section__lead rv">El Club VIP concentra cursos, materiales, herramientas profesionales y comunidad en un solo lugar, para que sigas aprendiendo después de cada curso.</p>
-      <a class="btn btn--primary rv" href="https://club.dulcelabfood.com/" target="_blank" rel="noopener">
+      <a class="btn btn--primary rv" href="https://club.dulcelabfood.com/vip-auth.html" target="_blank" rel="noopener">
         <svg class="ico" aria-hidden="true"><use href="#i-crown"></use></svg>
         <span>Conocer Club VIP</span>
       </a>
@@ -626,7 +631,7 @@
 
     <div class="about__media rv">
       <figure class="media media--cert tilt-soft">
-        <img src="assets/certificados.png" width="1200" height="670"
+        <img src="assets/certificados.png" width="1672" height="941"
              alt="Certificado digital de DulceLab Food con código QR y folio, mostrado en una tablet"
              loading="lazy" decoding="async"
              onload="this.parentNode.classList.add('is-loaded')"
@@ -682,13 +687,13 @@
           </a>
         </li>
         <li>
-          <a href="https://www.facebook.com/" target="_blank" rel="noopener">
+          <a href="https://www.facebook.com/profile.php?id=61592777306295&locale=es_LA" target="_blank" rel="noopener">
             <svg class="ico" aria-hidden="true"><use href="#i-facebook"></use></svg>
             <span>DULCELAB FOOD</span>
           </a>
         </li>
         <li>
-          <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+          <a href="https://www.instagram.com/dulcelab.food/?next=%2Fdulcelab.food%2F" target="_blank" rel="noopener">
             <svg class="ico" aria-hidden="true"><use href="#i-instagram"></use></svg>
             <span>DULCELAB FOOD</span>
           </a>
@@ -718,38 +723,13 @@
 
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
-  <div class="footer__inner">
+  <div class="footer__inner footer__inner--simple">
     <div class="footer__brand">
       <img class="footer__logo" src="assets/logo.png" alt="Logo DulceLab Food" width="97" height="52" loading="lazy">
       <div>
         <p class="footer__name">DULCELAB<span class="brand__accent">FOOD</span></p>
         <p class="footer__slogan">Aprende, crea y convierte tu talento en un negocio.</p>
       </div>
-    </div>
-
-    <div class="footer__col">
-      <h2 class="footer__h">Contacto</h2>
-      <a class="footer__contact" href="https://wa.me/522361223226" target="_blank" rel="noopener">
-        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        <span>236 122 3226</span>
-      </a>
-      <a class="footer__contact" href="https://club.dulcelabfood.com/" target="_blank" rel="noopener" style="display:flex;margin-top:.5rem">
-        <svg class="ico" aria-hidden="true"><use href="#i-crown"></use></svg>
-        <span>Club VIP</span>
-      </a>
-    </div>
-
-    <div class="footer__col">
-      <h2 class="footer__h">Síguenos</h2>
-      <div class="footer__social">
-        <a class="social" href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="Facebook DulceLab Food">
-          <svg class="ico" aria-hidden="true"><use href="#i-facebook"></use></svg>
-        </a>
-        <a class="social" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram DulceLab Food">
-          <svg class="ico" aria-hidden="true"><use href="#i-instagram"></use></svg>
-        </a>
-      </div>
-      <p class="footer__handle">DULCELAB FOOD</p>
     </div>
   </div>
   <p class="footer__legal">DulceLab Food · TEC CAPITAL Group · 2026</p>
