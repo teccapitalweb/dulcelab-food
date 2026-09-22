@@ -597,17 +597,9 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 .vip__text .section__title{text-align:left;margin-bottom:.9rem}
 .vip__text .section__lead{color:var(--text-soft);font-size:.98rem;line-height:1.7;margin-bottom:1.6rem;max-width:48ch}
-.vip__panel-mock{
-  border-radius:var(--r-lg);overflow:hidden;
-  border:1px solid var(--glass-brd);
-  background:var(--panel-bg);
-  box-shadow:var(--glass-shadow);
-  padding:1.1rem;
-}
-.vip__panel-bar{height:14px;border-radius:6px;width:38%;background:var(--frambuesa);margin-bottom:1rem;opacity:.85}
-.vip__panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-.vip__panel-card{aspect-ratio:4/3;border-radius:var(--r-sm);background:var(--glass-bg-strong);border:1px solid var(--glass-brd);overflow:hidden}
-.vip__panel-card img{width:100%;height:100%;object-fit:cover;display:block}
+.vip__shots{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+.vip__shot{border-radius:var(--r-md);overflow:hidden;border:1px solid var(--glass-brd);box-shadow:var(--glass-shadow)}
+.vip__shot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;aspect-ratio:16/11}
 :root[data-theme="dark"] .section--lines::before,
 :root[data-theme="dark"] .section--courses::before{
   background:linear-gradient(180deg,transparent,rgba(213,161,61,.06) 35%,transparent);
