@@ -26,7 +26,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 <style>
   /* Botón de acceso al Club VIP (club.dulcelabfood.com) — mismo layout que el de WhatsApp, color propio */
@@ -306,6 +306,21 @@
         </div>
       </div>
     </div>
+
+    <div class="hero__gallery reveal" style="--d:.35s" aria-hidden="true">
+      <div class="hero__gallery__item hero__gallery__item--tall">
+        <img src="assets/quienes-somos.png" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="hero__gallery__item hero__gallery__item--square">
+        <img src="assets/flyers/diseno-menus.png" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="hero__gallery__item hero__gallery__item--square">
+        <img src="assets/flyers/cocina-mexicana.png" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="hero__gallery__item hero__gallery__item--tall">
+        <img src="assets/certificados.png" alt="" loading="lazy" decoding="async">
+      </div>
+    </div>
   </div>
 
   <a class="scroll-cue" href="#quienes-somos" aria-label="Desplazarse hacia abajo">
@@ -579,6 +594,33 @@
   </div>
 </section>
 
+<!-- ============ CLUB VIP ============ -->
+<section class="section section--vip" id="club-vip">
+  <div class="section__inner vip">
+    <div class="vip__media rv">
+      <div class="vip__panel-mock">
+        <div class="vip__panel-bar"></div>
+        <div class="vip__panel-grid">
+          <div class="vip__panel-card"></div>
+          <div class="vip__panel-card"></div>
+          <div class="vip__panel-card"></div>
+          <div class="vip__panel-card"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vip__text" data-rv-group>
+      <p class="vip__eyebrow rv">DulceLab Food VIP</p>
+      <h2 class="section__title rv">Tu formación no termina cuando <span class="accent">termina la clase</span>.</h2>
+      <p class="section__lead rv">El Club VIP concentra cursos, materiales, herramientas profesionales y comunidad en un solo lugar, para que sigas aprendiendo después de cada curso.</p>
+      <a class="btn btn--primary rv" href="https://club.dulcelabfood.com/" target="_blank" rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-crown"></use></svg>
+        <span>Conocer Club VIP</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CERTIFICADOS ============ -->
 <section class="section section--certs" id="certificados">
   <div class="section__inner about about--reverse">
@@ -636,14 +678,19 @@
 <section class="section section--contact" id="contacto">
   <div class="section__inner">
     <div class="contact-card" data-rv-group>
-      <h2 class="section__title rv">Convierte tu talento en <span class="accent">negocio</span></h2>
-      <p class="section__sub rv">Escríbenos y te asesoramos sin compromiso.</p>
+      <h2 class="section__title rv">Convierte lo que sabes en algo que <span class="accent">venda</span>.</h2>
+      <p class="section__sub rv">Capacítate, profesionaliza tu trabajo y haz crecer tu negocio.</p>
 
-      <a class="btn btn--primary btn--xl rv" target="_blank" rel="noopener"
-         href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20de%20los%20cursos%20de%20DulceLab%20Food">
-        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        <span>Escríbenos por WhatsApp</span>
-      </a>
+      <div class="hero__ctas rv" style="justify-content:center;margin-bottom:1.4rem">
+        <a class="btn btn--primary btn--xl" href="#cursos">
+          <span>Ver Cursos</span>
+        </a>
+        <a class="btn btn--ghost btn--xl" target="_blank" rel="noopener"
+           href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20de%20los%20cursos%20de%20DulceLab%20Food">
+          <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          <span>WhatsApp</span>
+        </a>
+      </div>
 
       <ul class="contact__meta rv">
         <li>
@@ -703,6 +750,10 @@
       <a class="footer__contact" href="https://wa.me/522361223226" target="_blank" rel="noopener">
         <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
         <span>236 122 3226</span>
+      </a>
+      <a class="footer__contact" href="https://club.dulcelabfood.com/" target="_blank" rel="noopener" style="display:flex;margin-top:.5rem">
+        <svg class="ico" aria-hidden="true"><use href="#i-crown"></use></svg>
+        <span>Club VIP</span>
       </a>
     </div>
 
