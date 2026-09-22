@@ -224,6 +224,14 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 .nav__actions{display:flex;align-items:center;gap:.55rem}
 .nav__wa{display:none}
+/* El de WhatsApp se queda oculto en móvil (ya hay FAB flotante para eso),
+   pero Club VIP debe verse siempre, incluso con el menú cerrado. */
+.nav__actions .btn--vip.nav__wa{display:inline-flex;padding:.55rem 1rem;font-size:.8rem;min-height:40px}
+.nav__actions .btn--vip.nav__wa .ico{width:16px;height:16px}
+@media (max-width:380px){
+  .nav__actions .btn--vip.nav__wa span{display:none}
+  .nav__actions .btn--vip.nav__wa{padding:.55rem .7rem}
+}
 
 /* Toggle día/noche */
 .theme-toggle{

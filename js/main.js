@@ -16,7 +16,7 @@
   function applyTheme(theme) {
     root.setAttribute('data-theme', theme);
     if (toggle) toggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-    if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#2A1815' : '#FFF3E5');
+    if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#221F19' : '#F7EEEC');
     document.dispatchEvent(new CustomEvent('dlf:theme', { detail: theme }));
   }
 
