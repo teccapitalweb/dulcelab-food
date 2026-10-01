@@ -268,17 +268,23 @@
 <main>
 <!-- ============ HERO ============ -->
 <section class="hero hero--photo" id="hero">
-  <picture>
-    <source media="(max-width:980px)" srcset="assets/hero-chef-mobile.webp">
-    <img class="hero__photo-bg" src="assets/hero-chef.webp" width="1672" height="941"
-         alt="Chef de DulceLab Food emplatando un postre"
-         loading="eager" decoding="async">
-  </picture>
+  <div class="hero__media">
+    <picture>
+      <source media="(max-width:980px)" srcset="assets/hero-chef-mobile.webp">
+      <img class="hero__photo-bg" src="assets/hero-chef.webp" width="1672" height="941"
+           alt="Chef de DulceLab Food emplatando un postre"
+           loading="eager" decoding="async">
+    </picture>
 
-  <span class="hero__pill hero__pill--1 reveal" style="--d:.5s">Repostería</span>
-  <span class="hero__pill hero__pill--2 reveal" style="--d:.6s">Panadería</span>
-  <span class="hero__pill hero__pill--3 reveal" style="--d:.7s">Cocina</span>
-  <span class="hero__pill hero__pill--4 reveal" style="--d:.8s">Emprende</span>
+    <span class="hero__pill hero__pill--1 reveal" style="--d:.5s">
+      <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>Repostería</span>
+    <span class="hero__pill hero__pill--2 reveal" style="--d:.6s">
+      <svg class="ico" aria-hidden="true"><use href="#i-wheat"></use></svg>Panadería</span>
+    <span class="hero__pill hero__pill--3 reveal" style="--d:.7s">
+      <svg class="ico" aria-hidden="true"><use href="#i-pot"></use></svg>Cocina</span>
+    <span class="hero__pill hero__pill--4 reveal" style="--d:.8s">
+      <svg class="ico" aria-hidden="true"><use href="#i-chart"></use></svg>Emprende</span>
+  </div>
 
   <div class="hero__wrap">
     <div class="hero__copy">
@@ -301,6 +307,8 @@
         <li><svg class="ico" aria-hidden="true"><use href="#i-download"></use></svg>Material descargable</li>
         <li><svg class="ico" aria-hidden="true"><use href="#i-cert"></use></svg>Certificado con QR</li>
       </ul>
+
+      <p class="hero__note reveal" style="--d:.56s">La gastronomía también construye sueños</p>
     </div>
   </div>
 
