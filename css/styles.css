@@ -526,26 +526,25 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .hero__pill--2::before,.hero__pill--4::before{background:var(--dorado)}
 
 @media (max-width:980px){
-  .hero--photo{flex-direction:column;justify-content:center}
+  /* Una foto apaisada no puede a la vez llenar toda la pantalla del celular
+     (que es vertical) y mostrarse completa sin recortar: son dos cosas que
+     se pelean entre sí. Elegimos mostrarla completa: deja de ser fondo de
+     pantalla completa y pasa a ser una franja a ancho completo (sin tarjeta,
+     sin márgenes, pegada al texto y a las categorías) con su encuadre real. */
+  .hero--photo{flex-direction:column;justify-content:center;min-height:0}
   .hero__wrap{order:1}
-  .hero__photo-bg{object-position:58% 20%}
-  .hero__pill{order:2}
+  .hero__photo-bg{
+    position:static;order:2;z-index:0;
+    width:calc(100% + 2*clamp(1rem,4vw,2rem));
+    margin-inline:calc(-1*clamp(1rem,4vw,2rem));
+    height:auto;aspect-ratio:1672/941;object-position:50% 50%;
+    margin-block:1.5rem;
+  }
+  .hero--photo::before{content:none}
+  .hero__pill{order:3}
   .hero__copy{max-width:none;text-align:center;margin-inline:auto}
   .hero__ctas--split,.hero__features{justify-content:center}
-  .hero--photo::before{
-    background:linear-gradient(180deg,
-      color-mix(in srgb,var(--crema) 62%,transparent) 0%,
-      color-mix(in srgb,var(--crema) 38%,transparent) 36%,
-      color-mix(in srgb,var(--crema) 14%,transparent) 58%,
-      transparent 78%);
-  }
-  :root[data-theme="dark"] .hero--photo::before{
-    background:linear-gradient(180deg,
-      color-mix(in srgb,var(--chocolate) 66%,transparent) 0%,
-      color-mix(in srgb,var(--chocolate) 42%,transparent) 36%,
-      color-mix(in srgb,var(--chocolate) 14%,transparent) 58%,
-      transparent 78%);
-  }
+  .hero__headline,.hero__sub{text-shadow:none}
   .hero__pill{position:static;animation:none;display:inline-flex;margin:.3rem auto}
 }
 @media (prefers-reduced-motion:reduce){.hero__pill{animation:none}}
