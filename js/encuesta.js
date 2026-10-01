@@ -1,11 +1,13 @@
 /* =========================================================
-   DULCELAB FOOD — Encuesta adaptativa de segmentación
-   No se muestra apenas carga: espera a que la persona ya mostró
-   interés (tiempo en página, % de scroll, o que pulse el botón de
-   invitación). Primero pide consentimiento, luego una pregunta por
-   pantalla (algunas de opción múltiple) que se ramifica en 4 rutas
-   según el tipo de visitante, converge en 2 preguntas comunes, y
-   termina en un perfil con una ruta recomendada (reglas, no IA).
+   DULCELAB FOOD — Descubre tu perfil DulceLab
+   Encuesta adaptativa presentada como una experiencia guiada (no un
+   formulario): una guía (emoji + texto, no hay ilustración animada
+   real todavía) acompaña con una línea de reacción, el avance se
+   muestra como una receta que se va completando, y la pregunta de
+   intereses de membresía es una tarjeta de "me interesa / no es para
+   mí" en vez de una lista de casillas. Se ramifica en 4 rutas según
+   el tipo de visitante, converge en 2 preguntas comunes, y termina en
+   un perfil con una ruta recomendada (reglas, no IA todavía).
    ========================================================= */
 (function () {
   'use strict';
@@ -15,11 +17,11 @@
   var STORAGE_SKIP = 'dlf-encuesta-cerrada';  // sessionStorage: no insistir en esta misma visita
   var DELAY_MS = 28000;
   var SCROLL_PCT = 0.38;
+  var STEP_EMOJIS = ['👤', '🎯', '🔥', '🍰', '🎮', '⏰'];
 
   var modal = document.getElementById('encuesta');
   if (!modal) return;
   var body = document.getElementById('encuestaBody');
-  var progressBar = document.getElementById('encuestaProgressBar');
   var progressWrap = document.getElementById('encuestaProgressWrap');
   var btnClose = document.getElementById('encuestaClose');
   var btnAbrir = document.getElementById('encuestaTrigger');
@@ -54,12 +56,13 @@
   var PREGUNTAS = {
     inicio: {
       id: 'tipo', multi: false,
-      texto: '¿Cuál de estas opciones te describe mejor?',
+      guia: '👩‍🍳 Primero quiero conocerte…',
+      texto: '¿En qué momento de tu camino gastronómico estás?',
       opciones: [
-        { valor: 'estudiante', texto: '🎓 Estoy estudiando', siguiente: 'objetivo_estudiante' },
-        { valor: 'profesional', texto: '👩‍🍳 Trabajo en el sector', siguiente: 'area_profesional' },
-        { valor: 'emprendedor', texto: '🚀 Tengo o quiero iniciar un negocio', siguiente: 'etapa_emprendedor' },
-        { valor: 'aficionado', texto: '🍰 Quiero aprender por interés personal', siguiente: 'objetivo_aficionado' }
+        { valor: 'estudiante', texto: '🎓 Estoy estudiando', sub: 'Estoy construyendo mis conocimientos.', siguiente: 'objetivo_estudiante', reaccion: '¡Qué bien! 🎓 Vamos a ver cómo seguir construyendo tu camino.' },
+        { valor: 'profesional', texto: '👩‍🍳 Ya trabajo en gastronomía', sub: 'Quiero crecer profesionalmente.', siguiente: 'area_profesional', reaccion: '¡Excelente! 👩‍🍳 Hablemos de tu trabajo.' },
+        { valor: 'emprendedor', texto: '🚀 Tengo o quiero un negocio', sub: 'Quiero convertir lo que hago en algo rentable.', siguiente: 'etapa_emprendedor', reaccion: '¡Excelente! 🚀 Entonces vamos a hablar de tu negocio.' },
+        { valor: 'aficionado', texto: '❤️ Aprendo porque me apasiona', sub: 'Me encanta el mundo gastronómico.', siguiente: 'objetivo_aficionado', reaccion: '¡Me encanta! ❤️ Vamos a ver qué te late más.' }
       ]
     },
 
@@ -74,7 +77,7 @@
         { valor: 'complementar', texto: 'Complementar mis estudios', siguiente: 'intereses_estudiante' }
       ]
     },
-    intereses_estudiante: { id: 'intereses_estudiante', multi: true, texto: '¿Qué te interesa aprender?', opciones: TEMAS, siguiente: 'formato_estudiante' },
+    intereses_estudiante: { id: 'intereses_estudiante', multi: true, max: 3, texto: '¿Qué te interesa aprender?', nota: 'Elige hasta 3', opciones: TEMAS, siguiente: 'formato_estudiante' },
     formato_estudiante: { id: 'formato_estudiante', multi: true, texto: '¿Qué tipo de recursos te ayudarían más?', opciones: FORMATO, siguiente: 'membresia' },
 
     // ── Profesional ──
@@ -93,7 +96,7 @@
     },
     reto_profesional: {
       id: 'reto_profesional', multi: false,
-      texto: '¿Cuál es tu mayor reto actualmente?',
+      texto: '🎯 Elige el reto que más te está complicando',
       opciones: [
         { valor: 'actualizar', texto: 'Actualizar mis conocimientos', siguiente: 'temas_profesional' },
         { valor: 'procesos', texto: 'Mejorar procesos', siguiente: 'temas_profesional' },
@@ -104,7 +107,7 @@
         { valor: 'crecer', texto: 'Crecer profesionalmente', siguiente: 'temas_profesional' }
       ]
     },
-    temas_profesional: { id: 'temas_profesional', multi: true, texto: '¿Qué temas te gustaría profundizar?', opciones: TEMAS, siguiente: 'membresia' },
+    temas_profesional: { id: 'temas_profesional', multi: true, max: 3, texto: '¿Qué temas te gustaría profundizar?', nota: 'Elige hasta 3', opciones: TEMAS, siguiente: 'membresia' },
 
     // ── Emprendedor ──
     etapa_emprendedor: {
@@ -133,7 +136,7 @@
     },
     problema_emprendedor: {
       id: 'problema_emprendedor', multi: false,
-      texto: '¿Cuál es hoy tu principal problema?',
+      texto: '🎯 Elige el reto que más te está complicando',
       opciones: [
         { valor: 'precios', texto: '💰 No sé cuánto cobrar', siguiente: 'membresia' },
         { valor: 'costos', texto: '📊 No controlo bien mis costos', siguiente: 'membresia' },
@@ -157,13 +160,13 @@
         { valor: 'ocasional', texto: 'Aprender para vender o regalar ocasionalmente', siguiente: 'intereses_aficionado' }
       ]
     },
-    intereses_aficionado: { id: 'intereses_aficionado', multi: true, texto: '¿Qué te gustaría aprender?', opciones: TEMAS, siguiente: 'formato_aficionado' },
+    intereses_aficionado: { id: 'intereses_aficionado', multi: true, max: 3, texto: '¿Qué te gustaría aprender?', nota: 'Elige hasta 3', opciones: TEMAS, siguiente: 'formato_aficionado' },
     formato_aficionado: { id: 'formato_aficionado', multi: true, texto: '¿Qué tipo de recursos te ayudarían más?', opciones: FORMATO, siguiente: 'membresia' },
 
     // ── Común a todas las ramas ──
     membresia: {
-      id: 'membresia', multi: true,
-      texto: '¿Qué te gustaría encontrar dentro de una membresía gastronómica?',
+      id: 'membresia', multi: true, swipe: true,
+      texto: '¿Qué contenidos sí usarías?',
       opciones: [
         { valor: 'cursos', texto: 'Cursos completos' },
         { valor: 'vivo', texto: 'Clases en vivo' },
@@ -180,7 +183,7 @@
     },
     tiempo_disponible: {
       id: 'tiempo_disponible', multi: false,
-      texto: '¿Cuánto tiempo podrías dedicar a aprender cada semana?',
+      texto: '⏰ Imagina que tienes una hora libre para aprender… ¿cuánto tiempo tienes en realidad a la semana?',
       opciones: [
         { valor: 'menos1', texto: 'Menos de 1 hora', siguiente: 'fin' },
         { valor: 'uno_dos', texto: '1 a 2 horas', siguiente: 'fin' },
@@ -295,15 +298,28 @@
     return m[v] || 'Aprender gastronomía.';
   }
 
-  /* ---------- 5. Render: consentimiento, pregunta, perfil final ---------- */
+  /* ---------- 5. "Receta" en vez de barra de progreso ---------- */
+  function renderProgreso() {
+    var puntos = '';
+    for (var i = 0; i < TOTAL_PASOS; i++) {
+      puntos += '<span class="encuesta__punto' + (i < estado.paso ? ' is-lleno' : '') + '"></span>';
+    }
+    var ingredientes = STEP_EMOJIS.slice(0, estado.paso).join(' ');
+    progressWrap.innerHTML =
+      '<p class="encuesta__receta-txt">🍲 Preparando tu receta de aprendizaje · ' + estado.paso + ' de ' + TOTAL_PASOS + ' ingredientes</p>' +
+      '<div class="encuesta__puntos">' + puntos + '</div>' +
+      (ingredientes ? '<p class="encuesta__ingredientes">🥣 ' + ingredientes + '</p>' : '');
+  }
+
+  /* ---------- 6. Render: consentimiento, pregunta, swipe, perfil final ---------- */
   function renderConsentimiento() {
     progressWrap.hidden = true;
     body.innerHTML =
-      '<p class="encuesta__eyebrow">Queremos conocerte mejor ✨</p>' +
-      '<h2 class="encuesta__pregunta">Responde unas preguntas rápidas y descubre qué contenido de DulceLab puede ayudarte más</h2>' +
-      '<p class="encuesta__nota">Toma menos de 2 minutos</p>' +
+      '<p class="encuesta__eyebrow">👩‍🍳 Tu guía DulceLab</p>' +
+      '<h2 class="encuesta__pregunta">¡Hola! Voy a conocerte un poquito para prepararte una experiencia a tu medida.</h2>' +
+      '<p class="encuesta__nota">¿Comenzamos? Toma menos de 2 minutos.</p>' +
       '<div class="encuesta__ctas">' +
-      '<button type="button" class="btn btn--primary" id="encuestaIniciar">Personalizar mi experiencia</button>' +
+      '<button type="button" class="btn btn--primary" id="encuestaIniciar">Preparar mi ruta</button>' +
       '<button type="button" class="btn btn--ghost" id="encuestaAhoraNo">Ahora no</button>' +
       '</div>';
     document.getElementById('encuestaIniciar').addEventListener('click', iniciarPreguntas);
@@ -313,30 +329,45 @@
   function iniciarPreguntas() {
     progressWrap.hidden = false;
     estado = { paso: 0, tipo: null, respuestas: {} };
+    renderProgreso();
     transicion(function () { renderPregunta(PREGUNTAS.inicio); });
   }
 
   function renderPregunta(p) {
-    progressBar.style.width = Math.round((estado.paso / TOTAL_PASOS) * 100) + '%';
+    renderProgreso();
+    if (p.swipe) { renderSwipe(p); return; }
+
     var esMulti = p.multi;
     body.innerHTML =
-      '<p class="encuesta__eyebrow">Pregunta ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + (esMulti ? ' · elige una o varias' : '') + '</p>' +
+      (p.guia ? '<p class="encuesta__guia">' + p.guia + '</p>' : '') +
       '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
+      (p.nota ? '<p class="encuesta__nota">' + p.nota + '</p>' : '') +
       '<div class="encuesta__opciones' + (esMulti ? ' encuesta__opciones--multi' : '') + '">' +
       p.opciones.map(function (o) {
-        return '<button type="button" class="encuesta__opcion" data-valor="' + o.valor + '">' + o.texto + '</button>';
+        return '<button type="button" class="encuesta__opcion" data-valor="' + o.valor + '">' +
+          '<span class="encuesta__check">✓</span>' +
+          '<span class="encuesta__opcion-txt">' + o.texto + (o.sub ? '<small>' + o.sub + '</small>' : '') + '</span>' +
+          '</button>';
       }).join('') +
       '</div>' +
       (esMulti ? '<button type="button" class="btn btn--primary encuesta__continuar" id="encuestaContinuar" disabled>Continuar</button>' : '');
 
     var seleccionMulti = [];
+    var max = p.max || Infinity;
     var botones = body.querySelectorAll('.encuesta__opcion');
     for (var i = 0; i < botones.length; i++) {
       botones[i].addEventListener('click', function (e) {
         var btn = e.currentTarget;
         var valor = btn.getAttribute('data-valor');
         if (!esMulti) {
+          btn.classList.add('is-chosen');
           avanzar(p, valor);
+          return;
+        }
+        var yaElegida = btn.classList.contains('is-selected');
+        if (!yaElegida && seleccionMulti.length >= max) {
+          btn.classList.add('is-shake');
+          setTimeout(function () { btn.classList.remove('is-shake'); }, 400);
           return;
         }
         btn.classList.toggle('is-selected');
@@ -353,21 +384,59 @@
     }
   }
 
+  // Pregunta tipo "tarjetas": una opción a la vez, ❤️ Me interesa / ✕ No es
+  // para mí. Se recorren todas las opciones y las "aceptadas" quedan como
+  // la respuesta (mismo formato que una pregunta de opción múltiple).
+  function renderSwipe(p) {
+    var aceptadas = [];
+    var idx = 0;
+
+    function pintar() {
+      if (idx >= p.opciones.length) { avanzar(p, aceptadas); return; }
+      var o = p.opciones[idx];
+      body.innerHTML =
+        '<p class="encuesta__guia">👉 Desliza según te interese</p>' +
+        '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
+        '<div class="encuesta__swipe-card" id="encuestaSwipeCard"><p>' + o.texto + '</p></div>' +
+        '<div class="encuesta__swipe-ctas">' +
+        '<button type="button" class="encuesta__swipe-btn encuesta__swipe-btn--no" id="encuestaSwipeNo" aria-label="No es para mí">✕</button>' +
+        '<button type="button" class="encuesta__swipe-btn encuesta__swipe-btn--si" id="encuestaSwipeSi" aria-label="Me interesa">❤️</button>' +
+        '</div>' +
+        '<p class="encuesta__swipe-contador">' + (idx + 1) + ' de ' + p.opciones.length + '</p>';
+
+      var card = document.getElementById('encuestaSwipeCard');
+      document.getElementById('encuestaSwipeSi').addEventListener('click', function () { responder(true); });
+      document.getElementById('encuestaSwipeNo').addEventListener('click', function () { responder(false); });
+
+      function responder(si) {
+        card.classList.add(si ? 'is-si' : 'is-no');
+        if (si) aceptadas.push(o.valor);
+        idx += 1;
+        setTimeout(pintar, 220);
+      }
+    }
+    pintar();
+  }
+
   function avanzar(pregunta, valor) {
     estado.respuestas[pregunta.id] = valor;
     if (pregunta.id === 'tipo') estado.tipo = Array.isArray(valor) ? valor[0] : valor;
     estado.paso += 1;
 
     var siguienteId = pregunta.siguiente;
+    var reaccion = null;
     if (!siguienteId) {
       // preguntas de opción única del árbol de ramas: el "siguiente" vive en la opción elegida
       var opcion = pregunta.opciones.filter(function (o) { return o.valor === valor; })[0];
       siguienteId = opcion && opcion.siguiente;
+      reaccion = opcion && opcion.reaccion;
     }
 
     transicion(function () {
-      if (siguienteId === 'fin') renderFin();
-      else renderPregunta(PREGUNTAS[siguienteId]);
+      if (siguienteId === 'fin') { renderFin(); return; }
+      var siguientePregunta = PREGUNTAS[siguienteId];
+      if (reaccion) siguientePregunta = Object.assign({}, siguientePregunta, { guia: reaccion });
+      renderPregunta(siguientePregunta);
     });
   }
 
@@ -376,25 +445,25 @@
     setTimeout(function () {
       body.classList.remove('is-leaving');
       cb();
-    }, 180);
+    }, 260);
   }
 
   function renderFin() {
-    progressBar.style.width = '100%';
+    renderProgreso();
     var r = recomendar();
     body.innerHTML =
-      '<p class="encuesta__eyebrow">Tu perfil DulceLab</p>' +
+      '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
       '<div class="encuesta__perfil-bloque"><span>Lo que más necesitas trabajar</span><p>' + r.foco + '</p></div>' +
       '<div class="encuesta__ruta">' +
-      '<span class="encuesta__ruta-label">Tu ruta recomendada</span>' +
+      '<span class="encuesta__ruta-label">Tu ruta DulceLab</span>' +
       r.ruta.map(function (item) {
         return '<div class="encuesta__ruta-item"><span class="encuesta__ruta-icono">' + item.icono + '</span><div><span class="encuesta__ruta-cat">' + item.categoria + '</span><p>' + item.titulo + '</p></div></div>';
       }).join('') +
       '</div>' +
       '<div class="encuesta__ctas">' +
-      '<a class="btn btn--primary" href="#cursos" id="encuestaCtaCursos">Ver mi ruta en DulceLab</a>' +
+      '<a class="btn btn--primary" href="#cursos" id="encuestaCtaCursos">Descubrir mi ruta en DulceLab</a>' +
       '</div>';
 
     document.getElementById('encuestaCtaCursos').addEventListener('click', cerrar);
@@ -402,7 +471,7 @@
     try { localStorage.setItem(STORAGE_DONE, 'completada'); } catch (e) {}
   }
 
-  /* ---------- 6. Enviar a Firestore vía webhook ---------- */
+  /* ---------- 7. Enviar a Firestore vía webhook ---------- */
   function enviarRespuesta() {
     fetch(WEBHOOK_URL + '/api/encuesta/responder', {
       method: 'POST',
@@ -411,7 +480,7 @@
     }).catch(function () { /* silencioso: no interrumpir al visitante si falla */ });
   }
 
-  /* ---------- 7. Abrir / cerrar ---------- */
+  /* ---------- 8. Abrir / cerrar ---------- */
   function abrir() {
     renderConsentimiento();
     modal.hidden = false;
@@ -442,10 +511,10 @@
   });
   if (btnAbrir) btnAbrir.addEventListener('click', function () { disparar(true); });
 
-  /* ---------- 8. Disparo: tiempo en página, % de scroll, o botón manual ---------- */
+  /* ---------- 9. Disparo: tiempo en página, % de scroll, o botón manual ---------- */
   var yaDisparada = false;
   function disparar(manual) {
-    // El botón manual ("✨ Descubre…") siempre debe poder reabrirla, ya
+    // El botón manual ("🍰 Descubre…") siempre debe poder reabrirla, ya
     // la haya contestado o cerrado antes; esas banderas solo frenan los
     // disparos AUTOMÁTICOS (tiempo en página / scroll) para no insistir.
     if (!manual) {

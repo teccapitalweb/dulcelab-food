@@ -1223,22 +1223,20 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .encuesta__close:hover{color:var(--frambuesa);border-color:var(--frambuesa)}
 }
 .encuesta__close .ico{width:17px;height:17px}
-.encuesta__progress{
-  height:4px;border-radius:var(--r-pill);background:var(--glass-bg);
-  overflow:hidden;margin-bottom:1.5rem;
-}
+.encuesta__progress{margin-bottom:1.4rem}
 .encuesta__progress[hidden]{display:none}
-.encuesta__progress-bar{
-  height:100%;border-radius:var(--r-pill);
-  background:linear-gradient(90deg,var(--frambuesa),var(--dorado));
-  width:0%;transition:width .4s var(--ease);
-}
+.encuesta__receta-txt{font-size:.76rem;font-weight:700;color:var(--dorado);margin-bottom:.5rem}
+.encuesta__puntos{display:flex;gap:.3rem;margin-bottom:.4rem}
+.encuesta__punto{width:8px;height:8px;border-radius:50%;background:var(--glass-bg);border:1px solid var(--glass-brd);transition:background-color .3s var(--ease), border-color .3s var(--ease)}
+.encuesta__punto.is-lleno{background:var(--frambuesa);border-color:var(--frambuesa)}
+.encuesta__ingredientes{font-size:1rem;letter-spacing:.15em}
 .encuesta__body{transition:opacity .18s var(--ease), transform .18s var(--ease)}
 .encuesta__body.is-leaving{opacity:0;transform:translateY(6px)}
 .encuesta__eyebrow{
   font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   color:var(--dorado);margin-bottom:.5rem;
 }
+.encuesta__guia{font-size:.86rem;font-weight:600;color:var(--frambuesa);margin-bottom:.5rem}
 .encuesta__pregunta{
   font-family:var(--ff-title,'Sora',sans-serif);
   font-size:clamp(1.15rem,3vw,1.5rem);font-weight:800;letter-spacing:-.01em;
@@ -1248,23 +1246,65 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__opciones{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1rem}
 .encuesta__opciones--multi{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
 .encuesta__opcion{
+  position:relative;display:flex;align-items:center;gap:.6rem;
   text-align:left;padding:.9rem 1.1rem;border-radius:var(--r-md);
   font-size:.92rem;font-weight:600;color:var(--text);
   background:var(--glass-bg);border:1px solid var(--glass-brd);
   transition:border-color .25s var(--ease), background-color .25s var(--ease), transform .2s var(--ease);
+}
+.encuesta__opcion-txt{display:flex;flex-direction:column;gap:.15rem}
+.encuesta__opcion-txt small{font-size:.76rem;font-weight:400;color:var(--text-soft)}
+.encuesta__check{
+  display:grid;place-items:center;width:18px;height:18px;border-radius:50%;flex-shrink:0;
+  background:var(--frambuesa);color:var(--crema);font-size:.68rem;
+  opacity:0;transform:scale(.4);transition:opacity .2s var(--ease), transform .2s var(--ease);
 }
 @media (hover:hover){
   .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion:hover{border-color:var(--frambuesa);background:color-mix(in srgb,var(--frambuesa) 10%,var(--glass-bg));transform:translateX(3px)}
   .encuesta__opciones--multi .encuesta__opcion:hover{border-color:var(--frambuesa)}
 }
 .encuesta__opcion:active{transform:scale(.98)}
-.encuesta__opcion.is-selected{
+.encuesta__opcion.is-selected,
+.encuesta__opcion.is-chosen{
   border-color:var(--frambuesa);color:var(--frambuesa);
   background:color-mix(in srgb,var(--frambuesa) 14%,var(--glass-bg));
 }
+.encuesta__opcion.is-chosen{transform:scale(1.03)}
+.encuesta__opcion.is-selected .encuesta__check,
+.encuesta__opcion.is-chosen .encuesta__check{opacity:1;transform:scale(1)}
+@keyframes encuestaShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-4px)}
+  75%{transform:translateX(4px)}
+}
+.encuesta__opcion.is-shake{animation:encuestaShake .3s var(--ease)}
 .encuesta__continuar{width:100%;justify-content:center}
 .encuesta__continuar:disabled{opacity:.4;pointer-events:none}
 .encuesta__ctas{display:flex;flex-wrap:wrap;gap:.7rem}
+
+/* Pregunta tipo "me interesa / no es para mí" */
+.encuesta__swipe-card{
+  display:grid;place-items:center;text-align:center;
+  min-height:7rem;padding:1.5rem;margin-bottom:1.2rem;
+  border-radius:var(--r-md);background:var(--glass-bg);border:1px solid var(--glass-brd);
+  transition:transform .22s var(--ease), opacity .22s var(--ease);
+}
+.encuesta__swipe-card p{font-size:1.1rem;font-weight:700;color:var(--text)}
+.encuesta__swipe-card.is-si{transform:translateX(120%) rotate(8deg);opacity:0}
+.encuesta__swipe-card.is-no{transform:translateX(-120%) rotate(-8deg);opacity:0}
+.encuesta__swipe-ctas{display:flex;justify-content:center;gap:1.2rem;margin-bottom:.8rem}
+.encuesta__swipe-btn{
+  width:58px;height:58px;border-radius:50%;font-size:1.4rem;
+  display:grid;place-items:center;border:1px solid var(--glass-brd);background:var(--glass-bg);
+  transition:transform .2s var(--ease), border-color .2s var(--ease);
+}
+.encuesta__swipe-btn--no{color:var(--text-soft)}
+.encuesta__swipe-btn--si{color:var(--frambuesa)}
+@media (hover:hover){
+  .encuesta__swipe-btn:hover{transform:translateY(-2px) scale(1.05);border-color:var(--frambuesa)}
+}
+.encuesta__swipe-btn:active{transform:scale(.92)}
+.encuesta__swipe-contador{text-align:center;font-size:.76rem;color:var(--text-soft)}
 .encuesta__perfil-bloque{margin-bottom:1rem}
 .encuesta__perfil-bloque span{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:.2rem}
 .encuesta__perfil-bloque p{font-size:.96rem;color:var(--text);line-height:1.5}
