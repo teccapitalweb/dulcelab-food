@@ -446,6 +446,79 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .hero__badge .ico{width:19px;height:19px;color:var(--dorado)}
 @keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
+/* ═══ Hero con foto real (equipo DulceLab Food) · layout a dos columnas ═══ */
+.hero--photo{display:block;padding-block:calc(var(--nav-h) + clamp(1.5rem,4vw,3rem)) clamp(2.5rem,6vw,4.5rem)}
+.hero__wrap--split{
+  display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(2rem,5vw,4.5rem);
+  align-items:center;perspective:none;
+}
+.hero__copy{max-width:36rem}
+.hero__headline{
+  font-family:var(--ff-title,'Sora',sans-serif);
+  font-size:clamp(2.2rem,4.6vw,3.4rem);
+  font-weight:800;letter-spacing:-.03em;line-height:1.06;
+  color:var(--text);margin-bottom:1.1rem;text-wrap:balance;
+}
+.hero__headline-accent{color:var(--dorado)}
+.hero__sub{
+  font-size:clamp(.98rem,.9rem + .4vw,1.12rem);
+  font-weight:300;color:var(--text-soft);
+  max-width:46ch;margin-bottom:1.8rem;line-height:1.55;
+}
+.hero__ctas--split{justify-content:flex-start;margin-bottom:1.7rem}
+.hero__features{
+  display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;list-style:none;padding:0;margin:0;
+}
+.hero__features li{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.82rem;color:var(--text-soft);white-space:nowrap;
+}
+.hero__features .ico{width:17px;height:17px;color:var(--frambuesa)}
+
+.hero__photo-wrap{position:relative;isolation:isolate}
+.hero__photo{
+  margin:0;border-radius:1.6rem;overflow:hidden;
+  box-shadow:0 2px 3px rgba(0,0,0,.08),0 30px 55px -20px rgba(42,13,22,.35);
+  aspect-ratio:4/4.3;transform-style:preserve-3d;transition:transform .5s var(--ease);
+}
+.hero__photo.is-tilting{transition:transform .12s linear}
+.hero__photo img{
+  width:100%;height:100%;object-fit:cover;object-position:62% 30%;display:block;
+}
+.hero__pill{
+  position:absolute;z-index:1;display:inline-flex;align-items:center;gap:.4rem;
+  padding:.55rem 1rem;border-radius:var(--r-pill);
+  font-size:.78rem;font-weight:600;color:var(--chocolate);
+  background:var(--crema);border:1px solid rgba(42,13,22,.08);
+  box-shadow:0 14px 28px -12px rgba(42,13,22,.3);
+  animation:badgeFloat 6s ease-in-out infinite;
+}
+.hero__pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--frambuesa);flex-shrink:0}
+.hero__pill--1{top:6%;left:-6%;animation-delay:-1s}
+.hero__pill--2{top:16%;right:-7%;animation-delay:-3.4s}
+.hero__pill--3{bottom:20%;left:-8%;animation-delay:-5.2s}
+.hero__pill--4{bottom:7%;right:-6%;animation-delay:-2.1s}
+.hero__pill--2::before,.hero__pill--4::before{background:var(--dorado)}
+.hero__note{
+  position:absolute;left:-4%;bottom:-2.2rem;z-index:1;margin:0;
+  font-family:'Caveat',cursive;font-size:1.5rem;line-height:1.15;
+  color:var(--frambuesa);transform:rotate(-3deg);text-wrap:balance;
+}
+:root[data-theme="dark"] .hero__note{color:var(--dorado)}
+
+@media (max-width:980px){
+  .hero__wrap--split{grid-template-columns:1fr}
+  .hero__copy{max-width:none;text-align:center;margin-inline:auto}
+  .hero__ctas--split,.hero__features{justify-content:center}
+  .hero__photo-wrap{max-width:26rem;margin-inline:auto;margin-top:1.5rem}
+  .hero__pill{position:static;animation:none;margin:.4rem .3rem 0}
+  .hero__photo-wrap{display:flex;flex-direction:column;align-items:center}
+  .hero__pill--1,.hero__pill--2,.hero__pill--3,.hero__pill--4{order:2}
+  .hero__photo{order:1;width:100%}
+  .hero__note{position:static;transform:none;text-align:center;margin-top:.8rem}
+}
+@media (prefers-reduced-motion:reduce){.hero__pill{animation:none}}
+
 /* Indicador de scroll */
 .scroll-cue{
   position:absolute;left:50%;bottom:1.5rem;z-index:2;
