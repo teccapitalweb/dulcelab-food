@@ -1190,6 +1190,121 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .about--reverse .about__media{order:-1}
 }
 
+/* ---------- 25. Encuesta de segmentación ---------- */
+.encuesta{
+  position:fixed;inset:0;z-index:310;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.25rem;
+  background:rgba(26,15,13,.6);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  opacity:0;transition:opacity .3s var(--ease);
+}
+.encuesta[hidden]{display:none}
+.encuesta.is-open{opacity:1}
+.encuesta__card{
+  position:relative;width:100%;max-width:32rem;
+  max-height:min(42rem,88svh);overflow-y:auto;
+  background:var(--panel-bg);
+  border:1px solid var(--glass-brd);
+  border-radius:var(--r-lg);
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.5);
+  padding:clamp(1.5rem,4vw,2.25rem);
+  transform:translateY(16px) scale(.97);opacity:0;
+  transition:transform .35s var(--ease), opacity .35s var(--ease);
+}
+.encuesta.is-open .encuesta__card{transform:none;opacity:1}
+.encuesta__close{
+  position:absolute;top:1rem;right:1rem;z-index:2;
+  display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
+  color:var(--text-soft);background:var(--glass-bg);border:1px solid var(--glass-brd);
+  transition:color .3s var(--ease), border-color .3s var(--ease);
+}
+@media (hover:hover){
+  .encuesta__close:hover{color:var(--frambuesa);border-color:var(--frambuesa)}
+}
+.encuesta__close .ico{width:17px;height:17px}
+.encuesta__progress{
+  height:4px;border-radius:var(--r-pill);background:var(--glass-bg);
+  overflow:hidden;margin-bottom:1.5rem;
+}
+.encuesta__progress[hidden]{display:none}
+.encuesta__progress-bar{
+  height:100%;border-radius:var(--r-pill);
+  background:linear-gradient(90deg,var(--frambuesa),var(--dorado));
+  width:0%;transition:width .4s var(--ease);
+}
+.encuesta__body{transition:opacity .18s var(--ease), transform .18s var(--ease)}
+.encuesta__body.is-leaving{opacity:0;transform:translateY(6px)}
+.encuesta__eyebrow{
+  font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dorado);margin-bottom:.5rem;
+}
+.encuesta__pregunta{
+  font-family:var(--ff-title,'Sora',sans-serif);
+  font-size:clamp(1.15rem,3vw,1.5rem);font-weight:800;letter-spacing:-.01em;
+  color:var(--text);line-height:1.25;margin-bottom:1.4rem;text-wrap:balance;
+}
+.encuesta__nota{font-size:.88rem;color:var(--text-soft);margin:-.8rem 0 1.4rem}
+.encuesta__opciones{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1rem}
+.encuesta__opciones--multi{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+.encuesta__opcion{
+  text-align:left;padding:.9rem 1.1rem;border-radius:var(--r-md);
+  font-size:.92rem;font-weight:600;color:var(--text);
+  background:var(--glass-bg);border:1px solid var(--glass-brd);
+  transition:border-color .25s var(--ease), background-color .25s var(--ease), transform .2s var(--ease);
+}
+@media (hover:hover){
+  .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion:hover{border-color:var(--frambuesa);background:color-mix(in srgb,var(--frambuesa) 10%,var(--glass-bg));transform:translateX(3px)}
+  .encuesta__opciones--multi .encuesta__opcion:hover{border-color:var(--frambuesa)}
+}
+.encuesta__opcion:active{transform:scale(.98)}
+.encuesta__opcion.is-selected{
+  border-color:var(--frambuesa);color:var(--frambuesa);
+  background:color-mix(in srgb,var(--frambuesa) 14%,var(--glass-bg));
+}
+.encuesta__continuar{width:100%;justify-content:center}
+.encuesta__continuar:disabled{opacity:.4;pointer-events:none}
+.encuesta__ctas{display:flex;flex-wrap:wrap;gap:.7rem}
+.encuesta__perfil-bloque{margin-bottom:1rem}
+.encuesta__perfil-bloque span{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:.2rem}
+.encuesta__perfil-bloque p{font-size:.96rem;color:var(--text);line-height:1.5}
+.encuesta__ruta{
+  margin:1.2rem 0 1.6rem;padding:1rem 1.1rem;border-radius:var(--r-md);
+  background:var(--glass-bg);border:1px solid var(--glass-brd);
+}
+.encuesta__ruta-label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dorado);margin-bottom:.7rem}
+.encuesta__ruta-item{display:flex;align-items:flex-start;gap:.7rem;padding:.5rem 0}
+.encuesta__ruta-item + .encuesta__ruta-item{border-top:1px solid var(--glass-brd)}
+.encuesta__ruta-icono{font-size:1.25rem;line-height:1}
+.encuesta__ruta-cat{display:block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-soft)}
+.encuesta__ruta-item p{font-size:.92rem;font-weight:600;color:var(--text)}
+@media (max-width:420px){
+  .encuesta__card{padding:1.4rem}
+  .encuesta__opciones--multi{grid-template-columns:1fr}
+  .encuesta__ctas{flex-direction:column}
+  .encuesta__ctas .btn{width:100%;text-align:center;justify-content:center}
+}
+
+/* Botón flotante que invita a la encuesta (abajo-izquierda, aparte del FAB de WhatsApp) */
+.encuesta-trigger{
+  position:fixed;z-index:190;
+  left:calc(16px + env(safe-area-inset-left, 0px));
+  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  max-width:min(78vw,17rem);
+  padding:.7rem 1.1rem;border-radius:var(--r-pill);
+  font-size:.8rem;font-weight:700;color:var(--text);text-align:left;
+  background:var(--glass-bg-strong);border:1px solid var(--glass-brd-hi);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:var(--glass-shadow);
+  transition:transform .3s var(--ease), border-color .3s var(--ease);
+}
+@media (hover:hover){
+  .encuesta-trigger:hover{transform:translateY(-3px);border-color:var(--frambuesa)}
+}
+@media (max-width:640px){
+  .encuesta-trigger{bottom:calc(76px + env(safe-area-inset-bottom, 0px));font-size:.74rem;padding:.6rem .9rem}
+}
+
 /* ---------- 10. Movimiento reducido ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -1206,4 +1321,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .media--cert,.media--cert:hover{transform:none !important}
   .lightbox__figure{transform:none}
   .fab.is-on{transform:none !important}
+  .encuesta__card{transform:none !important}
+  .encuesta__body.is-leaving{opacity:1;transform:none}
 }

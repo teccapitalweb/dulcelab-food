@@ -725,6 +725,17 @@
   </button>
 </div>
 
+<!-- ============ ENCUESTA ============ -->
+<div class="encuesta" id="encuesta" role="dialog" aria-modal="true" aria-label="Encuesta rápida" hidden>
+  <div class="encuesta__card">
+    <button class="encuesta__close" type="button" id="encuestaClose" aria-label="Cerrar">
+      <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+    </button>
+    <div class="encuesta__progress" id="encuestaProgressWrap"><div class="encuesta__progress-bar" id="encuestaProgressBar"></div></div>
+    <div class="encuesta__body" id="encuestaBody"></div>
+  </div>
+</div>
+
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div class="footer__inner footer__inner--simple">
@@ -746,7 +757,11 @@
   <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
 </a>
 
+<!-- ============ ENCUESTA: invitación manual ============ -->
+<button type="button" class="encuesta-trigger" id="encuestaTrigger">✨ Descubre qué puedes aprender en DulceLab</button>
+
 <script src="js/main.js" defer></script>
+<script src="js/encuesta.js" defer></script>
 <!-- ═══════════════════════════════════════════════════════════════
      Aviso de cookies · DulceLab Food (estilo aviso simple, tipo Starbucks:
      "sigues navegando = aceptas", fondo blanco y limpio, no un bloque oscuro).
