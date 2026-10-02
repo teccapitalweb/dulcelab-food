@@ -379,20 +379,39 @@
     if (id.indexOf('contexto_') === 0) return 'Esto nos ayuda a ubicarte.';
     return pistas[id] || 'Elige la respuesta que mejor describe tu situación.';
   }
-  // La chef cambia de pose en cada paso (nunca dos iguales seguidas) y se
-  // alterna el lado desde el que entra. Para sumar poses nuevas basta con
-  // agregarlas aquí y a la lista de pasos.
+  // La chef cambia de pose según lo que la persona va eligiendo (nunca dos
+  // iguales seguidas). Para sumar poses nuevas basta con agregarlas aquí.
   var POSES = {
-    senala: { src: 'assets/chef-guia-senala.webp', w: 640, h: 960 },
+    saluda: { src: 'assets/chef-guia-saluda.webp', w: 640, h: 853 },
     planea: { src: 'assets/chef-guia-planea.webp', w: 640, h: 960 },
-    celebra: { src: 'assets/chef-guia-celebra.webp', w: 640, h: 960 },
     piensa: { src: 'assets/chef-guia.webp', w: 1086, h: 1448 },
+    senala: { src: 'assets/chef-guia-senala.webp', w: 640, h: 960 },
+    bascula: { src: 'assets/chef-guia-bascula.webp', w: 640, h: 853 },
+    batidor: { src: 'assets/chef-guia-batidor.webp', w: 640, h: 853 },
+    tablet: { src: 'assets/chef-guia-tablet.webp', w: 640, h: 853 },
+    duda: { src: 'assets/chef-guia-duda.webp', w: 640, h: 853 },
     tarta: { src: 'assets/chef-guia-tarta.webp', w: 640, h: 853 },
-    ok: { src: 'assets/chef-guia-ok.webp', w: 640, h: 853 },
-    batidor: { src: 'assets/chef-guia-batidor.webp', w: 640, h: 853 }
+    diploma: { src: 'assets/chef-guia-diploma.webp', w: 640, h: 853 },
+    celebra: { src: 'assets/chef-guia-celebra.webp', w: 640, h: 960 }
   };
-  // Inicio: senala · 6 pasos · resultado: tarta
-  var POSE_POR_PASO = ['planea', 'piensa', 'batidor', 'senala', 'ok', 'celebra'];
+  var RETOS_GESTION = ['costos', 'precios', 'produccion', 'procesos', 'ventas'];
+  // Inicio: saluda · 1 planea · 2 piensa · 3 señala · 4 báscula si habla de
+  // costos/precios/procesos (batidor si es de técnica) · 5 tablet (cursos en
+  // línea) · 6 duda ("¿qué te detiene?") · resultado: diploma / celebra / tarta.
+  function poseDePaso(n) {
+    var r = estado.respuestas, reto = r[RETO_ID[estado.tipo]];
+    if (n === 0) return 'planea';
+    if (n === 1) return 'piensa';
+    if (n === 2) return 'senala';
+    if (n === 3) return RETOS_GESTION.indexOf(reto) !== -1 ? 'bascula' : 'batidor';
+    if (n === 4) return 'tablet';
+    return 'duda';
+  }
+  function poseFinal() {
+    var r = estado.respuestas;
+    if (r[RETO_ID[estado.tipo]] === 'empleo' || categoriaTema() === 'calidad') return 'diploma';
+    return r.freno === 'listo' ? 'celebra' : 'tarta';
+  }
   function imgChef(nombre, clases, alt) {
     var p = POSES[nombre];
     return '<img' + (clases ? ' class="' + clases + '"' : '') + ' src="' + p.src + '" width="' + p.w + '" height="' + p.h + '" alt="' + alt + '">';
@@ -471,7 +490,7 @@
   function renderConsentimiento() {
     progressWrap.hidden = true;
     body.innerHTML =
-      imgChef('senala', 'encuesta__guia-img', 'Tu guía DulceLab') +
+      imgChef('saluda', 'encuesta__guia-img', 'Tu guía DulceLab') +
       '<p class="encuesta__eyebrow">👩‍🍳 Tu guía DulceLab</p>' +
       '<h2 class="encuesta__pregunta">¡Hola! Voy a conocerte un poquito para prepararte una experiencia a tu medida.</h2>' +
       '<p class="encuesta__nota">¿Comenzamos? Toma menos de 2 minutos.</p>' +
@@ -498,7 +517,7 @@
     body.innerHTML =
       '<div class="encuesta__lesson">' +
         '<aside class="encuesta__mentor">' +
-          imgChef(POSE_POR_PASO[estado.paso % POSE_POR_PASO.length], estado.paso % 2 ? 'is-der' : 'is-izq', 'Chef Dulce, tu guía de aprendizaje') +
+          imgChef(poseDePaso(estado.paso), estado.paso % 2 ? 'is-der' : 'is-izq', 'Chef Dulce, tu guía de aprendizaje') +
           '<div class="encuesta__mentor-talk"><span>Chef Dulce te guía</span><p>' + mensajeGuia + '</p></div>' +
         '</aside>' +
         '<div class="encuesta__question-panel">' +
@@ -620,7 +639,7 @@
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
-      imgChef('tarta', 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
+      imgChef(poseFinal(), 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
       '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
