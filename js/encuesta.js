@@ -244,7 +244,7 @@
       cocina: [['tecnicas', 'Técnicas y cocinas del mundo'], ['normativas', 'Normativas e inocuidad'], ['tendencias', 'Tendencias y menús nuevos'], ['liderazgo', 'Liderazgo de brigada']],
       produccion: [['tecnicas', 'Procesos y tecnología de producción'], ['normativas', 'Normativas (NOM, COFEPRIS)'], ['tendencias', 'Desarrollo de productos nuevos'], ['liderazgo', 'Liderazgo de líneas y turnos']],
       calidad: [['sistemas', 'Sistemas de calidad (HACCP, ISO 22000)'], ['normativas', 'Normativas (NOM, COFEPRIS)'], ['auditorias', 'Auditorías y certificaciones'], ['liderazgo', 'Liderazgo de equipos de calidad']],
-      _: [['tecnicas', 'Técnicas de mi área'], ['normativas', 'Normativas e inocuidad'], ['tendencias', 'Tendencias y productos nuevos'], ['liderazgo', 'Liderazgo de equipos']]
+      _: [['tecnicas', 'Nuevas técnicas culinarias y de producción'], ['normativas', 'Normativas e inocuidad'], ['tendencias', 'Tendencias y productos nuevos'], ['liderazgo', 'Liderazgo de equipos']]
     }),
     det_prof_costos: detalleGrupos('det_prof_costos', '¿Qué te cuesta más trabajo controlar?', {
       dulce: [['costeo', 'Costear recetas y rendimientos'], ['inventario', 'Inventarios y compras de insumos'], ['merma', 'Mermas de producción']],
@@ -379,10 +379,22 @@
     if (id.indexOf('contexto_') === 0) return 'Esto nos ayuda a ubicarte.';
     return pistas[id] || 'Elige la respuesta que mejor describe tu situación.';
   }
-  function imagenGuiaPaso(id) {
-    if (id === 'tipo') return 'assets/chef-guia-senala.png';
-    if (id === 'freno') return 'assets/chef-guia-celebra.png';
-    return 'assets/chef-guia-planea.png';
+  // La chef cambia de pose en cada paso (nunca dos iguales seguidas) y se
+  // alterna el lado desde el que entra. Para sumar poses nuevas basta con
+  // agregarlas aquí y a la lista de pasos.
+  var POSES = {
+    senala: { src: 'assets/chef-guia-senala.webp', w: 640, h: 960 },
+    planea: { src: 'assets/chef-guia-planea.webp', w: 640, h: 960 },
+    celebra: { src: 'assets/chef-guia-celebra.webp', w: 640, h: 960 },
+    piensa: { src: 'assets/chef-guia.webp', w: 1086, h: 1448 }
+  };
+  var POSE_POR_PASO = ['planea', 'piensa', 'senala', 'planea', 'piensa', 'senala'];
+  function imgChef(nombre, clases, alt) {
+    var p = POSES[nombre];
+    return '<img' + (clases ? ' class="' + clases + '"' : '') + ' src="' + p.src + '" width="' + p.w + '" height="' + p.h + '" alt="' + alt + '">';
+  }
+  function precargarPoses() {
+    Object.keys(POSES).forEach(function (k) { var i = new Image(); i.src = POSES[k].src; });
   }
 
   /* ---------- 3. Estado ---------- */
@@ -405,7 +417,8 @@
 
   function recomendar() {
     var t = estado.tipo, r = estado.respuestas;
-    var ctx = opTexto('contexto_' + t, r['contexto_' + t]);
+    var ctxValor = r['contexto_' + t];
+    var ctx = (ctxValor === 'otra' || ctxValor === 'otro') ? '' : opTexto('contexto_' + t, ctxValor);
     var reto = opTexto(RETO_ID[t], r[RETO_ID[t]]);
     var dId = idDetalle();
     var det = dId ? opTexto(dId, r[dId]) : '';
@@ -454,7 +467,7 @@
   function renderConsentimiento() {
     progressWrap.hidden = true;
     body.innerHTML =
-      '<img class="encuesta__guia-img" src="assets/chef-guia.webp" width="1086" height="1448" alt="Tu guía DulceLab">' +
+      imgChef('senala', 'encuesta__guia-img', 'Tu guía DulceLab') +
       '<p class="encuesta__eyebrow">👩‍🍳 Tu guía DulceLab</p>' +
       '<h2 class="encuesta__pregunta">¡Hola! Voy a conocerte un poquito para prepararte una experiencia a tu medida.</h2>' +
       '<p class="encuesta__nota">¿Comenzamos? Toma menos de 2 minutos.</p>' +
@@ -481,7 +494,7 @@
     body.innerHTML =
       '<div class="encuesta__lesson">' +
         '<aside class="encuesta__mentor">' +
-          '<img src="' + imagenGuiaPaso(p.id) + '" width="1024" height="1536" alt="Chef Dulce, tu guía de aprendizaje">' +
+          imgChef(POSE_POR_PASO[estado.paso % POSE_POR_PASO.length], estado.paso % 2 ? 'is-der' : 'is-izq', 'Chef Dulce, tu guía de aprendizaje') +
           '<div class="encuesta__mentor-talk"><span>Chef Dulce te guía</span><p>' + mensajeGuia + '</p></div>' +
         '</aside>' +
         '<div class="encuesta__question-panel">' +
@@ -603,7 +616,7 @@
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
-      '<img class="encuesta__guia-img encuesta__guia-img--chico" src="assets/chef-guia-celebra.png" width="1024" height="1536" alt="Tu guía DulceLab">' +
+      imgChef('celebra', 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
       '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
@@ -744,7 +757,7 @@
       });
     if (!items.length) {
       var dId = idDetalle(); var tema = (dId && opTexto(dId, estado.respuestas[dId])) || 'tu tema';
-      items.push({ icono: '🔜', categoria: 'Próximamente en la membresía', titulo: tema, detalle: 'Todavía no hay un curso de este tema en la membresía; tu interés ya quedó registrado.' });
+      items.push({ icono: '🔜', categoria: 'Próximamente en la membresía', titulo: tema, detalle: 'Aún no tenemos un curso de este tema en la membresía. Tu interés ya quedó registrado para lo próximo que grabemos.' });
     }
     return items;
   }
@@ -760,6 +773,7 @@
 
   /* ---------- 8. Abrir / cerrar ---------- */
   function abrir() {
+    precargarPoses();
     cargarCursos();
     renderConsentimiento();
     modal.hidden = false;

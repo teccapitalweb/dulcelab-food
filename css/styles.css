@@ -1244,11 +1244,21 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__atras{font:inherit;font-weight:700;letter-spacing:.03em;text-transform:none;cursor:pointer;color:var(--frambuesa);background:color-mix(in srgb,var(--frambuesa) 9%,transparent);border:0;border-radius:var(--r-pill);padding:.15rem .6rem;transition:background .2s}
 .encuesta__atras:hover{background:color-mix(in srgb,var(--frambuesa) 18%,transparent)}
 .encuesta__guia-img{
-  display:block;width:108px;height:144px;margin:0 auto 1rem;
-  object-fit:cover;object-position:50% 12%;border-radius:var(--r-md);
-  background:var(--crema);
+  display:block;width:auto;height:11.5rem;max-width:100%;margin:0 auto .9rem;
+  object-fit:contain;background:none;
+  filter:drop-shadow(0 8px 8px rgba(60,20,16,.15));
+  animation:chefEntra .5s var(--ease) both;
 }
-.encuesta__guia-img--chico{width:84px;height:112px;margin-bottom:.8rem}
+.encuesta__guia-img--chico{height:9rem;margin-bottom:.6rem}
+/* La chef entra con un pequeño salto, alternando lado en cada paso */
+.encuesta__mentor img{animation:chefEntraMentor .5s var(--ease) both}
+.encuesta__mentor img.is-der{--chef-x:24px}
+.encuesta__mentor img.is-izq{--chef-x:-24px}
+@keyframes chefEntra{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes chefEntraMentor{from{opacity:0;transform:translateX(calc(-50% + var(--chef-x,0px))) translateY(14px) scale(.94)}to{opacity:1;transform:translateX(-50%)}}
+@keyframes chefEntraMovil{from{opacity:0;transform:translateX(var(--chef-x,0px)) scale(.94)}to{opacity:1;transform:none}}
+@media (max-width:640px){.encuesta__mentor img{animation-name:chefEntraMovil}}
+@media (prefers-reduced-motion:reduce){.encuesta__guia-img,.encuesta__mentor img{animation:none}}
 .encuesta__eyebrow{
   font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   color:var(--dorado);margin-bottom:.5rem;
