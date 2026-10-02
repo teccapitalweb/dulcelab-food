@@ -317,7 +317,7 @@
   }
 
   /* ---------- 3. Estado ---------- */
-  var estado = { paso: 0, tipo: null, respuestas: {} };
+  var estado = { paso: 0, tipo: null, respuestas: {}, historial: [] };
 
   function preguntaPorId(id) {
     return id === 'tipo' ? PREGUNTAS.inicio : PREGUNTAS[id];
@@ -399,7 +399,7 @@
 
   function iniciarPreguntas() {
     progressWrap.hidden = false;
-    estado = { paso: 0, tipo: null, respuestas: {} };
+    estado = { paso: 0, tipo: null, respuestas: {}, historial: [] };
     renderProgreso();
     transicion(function () { renderPregunta(PREGUNTAS.inicio); });
   }
@@ -416,7 +416,7 @@
           '<div class="encuesta__mentor-talk"><span>Chef Dulce te guía</span><p>' + mensajeGuia + '</p></div>' +
         '</aside>' +
         '<div class="encuesta__question-panel">' +
-          '<div class="encuesta__step"><span>Paso ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + '</span><span>' + (esMulti ? (p.max ? 'Elige hasta ' + p.max : 'Puedes elegir varias') : 'Una respuesta') + '</span></div>' +
+          '<div class="encuesta__step"><span>Paso ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + '</span>' + (estado.historial.length ? '<button type="button" class="encuesta__atras" id="encuestaAtras">← Anterior</button>' : '<span>' + (esMulti ? (p.max ? 'Elige hasta ' + p.max : 'Puedes elegir varias') : 'Una respuesta') + '</span>') + '</div>' +
           '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
           (p.nota ? '<p class="encuesta__nota">' + p.nota + '</p>' : '') +
           '<div class="encuesta__opciones' + (esMulti ? ' encuesta__opciones--multi' : '') + '">' +
@@ -431,6 +431,9 @@
           (esMulti ? '<button type="button" class="btn btn--primary encuesta__continuar" id="encuestaContinuar" disabled>Continuar con mi ruta</button>' : '') +
         '</div>' +
       '</div>';
+
+    var btnAtras = document.getElementById('encuestaAtras');
+    if (btnAtras) btnAtras.addEventListener('click', volverAtras);
 
     var seleccionMulti = [];
     var max = p.max || Infinity;
@@ -464,7 +467,19 @@
     }
   }
 
+  // Regresa a la pregunta anterior (borra su respuesta para volver a elegir;
+  // si cambia de camino, las preguntas siguientes se vuelven a calcular).
+  function volverAtras() {
+    var anterior = estado.historial.pop();
+    if (!anterior) return;
+    delete estado.respuestas[anterior.id];
+    if (anterior.id === 'tipo') estado.tipo = null;
+    estado.paso = Math.max(0, estado.paso - 1);
+    transicion(function () { renderPregunta(anterior); });
+  }
+
   function avanzar(pregunta, valor) {
+    estado.historial.push(pregunta);
     estado.respuestas[pregunta.id] = valor;
     if (pregunta.id === 'tipo') estado.tipo = Array.isArray(valor) ? valor[0] : valor;
     estado.paso += 1;
