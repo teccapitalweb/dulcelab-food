@@ -23,7 +23,7 @@
   var btnAbrir = document.getElementById('encuestaTrigger');
 
   /* ---------- 1. Textos para el resultado ---------- */
-  var AREA_TXT = { reposteria: 'Repostería', panaderia: 'Panadería', cocina: 'Cocina' };
+  var AREA_TXT = { dulce: 'Repostería y panadería', cocina: 'Cocina', negocio: 'Negocio y calidad' };
 
   /* ---------- 2. Árbol de preguntas: 5 pasos, 3 opciones cada uno ---------- */
   // 1) quién es → 2) su reto principal (cambia según quién es)
@@ -73,11 +73,12 @@
     // ── Común a todos ──
     area_interes: {
       id: 'area_interes', multi: false,
-      texto: '¿Con qué área te gustaría empezar?',
+      texto: '¿Por dónde te gustaría empezar?',
+      nota: 'En el Club hay más temas; esto solo nos ayuda a recomendarte tu primer paso.',
       opciones: [
-        { valor: 'reposteria', texto: 'Repostería', siguiente: 'formato' },
-        { valor: 'panaderia', texto: 'Panadería', siguiente: 'formato' },
-        { valor: 'cocina', texto: 'Cocina', siguiente: 'formato' }
+        { valor: 'dulce', texto: 'Repostería y panadería', siguiente: 'formato' },
+        { valor: 'cocina', texto: 'Cocina', siguiente: 'formato' },
+        { valor: 'negocio', texto: 'Negocio y calidad', sub: 'Costos, precios, inventarios, inocuidad.', siguiente: 'formato' }
       ]
     },
     formato: {
@@ -106,7 +107,7 @@
     estudiante:'🎓', profesional:'👩‍🍳', emprendedor:'🚀',
     desde_cero:'🌱', tecnica:'✨', empleo:'💼',
     actualizar:'🔄', costos:'📊', procesos:'🧩', precios:'🏷️', produccion:'⚙️',
-    reposteria:'🧁', panaderia:'🥖', cocina:'🍳',
+    dulce:'🧁', cocina:'🍳', negocio:'📊',
     grabados:'▶️', vivo:'🔴', herramientas:'🧮',
     menos1:'⏳', uno_tres:'🕐', mas3:'🔥'
   };
@@ -115,7 +116,7 @@
   function pistaPregunta(id) {
     var pistas = {
       tipo:'Elige la opción que más se parece a tu momento actual.',
-      area_interes:'Empezamos por una; después puedes explorar las demás.',
+      area_interes:'Elige por dónde quieres dar tu primer paso.',
       formato:'Así sabemos si te conviene más un curso, una clase o una herramienta.',
       tiempo_disponible:'Una ruta realista se adapta al tiempo que sí tienes.'
     };
@@ -146,7 +147,7 @@
         empleo: { o: 'Prepararte para trabajar o emprender.', f: 'Tener práctica demostrable y bases de negocio en ' + area.toLowerCase() + '.' }
       };
       var oe = objs[r.objetivo_estudiante] || objs.desde_cero;
-      perfil = { icono: '🎓', texto: 'Aprendiz de ' + area };
+      perfil = { icono: '🎓', texto: 'Aprendiz · ' + area };
       objetivo = oe.o; foco = oe.f;
       items = [{ icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Fundamentos de ' + area }];
       if (r.objetivo_estudiante === 'empleo') items.push({ icono: ICONOS.club, categoria: 'Certificado', titulo: 'Certificado con QR al terminar' });
@@ -158,7 +159,7 @@
         procesos: { o: 'Ordenar tus procesos y calidad.', f: 'Estandarizar procesos y calidad.', i: linea('Compras, Inventarios y Control de Insumos') }
       };
       var rp = retos[r.reto_profesional] || retos.actualizar;
-      perfil = { icono: '👩‍🍳', texto: 'Profesional de ' + area };
+      perfil = { icono: '👩‍🍳', texto: 'Profesional · ' + area };
       objetivo = rp.o; foco = rp.f;
       items = [rp.i, { icono: ICONOS.club, categoria: 'Club VIP', titulo: 'Comunidad y recursos para profesionales' }];
     } else {
@@ -168,7 +169,7 @@
         produccion: { o: 'Ordenar tu producción y calidad.', f: 'Producción y calidad sin un proceso claro.', i: linea('Compras, Inventarios y Control de Insumos') }
       };
       var pe = probs[r.problema_emprendedor] || probs.costos;
-      perfil = { icono: '🚀', texto: 'Emprendedor de ' + area };
+      perfil = { icono: '🚀', texto: 'Emprendedor · ' + area };
       objetivo = pe.o; foco = pe.f;
       items = [pe.i, { icono: ICONOS.reto, categoria: 'Reto', titulo: 'Calcula la rentabilidad de uno de tus productos' }];
     }
@@ -406,7 +407,8 @@
     procesos: ['estandariz', 'proceso', 'inocuidad', 'calidad'],
     actualizar: ['tecnica', 'receta'], tecnica: ['tecnica', 'receta'],
     desde_cero: ['fundamento', 'basic', 'introduccion'], empleo: ['certific', 'inocuidad', 'negocio'],
-    reposteria: ['reposter', 'postre'], panaderia: ['panader'], cocina: ['cocina']
+    dulce: ['reposter', 'postre', 'panader'], cocina: ['cocina'],
+    negocio: ['costo', 'precio', 'rentab', 'inventario', 'inocuidad', 'negocio']
   };
 
   function perfilPalabras() {
