@@ -39,7 +39,9 @@
   var GRUPO_TXT = { dulce: 'Repostería', cocina: 'Cocina', catering: 'Catering', casa: 'Casa', produccion: 'Producción', calidad: 'Calidad', _: 'Otro' };
   var GRUPO_DE = {
     emprendedor: { reposteria: 'dulce', panaderia: 'dulce', restaurante: 'cocina', cafeteria: 'cocina', catering: 'catering', casa: 'casa', otro: '_' },
-    profesional: { dulce: 'dulce', cocina: 'cocina', produccion: 'produccion', calidad: 'calidad', otra: '_' }
+    profesional: { dulce: 'dulce', cocina: 'cocina', produccion: 'produccion', calidad: 'calidad', otra: '_' },
+    estudiante: { cocina: 'cocina', dulce: 'dulce', otra: '_' },
+    aficionado: { nada: 'nada', basico: 'basico', confianza: 'confianza' }
   };
   var GRUPOS_RE = /^(.*)_(dulce|cocina|catering|casa|produccion|calidad)$/;
   // def: { grupo: [[base, texto], ...] }. Cada valor guardado lleva el grupo
@@ -55,15 +57,40 @@
     });
     return { id: id, multi: false, texto: texto, porGrupo: porGrupo, opciones: todas };
   }
+  // Pregunta de reto: las opciones y el título cambian según el contexto
+  // (paso 2), pero los valores guardados son los mismos. 'base' es la variante
+  // que usa el admin para nombrar las opciones.
+  function retoGrupos(id, base, def) {
+    var porGrupo = {};
+    Object.keys(def).forEach(function (g) {
+      porGrupo[g] = { texto: def[g].texto, opciones: def[g].ops.map(function (par) { return { valor: par[0], texto: par[1], siguiente: par[2] }; }) };
+    });
+    return { id: id, multi: false, texto: def[base].texto, base: base, porGrupo: porGrupo, opciones: porGrupo[base].opciones };
+  }
   function grupoActual() {
     var m = GRUPO_DE[estado.tipo];
     return (m && m[estado.respuestas['contexto_' + estado.tipo]]) || '_';
   }
   // Devuelve la pregunta lista para mostrar (con las opciones de su grupo).
   function resolverPregunta(q) {
-    if (!q || !q.porGrupo) return q;
-    var g = grupoActual();
-    return Object.assign({}, q, { opciones: q.porGrupo[g] || q.porGrupo._, porGrupo: null });
+    if (!q) return q;
+    if (q.variante) return Object.assign({}, q, q.variante(), { variante: null });
+    if (!q.porGrupo) return q;
+    var v = q.porGrupo[grupoActual()] || q.porGrupo[q.base] || q.porGrupo._;
+    if (Array.isArray(v)) v = { opciones: v };
+    return Object.assign({}, q, v, { porGrupo: null });
+  }
+
+  // Tipo de tema del detalle elegido (paso 4): decide cómo se le ofrece el
+  // formato (paso 5). Los valores con grupo (costeo_dulce) se reducen a su base.
+  var TEMAS_CALIDAD = ['higiene', 'normativas', 'calidad', 'sistemas', 'auditorias', 'bpm', 'auditar', 'capacitar'];
+  var TEMAS_GESTION = ['costeo', 'inventario', 'merma', 'estandarizar', 'planear', 'costo_real', 'precio_venta', 'ganancia', 'reprocesos', 'trazabilidad', 'liderazgo', 'emprender', 'redes', 'mayoreo', 'pedidos'];
+  function baseDe(valor) { var m = GRUPOS_RE.exec(valor || ''); return m ? m[1] : valor; }
+  function categoriaTema() {
+    var dId = idDetalle(), b = baseDe(estado.respuestas[dId]);
+    if (TEMAS_CALIDAD.indexOf(b) !== -1) return 'calidad';
+    if (TEMAS_GESTION.indexOf(b) !== -1) return 'gestion';
+    return 'tecnica';
   }
 
   /* ---------- 2. Árbol de preguntas: 6 pasos encadenados ---------- */
@@ -128,43 +155,30 @@
     },
 
     // ── Paso 3: reto principal (cada opción lleva a SU pregunta de detalle) ──
-    objetivo_estudiante: {
-      id: 'objetivo_estudiante', multi: false,
-      texto: '¿Qué quieres lograr?',
-      opciones: [
-        { valor: 'desde_cero', texto: 'Aprender desde cero', siguiente: 'det_desde_cero' },
-        { valor: 'tecnica', texto: 'Mejorar mi técnica', siguiente: 'det_tecnica' },
-        { valor: 'empleo', texto: 'Prepararme para trabajar', siguiente: 'det_empleo' }
-      ]
-    },
-    objetivo_aficionado: {
-      id: 'objetivo_aficionado', multi: false,
-      texto: '¿Qué te gustaría lograr?',
-      opciones: [
-        { valor: 'cocinar_mejor', texto: 'Cocinar mejor en casa', siguiente: 'det_cocinar_mejor' },
-        { valor: 'postres', texto: 'Hacer postres y pasteles', siguiente: 'det_postres' },
-        { valor: 'explorar', texto: 'Ver si me quiero dedicar a esto', siguiente: 'det_explorar' }
-      ]
-    },
-    reto_profesional: {
-      id: 'reto_profesional', multi: false,
-      texto: '🎯 ¿Qué es lo que más te complica en tu trabajo?',
-      opciones: [
-        { valor: 'actualizar', texto: 'Actualizarme o especializarme', siguiente: 'det_actualizar' },
-        { valor: 'costos', texto: 'Reducir costos y mermas', siguiente: 'det_prof_costos' },
-        { valor: 'procesos', texto: 'Ordenar procesos y calidad', siguiente: 'det_prof_procesos' }
-      ]
-    },
-    problema_emprendedor: {
-      id: 'problema_emprendedor', multi: false,
-      texto: '🎯 ¿Qué es lo que más te complica en tu negocio?',
-      opciones: [
-        { valor: 'precios', texto: '💰 No sé cuánto cobrar', siguiente: 'det_emp_precios' },
-        { valor: 'costos', texto: '📊 No controlo mis costos, inventario y merma', siguiente: 'det_emp_costos' },
-        { valor: 'produccion', texto: '⚙️ Necesito ordenar mi producción y calidad', siguiente: 'det_emp_produccion' },
-        { valor: 'ventas', texto: '📣 Necesito vender más', siguiente: 'det_emp_ventas' }
-      ]
-    },
+    objetivo_estudiante: retoGrupos('objetivo_estudiante', '_', {
+      cocina: { texto: '¿Qué quieres lograr en cocina?', ops: [['desde_cero', 'Aprender cocina desde cero', 'det_desde_cero'], ['tecnica', 'Mejorar mi técnica en cocina', 'det_tecnica'], ['empleo', 'Prepararme para trabajar en cocinas', 'det_empleo']] },
+      dulce: { texto: '¿Qué quieres lograr en repostería y panadería?', ops: [['desde_cero', 'Aprender repostería y panadería desde cero', 'det_desde_cero'], ['tecnica', 'Mejorar mi técnica de repostería y panadería', 'det_tecnica'], ['empleo', 'Prepararme para trabajar en pastelería o panadería', 'det_empleo']] },
+      _: { texto: '¿Qué quieres lograr?', ops: [['desde_cero', 'Aprender desde cero', 'det_desde_cero'], ['tecnica', 'Mejorar mi técnica', 'det_tecnica'], ['empleo', 'Prepararme para trabajar', 'det_empleo']] }
+    }),
+    objetivo_aficionado: retoGrupos('objetivo_aficionado', 'basico', {
+      nada: { texto: '¿Qué te gustaría lograr para empezar?', ops: [['cocinar_mejor', 'Aprender a cocinar desde lo básico', 'det_cocinar_mejor'], ['postres', 'Aprender postres fáciles para empezar', 'det_postres'], ['explorar', 'Ver si esto es para mí', 'det_explorar']] },
+      basico: { texto: '¿Qué te gustaría lograr?', ops: [['cocinar_mejor', 'Cocinar mejor en casa', 'det_cocinar_mejor'], ['postres', 'Hacer postres y pasteles', 'det_postres'], ['explorar', 'Ver si me quiero dedicar a esto', 'det_explorar']] },
+      confianza: { texto: '¿Qué te gustaría lograr ahora que ya cocinas con confianza?', ops: [['cocinar_mejor', 'Perfeccionar mis platillos', 'det_cocinar_mejor'], ['postres', 'Hacer postres y pasteles más elaborados', 'det_postres'], ['explorar', 'Convertir esto en un negocio', 'det_explorar']] }
+    }),
+    reto_profesional: retoGrupos('reto_profesional', '_', {
+      dulce: { texto: '🎯 En repostería y panadería, ¿qué es lo que más te complica?', ops: [['actualizar', 'Actualizarme en repostería y panadería', 'det_actualizar'], ['costos', 'Reducir costos y mermas de producción', 'det_prof_costos'], ['procesos', 'Estandarizar mis recetas y procesos', 'det_prof_procesos']] },
+      cocina: { texto: '🎯 En cocina y restaurante, ¿qué es lo que más te complica?', ops: [['actualizar', 'Actualizarme en técnicas y tendencias', 'det_actualizar'], ['costos', 'Controlar food cost y mermas', 'det_prof_costos'], ['procesos', 'Ordenar la operación de mi cocina', 'det_prof_procesos']] },
+      produccion: { texto: '🎯 En producción de alimentos, ¿qué es lo que más te complica?', ops: [['actualizar', 'Actualizarme en procesos y normativas', 'det_actualizar'], ['costos', 'Reducir costos y mermas de línea', 'det_prof_costos'], ['procesos', 'Mejorar procesos y rendimientos', 'det_prof_procesos']] },
+      calidad: { texto: '🎯 En calidad e inocuidad, ¿qué es lo que más te complica?', ops: [['actualizar', 'Actualizarme en sistemas de calidad', 'det_actualizar'], ['costos', 'Reducir reprocesos y rechazos', 'det_prof_costos'], ['procesos', 'Implementar y mantener procesos de calidad', 'det_prof_procesos']] },
+      _: { texto: '🎯 ¿Qué es lo que más te complica en tu trabajo?', ops: [['actualizar', 'Actualizarme o especializarme', 'det_actualizar'], ['costos', 'Reducir costos y mermas', 'det_prof_costos'], ['procesos', 'Ordenar procesos y calidad', 'det_prof_procesos']] }
+    }),
+    problema_emprendedor: retoGrupos('problema_emprendedor', '_', {
+      dulce: { texto: '🎯 En tu negocio de repostería o panadería, ¿qué es lo que más te complica?', ops: [['precios', '💰 No sé cuánto cobrar mis pasteles y postres', 'det_emp_precios'], ['costos', '📊 No controlo mis costos, insumos y mermas', 'det_emp_costos'], ['produccion', '⚙️ Me cuesta ordenar pedidos y producción', 'det_emp_produccion'], ['ventas', '📣 Necesito vender más', 'det_emp_ventas']] },
+      cocina: { texto: '🎯 En tu restaurante o cafetería, ¿qué es lo que más te complica?', ops: [['precios', '💰 No sé cómo fijar los precios de mi menú', 'det_emp_precios'], ['costos', '📊 No controlo mi food cost, inventario y mermas', 'det_emp_costos'], ['produccion', '⚙️ Necesito ordenar mi cocina y mi servicio', 'det_emp_produccion'], ['ventas', '📣 Necesito más comensales', 'det_emp_ventas']] },
+      catering: { texto: '🎯 En tu catering, ¿qué es lo que más te complica?', ops: [['precios', '💰 No sé cómo cotizar mis eventos', 'det_emp_precios'], ['costos', '📊 No controlo el costo de cada evento', 'det_emp_costos'], ['produccion', '⚙️ Necesito ordenar producción y logística', 'det_emp_produccion'], ['ventas', '📣 Necesito conseguir más eventos', 'det_emp_ventas']] },
+      casa: { texto: '🎯 Vendiendo desde casa, ¿qué es lo que más te complica?', ops: [['precios', '💰 No sé cuánto cobrar por mis productos', 'det_emp_precios'], ['costos', '📊 No sé cuánto me cuesta hacer lo que vendo', 'det_emp_costos'], ['produccion', '⚙️ Necesito organizar mis pedidos y mi tiempo', 'det_emp_produccion'], ['ventas', '📣 Necesito más clientes', 'det_emp_ventas']] },
+      _: { texto: '🎯 ¿Qué es lo que más te complica en tu negocio?', ops: [['precios', '💰 No sé cuánto cobrar', 'det_emp_precios'], ['costos', '📊 No controlo mis costos, inventario y merma', 'det_emp_costos'], ['produccion', '⚙️ Necesito ordenar mi producción y calidad', 'det_emp_produccion'], ['ventas', '📣 Necesito vender más', 'det_emp_ventas']] }
+    }),
 
     // ── Paso 4: detalle del reto elegido ──
     det_desde_cero: {
@@ -278,16 +292,35 @@
     },
 
     // ── Pasos 5 y 6: comunes a todos ──
+    // Paso 5: depende del TEMA elegido en el paso 4 (no es lo mismo aprender
+    // costeo que decoración o inocuidad). Los valores guardados no cambian.
     formato: {
       id: 'formato', multi: false,
       texto: '¿Cómo te gustaría aprenderlo?',
       opciones: sig([
-        { valor: 'grabados', texto: 'Cursos grabados', sub: 'Los veo a mi ritmo, cuando puedo.' },
-        { valor: 'vivo', texto: 'Clases en vivo', sub: 'Con chefs y preguntas en tiempo real.' },
-        { valor: 'herramientas', texto: 'Plantillas y calculadoras', sub: 'Formatos listos para usar en mi cocina.' },
-        { valor: 'asesoria', texto: 'Asesoría personalizada', sub: 'Orientación para mi caso.' }
-      ], 'freno')
+        { valor: 'grabados', texto: 'Cursos grabados' },
+        { valor: 'vivo', texto: 'Clases en vivo' },
+        { valor: 'herramientas', texto: 'Plantillas, calculadoras, recetarios o formatos' },
+        { valor: 'asesoria', texto: 'Asesoría personalizada' }
+      ], 'freno'),
+      variante: function () {
+        var dId = idDetalle();
+        var tema = (dId && opTexto(dId, estado.respuestas[dId])) || 'este tema';
+        var t = {
+          gestion: ['Curso grabado paso a paso', 'Clase en vivo resolviendo mi caso', 'Calculadoras y plantillas listas para usar', 'Asesoría para mi negocio o área'],
+          tecnica: ['Videos paso a paso para repetir', 'Clase en vivo con chef', 'Recetario y guías descargables', 'Retroalimentación de mis preparaciones'],
+          calidad: ['Curso grabado con ejemplos reales', 'Clase en vivo con especialista', 'Formatos y checklists listos (bitácoras, auditorías)', 'Asesoría para implementarlo']
+        }[categoriaTema()];
+        return {
+          texto: '¿Cómo te gustaría aprender «' + tema + '»?',
+          opciones: sig([
+            { valor: 'grabados', texto: t[0] }, { valor: 'vivo', texto: t[1] },
+            { valor: 'herramientas', texto: t[2] }, { valor: 'asesoria', texto: t[3] }
+          ], 'freno')
+        };
+      }
     },
+    // Paso 6: depende del FORMATO elegido en el paso 5.
     freno: {
       id: 'freno', multi: false,
       texto: '¿Qué te detiene hoy?',
@@ -297,7 +330,23 @@
         { valor: 'tema', texto: 'No encuentro el tema que busco' },
         { valor: 'dudas', texto: 'No estoy seguro de que sea para mí' },
         { valor: 'listo', texto: 'Nada, estoy listo para empezar' }
-      ], 'fin')
+      ], 'fin'),
+      variante: function () {
+        var f = estado.respuestas.formato;
+        var nombres = { grabados: 'cursos grabados', vivo: 'clases en vivo', herramientas: 'plantillas y herramientas', asesoria: 'una asesoría' };
+        var tiempo = { grabados: 'No me alcanza el tiempo para verlos', vivo: 'No puedo conectarme en horarios fijos', herramientas: 'No tengo tiempo de aprender a usarlas', asesoria: 'No tengo tiempo para sesiones' }[f];
+        var dudas = { grabados: 'No sé si aprendería sin un chef que me guíe', vivo: 'No sé si me sirva si no puedo repetir la clase', herramientas: 'No sé si se adaptan a mi caso', asesoria: 'No sé si valdría lo que cuesta' }[f];
+        return {
+          texto: '¿Qué te detiene hoy para empezar con ' + (nombres[f] || 'esto') + '?',
+          opciones: sig([
+            { valor: 'precio', texto: f === 'asesoria' ? 'Me preocupa cuánto cuesta' : 'El precio' },
+            { valor: 'tiempo', texto: tiempo || 'El tiempo' },
+            { valor: 'tema', texto: 'No encuentro el tema que busco' },
+            { valor: 'dudas', texto: dudas || 'No estoy seguro de que sea para mí' },
+            { valor: 'listo', texto: 'Nada, estoy listo para empezar' }
+          ], 'fin')
+        };
+      }
     }
   };
 
@@ -664,8 +713,7 @@
     Object.keys(r).forEach(function (id) {
       var peso = pesoDe(id);
       if (!peso) return;
-      var m = GRUPOS_RE.exec(r[id]);
-      (PALABRAS[m ? m[1] : r[id]] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); });
+      (PALABRAS[baseDe(r[id])] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); });
     });
     return pesos;
   }
