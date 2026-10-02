@@ -386,9 +386,13 @@
     senala: { src: 'assets/chef-guia-senala.webp', w: 640, h: 960 },
     planea: { src: 'assets/chef-guia-planea.webp', w: 640, h: 960 },
     celebra: { src: 'assets/chef-guia-celebra.webp', w: 640, h: 960 },
-    piensa: { src: 'assets/chef-guia.webp', w: 1086, h: 1448 }
+    piensa: { src: 'assets/chef-guia.webp', w: 1086, h: 1448 },
+    tarta: { src: 'assets/chef-guia-tarta.webp', w: 640, h: 853 },
+    ok: { src: 'assets/chef-guia-ok.webp', w: 640, h: 853 },
+    batidor: { src: 'assets/chef-guia-batidor.webp', w: 640, h: 853 }
   };
-  var POSE_POR_PASO = ['planea', 'piensa', 'senala', 'planea', 'piensa', 'senala'];
+  // Inicio: senala · 6 pasos · resultado: tarta
+  var POSE_POR_PASO = ['planea', 'piensa', 'batidor', 'senala', 'ok', 'celebra'];
   function imgChef(nombre, clases, alt) {
     var p = POSES[nombre];
     return '<img' + (clases ? ' class="' + clases + '"' : '') + ' src="' + p.src + '" width="' + p.w + '" height="' + p.h + '" alt="' + alt + '">';
@@ -616,7 +620,7 @@
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
-      imgChef('celebra', 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
+      imgChef('tarta', 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
       '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
