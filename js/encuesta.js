@@ -448,6 +448,20 @@
     }, 260);
   }
 
+  // El sitio todavía no tiene forma de llevar a cada quien directo al curso
+  // exacto de su ruta (la sección #cursos es la misma lista para todos), así
+  // que en vez de mandar a algo genérico que no coincide con lo que se le
+  // prometió, el CTA abre WhatsApp con su perfil y ruta ya escritos, para
+  // que el equipo le dé seguimiento personal.
+  function linkWhatsApp(r) {
+    var items = r.ruta.map(function (item) { return item.categoria + ': ' + item.titulo; }).join(' · ');
+    var texto = 'Hola, acabo de contestar la encuesta de DulceLab Food.\n' +
+      'Mi perfil: ' + r.perfil.texto + '\n' +
+      'Me recomendaron: ' + items + '\n' +
+      '¿Me ayudan a empezar?';
+    return 'https://wa.me/522361223226?text=' + encodeURIComponent(texto);
+  }
+
   function renderFin() {
     renderProgreso();
     var r = recomendar();
@@ -463,10 +477,12 @@
       }).join('') +
       '</div>' +
       '<div class="encuesta__ctas">' +
-      '<a class="btn btn--primary" href="#cursos" id="encuestaCtaCursos">Descubrir mi ruta en DulceLab</a>' +
+      '<a class="btn btn--primary" href="' + linkWhatsApp(r) + '" target="_blank" rel="noopener" id="encuestaCtaCursos">Platicar mi ruta por WhatsApp</a>' +
+      '<button type="button" class="btn btn--ghost" id="encuestaCerrarFin">Cerrar</button>' +
       '</div>';
 
     document.getElementById('encuestaCtaCursos').addEventListener('click', cerrar);
+    document.getElementById('encuestaCerrarFin').addEventListener('click', cerrar);
     enviarRespuesta();
     try { localStorage.setItem(STORAGE_DONE, 'completada'); } catch (e) {}
   }
