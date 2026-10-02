@@ -1203,7 +1203,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta.is-open{opacity:1}
 .encuesta__card{
   position:relative;width:100%;max-width:50rem;
-  max-height:min(42rem,88svh);overflow-y:auto;
+  /* --cookie-h: alto del aviso de cookies (si está visible) para que no tape la encuesta */
+  max-height:min(42rem,calc(88svh - var(--cookie-h,0px)));margin-bottom:var(--cookie-h,0px);overflow-y:auto;
   background:var(--panel-bg);
   border:1px solid var(--glass-brd);
   border-radius:var(--r-lg);

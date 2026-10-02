@@ -795,8 +795,22 @@
   }
 
   /* ---------- 8. Abrir / cerrar ---------- */
+  // El aviso de cookies (fijo abajo, z-index altísimo) tapaba la parte baja de
+  // la encuesta en celular: se mide su altura y la tarjeta se acomoda encima.
+  function ajustarCookies() {
+    var b = document.getElementById('dlf-cookie-banner');
+    var h = (b && getComputedStyle(b).display !== 'none') ? b.offsetHeight : 0;
+    modal.style.setProperty('--cookie-h', h + 'px');
+  }
+  (function vigilarCookies() {
+    var b = document.getElementById('dlf-cookie-banner');
+    if (b && window.MutationObserver) new MutationObserver(ajustarCookies).observe(b, { attributes: true, attributeFilter: ['style'] });
+    window.addEventListener('resize', ajustarCookies);
+  })();
+
   function abrir() {
     precargarPoses();
+    ajustarCookies();
     cargarCursos();
     renderConsentimiento();
     modal.hidden = false;
