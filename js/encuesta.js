@@ -1,13 +1,11 @@
 /* =========================================================
    DULCELAB FOOD — Descubre tu perfil DulceLab
-   Encuesta adaptativa presentada como una experiencia guiada (no un
-   formulario): una guía (emoji + texto, no hay ilustración animada
-   real todavía) acompaña con una línea de reacción, el avance se
-   muestra como una receta que se va completando, y la pregunta de
-   intereses permite elegir hasta tres recursos en una sola pantalla.
-   Se ramifica en 4 rutas según
-   el tipo de visitante, converge en 2 preguntas comunes, y termina en
-   un perfil con una ruta recomendada (reglas, no IA todavía).
+   Encuesta adaptativa presentada como una experiencia guiada: la chef
+   acompaña cada paso, el avance es una receta que se completa, la
+   pregunta de contenidos es de tarjetas "me interesa / no es para mí"
+   (botones o arrastrando) y se ramifica en 4 rutas según el tipo de
+   visitante. Al final recomienda los cursos que de verdad están en la
+   membresía (se leen de Firestore) según lo que contestó.
    ========================================================= */
 (function () {
   'use strict';
@@ -163,17 +161,19 @@
 
     // ── Común a todas las ramas ──
     membresia: {
-      id: 'membresia', multi: true, max: 3,
-      texto: '¿Qué recursos te interesan más?',
-     
+      id: 'membresia', multi: true, swipe: true,
+      texto: '¿Qué contenidos sí usarías?',
       opciones: [
-        { valor: 'cursos', texto: 'Cursos completos' },
-        { valor: 'vivo', texto: 'Clases en vivo' },
-        { valor: 'plantillas', texto: 'Plantillas de trabajo' },
-        { valor: 'calculadoras', texto: 'Calculadoras y herramientas' },
-        { valor: 'retos', texto: 'Retos prácticos' },
-        { valor: 'comunidad', texto: 'Comunidad' },
-        { valor: 'certificados', texto: 'Certificados' }
+        { valor: 'cursos', texto: 'Cursos completos', sub: 'Aprende paso a paso, a tu ritmo' },
+        { valor: 'vivo', texto: 'Clases en vivo', sub: 'Con chefs y preguntas en tiempo real' },
+        { valor: 'rapidos', texto: 'Videos rápidos', sub: 'Clips de 5 minutos para aprender al paso' },
+        { valor: 'plantillas', texto: 'Plantillas de trabajo', sub: 'Formatos listos para usar en tu cocina' },
+        { valor: 'calculadoras', texto: 'Calculadoras y herramientas', sub: 'Costos, rendimientos y precios al instante' },
+        { valor: 'recetas', texto: 'Recetas', sub: 'Preparaciones probadas, paso a paso' },
+        { valor: 'retos', texto: 'Retos prácticos', sub: 'Pon en práctica lo aprendido' },
+        { valor: 'certificados', texto: 'Certificados', sub: 'Comprueba lo que aprendiste' },
+        { valor: 'comunidad', texto: 'Comunidad', sub: 'Resuelve dudas y aprende con otros' },
+        { valor: 'asesoria', texto: 'Asesoría', sub: 'Orientación personalizada para ti' }
       ],
       siguiente: 'tiempo_disponible'
     },
@@ -195,7 +195,7 @@
     estudiante:'🎓', profesional:'👩‍🍳', emprendedor:'🚀', aficionado:'❤️',
     cocina:'🍳', reposteria:'🧁', panaderia:'🥖', inocuidad:'🛡️', costos:'💰', produccion:'⚙️', emprendimiento:'📈',
     vivo:'🔴', grabados:'▶️', pdfs:'📄', plantillas:'🧾', herramientas:'🧰', retos:'⚡',
-    cursos:'🎓', calculadoras:'🧮', comunidad:'🤝', certificados:'🏅',
+    cursos:'🎓', calculadoras:'🧮', comunidad:'🤝', certificados:'🏅', rapidos:'🎬', recetas:'🍰', asesoria:'💬',
     idea:'💡', comenzando:'🌱', activo:'🏪', creciendo:'📈', restaurante:'🍽️', cafeteria:'☕', catering:'🍱', procesados:'🏭', casa:'🏠',
     mejorar:'✨', trabajar:'💼', emprender:'🚀', complementar:'📚', hobby:'🎨', familia:'👨‍👩‍👧', explorar:'🧭', ocasional:'🎁',
     precios:'🏷️', inventarios:'📦', merma:'♻️', ventas:'📣', productos:'🍽️', procesos:'🧩', normativas:'📋', especializarme:'🎯', actualizar:'🔄', crecer:'📈',
@@ -421,37 +421,90 @@
   }
 
   // Pregunta tipo "tarjetas": una opción a la vez, ❤️ Me interesa / ✕ No es
-  // para mí. Se recorren todas las opciones y las "aceptadas" quedan como
-  // la respuesta (mismo formato que una pregunta de opción múltiple).
+  // para mí (con botones o arrastrando la tarjeta). Las "aceptadas" quedan
+  // como respuesta (mismo formato que una de opción múltiple). Si descarta
+  // todas se guarda ['ninguno'] porque el backend no acepta arreglos vacíos.
   function renderSwipe(p) {
-    var aceptadas = [];
-    var idx = 0;
+    var aceptadas = [], idx = 0, ocupado = false, n = p.opciones.length;
+    var siMsgs = ['¡Anotado! ❤️', '¡Buena elección!', 'Eso suma a tu ruta ✨', '¡Me encanta! 🙌'];
+    var noMsgs = ['Sin problema, seguimos 👉', 'Anotado, siguiente…', 'Va, a la que sigue'];
+    function azar(a) { return a[Math.floor(Math.random() * a.length)]; }
 
-    function pintar() {
-      if (idx >= p.opciones.length) { avanzar(p, aceptadas); return; }
-      var o = p.opciones[idx];
-      body.innerHTML =
-        '<p class="encuesta__guia">👉 Desliza según te interese</p>' +
-        '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
-        '<div class="encuesta__swipe-card" id="encuestaSwipeCard"><p>' + o.texto + '</p></div>' +
-        '<div class="encuesta__swipe-ctas">' +
-        '<button type="button" class="encuesta__swipe-btn encuesta__swipe-btn--no" id="encuestaSwipeNo" aria-label="No es para mí">✕</button>' +
-        '<button type="button" class="encuesta__swipe-btn encuesta__swipe-btn--si" id="encuestaSwipeSi" aria-label="Me interesa">❤️</button>' +
+    renderProgreso();
+    body.innerHTML =
+      '<div class="encuesta__lesson">' +
+        '<aside class="encuesta__mentor">' +
+          '<img src="' + imagenGuiaPaso(p.id) + '" width="1024" height="1536" alt="Chef Dulce, tu guía de aprendizaje">' +
+          '<div class="encuesta__mentor-talk"><span>Chef Dulce te guía</span><p id="encuestaSwipeBurbuja">Toca ❤️ si lo usarías o ✕ si no. También puedes arrastrar la tarjeta.</p></div>' +
+        '</aside>' +
+        '<div class="encuesta__question-panel">' +
+          '<div class="encuesta__step"><span>Paso ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + '</span><span id="encuestaSwipeContador"></span></div>' +
+          '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
+          '<div class="encuesta__swipe-stage"><div class="encuesta__swipe-card" id="encuestaSwipeCard"></div></div>' +
+          '<div class="encuesta__swipe-ctas">' +
+            '<button type="button" class="encuesta__swipe-btn encuesta__swipe-btn--no" id="encuestaSwipeNo" aria-label="No es para mí">✕</button>' +
+            '<button type="button" class="encuesta__swipe-btn encuesta__swipe-btn--si" id="encuestaSwipeSi" aria-label="Me interesa">❤️</button>' +
+          '</div>' +
+          '<div class="encuesta__swipe-barra"><div id="encuestaSwipeAvance"></div></div>' +
         '</div>' +
-        '<p class="encuesta__swipe-contador">' + (idx + 1) + ' de ' + p.opciones.length + '</p>';
+      '</div>';
 
-      var card = document.getElementById('encuestaSwipeCard');
-      document.getElementById('encuestaSwipeSi').addEventListener('click', function () { responder(true); });
-      document.getElementById('encuestaSwipeNo').addEventListener('click', function () { responder(false); });
+    var card = document.getElementById('encuestaSwipeCard');
+    var burbuja = document.getElementById('encuestaSwipeBurbuja');
+    var contador = document.getElementById('encuestaSwipeContador');
+    var avance = document.getElementById('encuestaSwipeAvance');
 
-      function responder(si) {
-        card.classList.add(si ? 'is-si' : 'is-no');
-        if (si) aceptadas.push(o.valor);
-        idx += 1;
-        setTimeout(pintar, 220);
-      }
+    function pintarCard() {
+      if (idx >= n) { avanzar(p, aceptadas.length ? aceptadas : ['ninguno']); return; }
+      var o = p.opciones[idx];
+      card.className = 'encuesta__swipe-card is-entra';
+      card.style.transform = '';
+      card.innerHTML = '<span class="encuesta__swipe-icono">' + iconoOpcion(o.valor) + '</span><p>' + o.texto + '</p>' + (o.sub ? '<small>' + o.sub + '</small>' : '');
+      contador.textContent = (idx + 1) + ' de ' + n;
+      avance.style.width = Math.round(idx / n * 100) + '%';
     }
-    pintar();
+
+    function responder(si) {
+      if (ocupado || idx >= n) return;
+      ocupado = true;
+      var o = p.opciones[idx];
+      card.classList.remove('is-entra', 'is-arrastra', 'is-quiere-si', 'is-quiere-no');
+      card.style.transform = '';
+      card.classList.add(si ? 'is-si' : 'is-no');
+      if (si) aceptadas.push(o.valor);
+      burbuja.textContent = azar(si ? siMsgs : noMsgs);
+      idx += 1;
+      setTimeout(function () { ocupado = false; pintarCard(); }, 240);
+    }
+
+    document.getElementById('encuestaSwipeSi').addEventListener('click', function () { responder(true); });
+    document.getElementById('encuestaSwipeNo').addEventListener('click', function () { responder(false); });
+
+    var x0 = null;
+    card.addEventListener('pointerdown', function (e) {
+      if (ocupado) return;
+      x0 = e.clientX;
+      try { card.setPointerCapture(e.pointerId); } catch (err) {}
+      card.classList.add('is-arrastra');
+    });
+    card.addEventListener('pointermove', function (e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0;
+      card.style.transform = 'translateX(' + dx + 'px) rotate(' + (dx / 18) + 'deg)';
+      card.classList.toggle('is-quiere-si', dx > 40);
+      card.classList.toggle('is-quiere-no', dx < -40);
+    });
+    function soltar(e) {
+      if (x0 === null) return;
+      var dx = e.clientX - x0;
+      x0 = null;
+      card.classList.remove('is-arrastra', 'is-quiere-si', 'is-quiere-no');
+      if (Math.abs(dx) > 90) responder(dx > 0); else card.style.transform = '';
+    }
+    card.addEventListener('pointerup', soltar);
+    card.addEventListener('pointercancel', soltar);
+
+    pintarCard();
   }
 
   function avanzar(pregunta, valor) {
@@ -498,6 +551,13 @@
     return 'https://wa.me/522361223226?text=' + encodeURIComponent(texto);
   }
 
+  function htmlRuta(ruta) {
+    return '<span class="encuesta__ruta-label">Tu ruta DulceLab</span>' +
+      ruta.map(function (item) {
+        return '<div class="encuesta__ruta-item"><span class="encuesta__ruta-icono">' + item.icono + '</span><div><span class="encuesta__ruta-cat">' + item.categoria + '</span><p>' + item.titulo + '</p>' + (item.detalle ? '<small>' + item.detalle + '</small>' : '') + '</div></div>';
+      }).join('');
+  }
+
   function renderFin() {
     renderProgreso();
     var r = recomendar();
@@ -507,21 +567,115 @@
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
       '<div class="encuesta__perfil-bloque"><span>Lo que más necesitas trabajar</span><p>' + r.foco + '</p></div>' +
-      '<div class="encuesta__ruta">' +
-      '<span class="encuesta__ruta-label">Tu ruta DulceLab</span>' +
-      r.ruta.map(function (item) {
-        return '<div class="encuesta__ruta-item"><span class="encuesta__ruta-icono">' + item.icono + '</span><div><span class="encuesta__ruta-cat">' + item.categoria + '</span><p>' + item.titulo + '</p></div></div>';
-      }).join('') +
-      '</div>' +
+      '<div class="encuesta__ruta" id="encuestaRuta">' + htmlRuta(r.ruta) + '</div>' +
       '<div class="encuesta__ctas">' +
-      '<a class="btn btn--primary" href="' + linkWhatsApp(r) + '" target="_blank" rel="noopener" id="encuestaCtaCursos">Platicar mi ruta por WhatsApp</a>' +
-      '<button type="button" class="btn btn--ghost" id="encuestaCerrarFin">Cerrar</button>' +
+      '<a class="btn btn--primary" href="https://club.dulcelabfood.com" target="_blank" rel="noopener" id="encuestaCtaCursos">Ver los cursos del Club VIP</a>' +
+      '<a class="btn btn--ghost" href="' + linkWhatsApp(r) + '" target="_blank" rel="noopener" id="encuestaCtaWa">Platicar mi ruta por WhatsApp</a>' +
       '</div>';
 
     document.getElementById('encuestaCtaCursos').addEventListener('click', cerrar);
-    document.getElementById('encuestaCerrarFin').addEventListener('click', cerrar);
+    document.getElementById('encuestaCtaWa').addEventListener('click', cerrar);
     enviarRespuesta();
     try { localStorage.setItem(STORAGE_DONE, 'completada'); } catch (e) {}
+
+    // Cambia la ruta genérica por los cursos reales de la membresía (si ya
+    // se pudieron leer; si falla la red se queda la de reglas de arriba).
+    cargarCursos().then(function (cursos) {
+      if (!cursos.length) return;
+      var extras = r.ruta.filter(function (it) { return it.categoria === 'Reto' || it.categoria === 'Club VIP' || it.categoria === 'Certificado'; });
+      r.ruta = rutaDeMembresia(cursos).concat(extras);
+      var caja = document.getElementById('encuestaRuta');
+      if (caja) caja.innerHTML = htmlRuta(r.ruta);
+      var wa = document.getElementById('encuestaCtaWa');
+      if (wa) wa.setAttribute('href', linkWhatsApp(r));
+    });
+  }
+
+  /* ---------- 6b. Cursos reales de la membresía (lectura pública) ---------- */
+  var CURSOS_URL = 'https://firestore.googleapis.com/v1/projects/dulcelab-club/databases/(default)/documents/cursos?pageSize=50';
+  var cursosPromesa = null;
+
+  function valFs(v) {
+    if (!v) return null;
+    var k = Object.keys(v)[0], x = v[k];
+    if (k === 'arrayValue') return (x.values || []).map(valFs);
+    if (k === 'mapValue') { var o = {}; Object.keys(x.fields || {}).forEach(function (f) { o[f] = valFs(x.fields[f]); }); return o; }
+    return x;
+  }
+  function cargarCursos() {
+    if (cursosPromesa) return cursosPromesa;
+    cursosPromesa = fetch(CURSOS_URL)
+      .then(function (r) { return r.ok ? r.json() : { documents: [] }; })
+      .then(function (d) {
+        return (d.documents || []).map(function (doc) {
+          var f = {}; Object.keys(doc.fields || {}).forEach(function (k) { f[k] = valFs(doc.fields[k]); });
+          return f;
+        }).filter(function (c) { return c.titulo && c.activo !== false && c.disponible !== false; })
+          .map(function (c) {
+            return {
+              titulo: c.titulo, area: c.area || '', descripcion: c.descripcion || '',
+              modulos: (c.sesiones || []).map(function (x) { return x.titulo || ''; }),
+              materiales: (c.materiales || []).map(function (x) { return x.titulo || ''; }),
+              tieneGratis: (c.sesiones || []).some(function (x) { return x.gratis === true; })
+            };
+          });
+      })
+      .catch(function () { return []; });
+    return cursosPromesa;
+  }
+
+  function norm(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+
+  // Palabras que, si aparecen en un curso o módulo, lo hacen relevante para
+  // cada respuesta. El peso 3 es para lo que dijo que más le urge.
+  var PALABRAS = {
+    costos: ['costo', 'food cost', 'rentab'], precios: ['precio', 'fijacion', 'rentab'],
+    inventarios: ['inventario', 'compras', 'insumo'], merma: ['merma', 'desperdicio'],
+    ventas: ['rentab', 'precio'], produccion: ['estandariz', 'proceso', 'receta'],
+    procesos: ['estandariz', 'proceso'], crecer: ['rentab', 'precio'],
+    emprendimiento: ['negocio', 'emprend', 'rentab', 'costo'], productos: ['receta', 'estandariz'],
+    reposteria: ['reposter', 'postre'], panaderia: ['panader'], cocina: ['cocina'],
+    inocuidad: ['inocuidad', 'higiene'], normativas: ['inocuidad', 'norma']
+  };
+
+  function perfilPalabras() {
+    var r = estado.respuestas, pesos = {};
+    function sumar(valor, peso) { (PALABRAS[valor] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); }); }
+    [r.problema_emprendedor, r.reto_profesional].forEach(function (v) { if (v) sumar(v, 3); });
+    [r.intereses_estudiante, r.temas_profesional, r.intereses_aficionado].forEach(function (arr) { (arr || []).forEach(function (v) { sumar(v, 2); }); });
+    [r.area_profesional, r.tipo_negocio_emprendedor].forEach(function (v) { if (v) sumar(v, 1); });
+    return pesos;
+  }
+  function puntaje(texto, pesos) {
+    var t = norm(texto), n = 0;
+    Object.keys(pesos).forEach(function (w) { if (t.indexOf(w) !== -1) n += pesos[w]; });
+    return n;
+  }
+  function limpiarModulo(t) {
+    t = String(t).replace(/^\s*m[oó]dulo\s*\d+(\s*y\s*\d+)?\s*/i, '').replace(/[.\s]+$/, '').toLowerCase();
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+
+  // Devuelve los items de ruta que salen de los cursos que de verdad están
+  // en la membresía, según lo que contestó la persona.
+  function rutaDeMembresia(cursos) {
+    var pesos = perfilPalabras(), items = [];
+    cursos.map(function (c) {
+      var mejor = null, mejorP = 0;
+      c.modulos.concat(c.materiales).forEach(function (m) { var pm = puntaje(m, pesos); if (pm > mejorP) { mejorP = pm; mejor = m; } });
+      return { c: c, p: puntaje([c.titulo, c.area, c.descripcion].join(' '), pesos) + mejorP, modulo: mejor };
+    }).filter(function (x) { return x.p > 0; })
+      .sort(function (a, b) { return b.p - a.p; })
+      .slice(0, 2)
+      .forEach(function (x) {
+        var detalle = (x.modulo ? 'Empieza por: ' + limpiarModulo(x.modulo) : '') + (x.c.tieneGratis ? (x.modulo ? ' · ' : '') + 'Incluye clases de muestra gratis' : '');
+        items.push({ icono: ICONOS.curso, categoria: 'Curso en la membresía', titulo: x.c.titulo, detalle: detalle });
+      });
+    if (!items.length) {
+      var tema = AREA_TXT[primero(estado.respuestas.intereses_estudiante || estado.respuestas.temas_profesional || estado.respuestas.intereses_aficionado || estado.respuestas.tipo_negocio_emprendedor || estado.respuestas.area_profesional)] || 'tu tema';
+      items.push({ icono: '🔜', categoria: 'Próximamente en la membresía', titulo: tema, detalle: 'Todavía no hay un curso de este tema en la membresía; tu interés ya quedó registrado.' });
+    }
+    return items;
   }
 
   /* ---------- 7. Enviar a Firestore vía webhook ---------- */
@@ -535,6 +689,7 @@
 
   /* ---------- 8. Abrir / cerrar ---------- */
   function abrir() {
+    cargarCursos();
     renderConsentimiento();
     modal.hidden = false;
     requestAnimationFrame(function () { modal.classList.add('is-open'); });

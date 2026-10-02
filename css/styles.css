@@ -1325,6 +1325,27 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 .encuesta__swipe-btn:active{transform:scale(.92)}
 .encuesta__swipe-contador{text-align:center;font-size:.76rem;color:var(--text-soft)}
+/* Tarjetas "me interesa / no es para mí": más vivas y arrastrables */
+.encuesta__swipe-stage{position:relative;margin:.3rem 0 1rem}
+.encuesta__swipe-card{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;
+  width:100%;min-height:9.5rem;margin-bottom:0;padding:1.1rem;text-align:center;
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;
+  background:linear-gradient(160deg,var(--glass-bg),color-mix(in srgb,var(--dorado) 9%,var(--glass-bg)));
+}
+.encuesta__swipe-card.is-entra{animation:encuestaPop .3s var(--ease)}
+.encuesta__swipe-card.is-arrastra{transition:none;cursor:grabbing}
+.encuesta__swipe-card.is-quiere-si{border-color:var(--frambuesa);box-shadow:0 0 0 3px color-mix(in srgb,var(--frambuesa) 22%,transparent)}
+.encuesta__swipe-card.is-quiere-no{border-color:var(--text-soft);box-shadow:0 0 0 3px color-mix(in srgb,var(--text-soft) 18%,transparent)}
+.encuesta__swipe-icono{font-size:2.5rem;line-height:1}
+.encuesta__swipe-card p{font-size:1.15rem;font-weight:800;color:var(--text)}
+.encuesta__swipe-card small{font-size:.8rem;color:var(--text-soft);max-width:22ch}
+.encuesta__swipe-barra{height:4px;border-radius:var(--r-pill);background:var(--glass-bg);overflow:hidden;margin-top:.9rem}
+.encuesta__swipe-barra div{height:100%;width:0;border-radius:var(--r-pill);background:linear-gradient(90deg,var(--frambuesa),var(--dorado));transition:width .3s var(--ease)}
+@keyframes encuestaPop{from{opacity:0;transform:translateY(12px) scale(.93)}to{opacity:1;transform:none}}
+.encuesta__ruta-item small{display:block;font-size:.76rem;font-weight:400;line-height:1.4;color:var(--text-soft);margin-top:.15rem}
+@media (prefers-reduced-motion:reduce){.encuesta__swipe-card.is-entra{animation:none}}
+
 .encuesta__perfil-bloque{margin-bottom:1rem}
 .encuesta__perfil-bloque span{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:.2rem}
 .encuesta__perfil-bloque p{font-size:.96rem;color:var(--text);line-height:1.5}
