@@ -1,11 +1,12 @@
 /* =========================================================
    DULCELAB FOOD — Descubre tu perfil DulceLab
    Encuesta adaptativa presentada como una experiencia guiada: la chef
-   acompaña cada paso y el avance es una receta que se completa. Son 5
-   preguntas con 3 opciones cada una (el reto cambia según el tipo de
-   persona) y todas sirven para decidir qué producir. Al final recomienda
-   los cursos que de verdad están en la membresía (se leen de Firestore)
-   según lo que contestó.
+   acompaña cada paso y el avance es una receta que se completa. Son 6
+   preguntas encadenadas: cada una sale de la anterior (quién es → su
+   contexto → su reto → el detalle de ESE reto → formato → qué lo detiene)
+   y todas sirven para decidir qué producir. Al final recomienda los cursos
+   que de verdad están en la membresía (se leen de Firestore) según lo que
+   contestó.
    ========================================================= */
 (function () {
   'use strict';
@@ -13,7 +14,7 @@
   var WEBHOOK_URL = 'https://dulcelab-webhook-production.up.railway.app';
   var STORAGE_DONE = 'dlf-encuesta';          // localStorage: ya la contestó o dijo "ahora no" definitivo
   var STORAGE_SKIP = 'dlf-encuesta-cerrada';  // sessionStorage: no insistir en esta misma visita
-  var STEP_EMOJIS = ['👤', '🎯', '🍰', '🎬', '⏰'];
+  var STEP_EMOJIS = ['👤', '🧭', '🎯', '🔎', '🎬', '🚧'];
 
   var modal = document.getElementById('encuesta');
   if (!modal) return;
@@ -22,165 +23,349 @@
   var btnClose = document.getElementById('encuestaClose');
   var btnAbrir = document.getElementById('encuestaTrigger');
 
-  /* ---------- 1. Textos para el resultado ---------- */
-  var AREA_TXT = { dulce: 'Repostería y panadería', cocina: 'Cocina', negocio: 'Negocio y calidad' };
+  /* ---------- 1. Textos base ---------- */
+  var TIPO_TXT = { estudiante: 'Estudiante', aficionado: 'Aprende por gusto', profesional: 'Profesional', emprendedor: 'Emprendedor' };
+  var TIPO_ICONO = { estudiante: '🎓', aficionado: '🍰', profesional: '👩‍🍳', emprendedor: '🚀' };
+  var RETO_ID = { estudiante: 'objetivo_estudiante', aficionado: 'objetivo_aficionado', profesional: 'reto_profesional', emprendedor: 'problema_emprendedor' };
 
-  /* ---------- 2. Árbol de preguntas: 5 pasos, 3 opciones cada uno ---------- */
-  // 1) quién es → 2) su reto principal (cambia según quién es)
-  // → 3) área → 4) formato que preferiría → 5) tiempo semanal.
-  // Todo lo que se pregunta sirve para decidir QUÉ producir.
+  // Aplica el mismo "siguiente" a todas las opciones de una pregunta.
+  function sig(opciones, siguiente) {
+    return opciones.map(function (o) { o.siguiente = siguiente; return o; });
+  }
+
+  /* ---------- 2. Árbol de preguntas: 6 pasos encadenados ---------- */
+  // 1) quién es → 2) su contexto → 3) su reto principal → 4) el detalle de
+  // ESE reto (cada reto tiene su propia pregunta de seguimiento) → 5) formato
+  // que prefiere → 6) qué lo detiene. Todo sirve para decidir qué producir.
   var PREGUNTAS = {
     inicio: {
       id: 'tipo', multi: false,
       guia: '👩‍🍳 Primero quiero conocerte…',
-      texto: '¿En qué momento de tu camino gastronómico estás?',
+      texto: '¿Qué te describe mejor?',
       opciones: [
-        { valor: 'estudiante', texto: '🎓 Estoy aprendiendo', sub: 'Estudio o aprendo por gusto.', siguiente: 'objetivo_estudiante', reaccion: '¡Qué bien! 🎓 Vamos a ver cómo seguir construyendo tu camino.' },
-        { valor: 'profesional', texto: '👩‍🍳 Trabajo en gastronomía', sub: 'Quiero crecer profesionalmente.', siguiente: 'reto_profesional', reaccion: '¡Excelente! 👩‍🍳 Hablemos de tu trabajo.' },
-        { valor: 'emprendedor', texto: '🚀 Tengo o quiero un negocio', sub: 'Quiero que lo que hago sea rentable.', siguiente: 'problema_emprendedor', reaccion: '¡Excelente! 🚀 Entonces vamos a hablar de tu negocio.' }
+        { valor: 'estudiante', texto: '🎓 Estoy estudiando', sub: 'Gastronomía o una carrera afín.', siguiente: 'contexto_estudiante', reaccion: '¡Qué bien! 🎓 Vamos a ver cómo seguir construyendo tu camino.' },
+        { valor: 'aficionado', texto: '❤️ Aprendo por gusto', sub: 'Me apasiona cocinar y hornear.', siguiente: 'contexto_aficionado', reaccion: '¡Me encanta! ❤️ Vamos a ver qué te late más.' },
+        { valor: 'profesional', texto: '👩‍🍳 Trabajo en gastronomía', sub: 'Quiero crecer profesionalmente.', siguiente: 'contexto_profesional', reaccion: '¡Excelente! 👩‍🍳 Hablemos de tu trabajo.' },
+        { valor: 'emprendedor', texto: '🚀 Tengo o quiero un negocio', sub: 'Quiero que lo que hago sea rentable.', siguiente: 'contexto_emprendedor', reaccion: '¡Excelente! 🚀 Entonces vamos a hablar de tu negocio.' }
       ]
     },
 
-    // ── Reto principal (una pregunta distinta por tipo de persona) ──
+    // ── Paso 2: contexto (cambia según quién es) ──
+    contexto_estudiante: {
+      id: 'contexto_estudiante', multi: false,
+      texto: '¿Qué estás estudiando?',
+      opciones: sig([
+        { valor: 'cocina', texto: 'Cocina y gastronomía' },
+        { valor: 'dulce', texto: 'Repostería y panadería' },
+        { valor: 'otra', texto: 'Otra carrera o curso técnico' }
+      ], 'objetivo_estudiante')
+    },
+    contexto_aficionado: {
+      id: 'contexto_aficionado', multi: false,
+      texto: '¿Cuánta experiencia tienes?',
+      opciones: sig([
+        { valor: 'nada', texto: 'Casi ninguna, apenas empiezo' },
+        { valor: 'basico', texto: 'Lo básico' },
+        { valor: 'confianza', texto: 'Ya cocino con confianza' }
+      ], 'objetivo_aficionado')
+    },
+    contexto_profesional: {
+      id: 'contexto_profesional', multi: false,
+      texto: '¿En qué área trabajas?',
+      opciones: sig([
+        { valor: 'dulce', texto: 'Repostería y panadería' },
+        { valor: 'cocina', texto: 'Cocina y restaurante' },
+        { valor: 'produccion', texto: 'Producción de alimentos' },
+        { valor: 'calidad', texto: 'Calidad e inocuidad' },
+        { valor: 'otra', texto: 'Otra área' }
+      ], 'reto_profesional')
+    },
+    contexto_emprendedor: {
+      id: 'contexto_emprendedor', multi: false,
+      texto: '¿Qué tipo de negocio tienes o quieres crear?',
+      opciones: sig([
+        { valor: 'reposteria', texto: 'Repostería' },
+        { valor: 'panaderia', texto: 'Panadería' },
+        { valor: 'restaurante', texto: 'Restaurante' },
+        { valor: 'cafeteria', texto: 'Cafetería' },
+        { valor: 'catering', texto: 'Catering y eventos' },
+        { valor: 'casa', texto: 'Venta desde casa' },
+        { valor: 'otro', texto: 'Otro negocio' }
+      ], 'problema_emprendedor')
+    },
+
+    // ── Paso 3: reto principal (cada opción lleva a SU pregunta de detalle) ──
     objetivo_estudiante: {
       id: 'objetivo_estudiante', multi: false,
       texto: '¿Qué quieres lograr?',
       opciones: [
-        { valor: 'desde_cero', texto: 'Aprender desde cero', siguiente: 'area_interes' },
-        { valor: 'tecnica', texto: 'Mejorar mi técnica', siguiente: 'area_interes' },
-        { valor: 'empleo', texto: 'Prepararme para trabajar o emprender', siguiente: 'area_interes' }
+        { valor: 'desde_cero', texto: 'Aprender desde cero', siguiente: 'det_desde_cero' },
+        { valor: 'tecnica', texto: 'Mejorar mi técnica', siguiente: 'det_tecnica' },
+        { valor: 'empleo', texto: 'Prepararme para trabajar', siguiente: 'det_empleo' }
+      ]
+    },
+    objetivo_aficionado: {
+      id: 'objetivo_aficionado', multi: false,
+      texto: '¿Qué te gustaría lograr?',
+      opciones: [
+        { valor: 'cocinar_mejor', texto: 'Cocinar mejor en casa', siguiente: 'det_cocinar_mejor' },
+        { valor: 'postres', texto: 'Hacer postres y pasteles', siguiente: 'det_postres' },
+        { valor: 'explorar', texto: 'Ver si me quiero dedicar a esto', siguiente: 'det_explorar' }
       ]
     },
     reto_profesional: {
       id: 'reto_profesional', multi: false,
       texto: '🎯 ¿Qué es lo que más te complica en tu trabajo?',
       opciones: [
-        { valor: 'actualizar', texto: 'Actualizarme o especializarme', siguiente: 'area_interes' },
-        { valor: 'costos', texto: 'Reducir costos y mermas', siguiente: 'area_interes' },
-        { valor: 'procesos', texto: 'Ordenar procesos y calidad', siguiente: 'area_interes' }
+        { valor: 'actualizar', texto: 'Actualizarme o especializarme', siguiente: 'det_actualizar' },
+        { valor: 'costos', texto: 'Reducir costos y mermas', siguiente: 'det_prof_costos' },
+        { valor: 'procesos', texto: 'Ordenar procesos y calidad', siguiente: 'det_prof_procesos' }
       ]
     },
     problema_emprendedor: {
       id: 'problema_emprendedor', multi: false,
       texto: '🎯 ¿Qué es lo que más te complica en tu negocio?',
       opciones: [
-        { valor: 'precios', texto: '💰 No sé cuánto cobrar', siguiente: 'area_interes' },
-        { valor: 'costos', texto: '📊 No controlo costos, inventario y merma', siguiente: 'area_interes' },
-        { valor: 'produccion', texto: '⚙️ Necesito ordenar mi producción y calidad', siguiente: 'area_interes' }
+        { valor: 'precios', texto: '💰 No sé cuánto cobrar', siguiente: 'det_emp_precios' },
+        { valor: 'costos', texto: '📊 No controlo mis costos, inventario y merma', siguiente: 'det_emp_costos' },
+        { valor: 'produccion', texto: '⚙️ Necesito ordenar mi producción y calidad', siguiente: 'det_emp_produccion' },
+        { valor: 'ventas', texto: '📣 Necesito vender más', siguiente: 'det_emp_ventas' }
       ]
     },
 
-    // ── Común a todos ──
-    area_interes: {
-      id: 'area_interes', multi: false,
-      texto: '¿Por dónde te gustaría empezar?',
-      nota: 'En el Club hay más temas; esto solo nos ayuda a recomendarte tu primer paso.',
-      opciones: [
-        { valor: 'dulce', texto: 'Repostería y panadería', siguiente: 'formato' },
-        { valor: 'cocina', texto: 'Cocina', siguiente: 'formato' },
-        { valor: 'negocio', texto: 'Negocio y calidad', sub: 'Costos, precios, inventarios, inocuidad.', siguiente: 'formato' }
-      ]
+    // ── Paso 4: detalle del reto elegido ──
+    det_desde_cero: {
+      id: 'det_desde_cero', multi: false,
+      texto: '¿Qué te gustaría aprender primero?',
+      opciones: sig([
+        { valor: 'cocina_base', texto: 'Técnicas básicas de cocina' },
+        { valor: 'reposteria', texto: 'Repostería y postres' },
+        { valor: 'panaderia', texto: 'Panadería y masas' },
+        { valor: 'higiene', texto: 'Higiene y seguridad en la cocina' }
+      ], 'formato')
     },
+    det_tecnica: {
+      id: 'det_tecnica', multi: false,
+      texto: '¿Qué técnica quieres perfeccionar?',
+      opciones: sig([
+        { valor: 'cortes', texto: 'Cortes y cocciones' },
+        { valor: 'masas', texto: 'Masas, hornos y panes' },
+        { valor: 'decoracion', texto: 'Decoración y emplatado' },
+        { valor: 'salsas', texto: 'Salsas y fondos' }
+      ], 'formato')
+    },
+    det_empleo: {
+      id: 'det_empleo', multi: false,
+      texto: '¿A qué te quieres dedicar?',
+      opciones: sig([
+        { valor: 'restaurante', texto: 'Cocina de restaurante u hotel' },
+        { valor: 'pasteleria', texto: 'Pastelería y panadería' },
+        { valor: 'produccion', texto: 'Producción de alimentos' },
+        { valor: 'emprender', texto: 'Tener mi propio negocio' }
+      ], 'formato')
+    },
+    det_cocinar_mejor: {
+      id: 'det_cocinar_mejor', multi: false,
+      texto: '¿Qué te gustaría dominar?',
+      opciones: sig([
+        { valor: 'diario', texto: 'Platillos del día a día' },
+        { valor: 'especiales', texto: 'Comidas para ocasiones especiales' },
+        { valor: 'basicas', texto: 'Técnicas básicas para cocinar mejor' }
+      ], 'formato')
+    },
+    det_postres: {
+      id: 'det_postres', multi: false,
+      texto: '¿Qué te gustaría preparar?',
+      opciones: sig([
+        { valor: 'pasteles', texto: 'Pasteles y cupcakes' },
+        { valor: 'individuales', texto: 'Postres individuales y de vaso' },
+        { valor: 'galletas', texto: 'Galletas y panes dulces' }
+      ], 'formato')
+    },
+    det_explorar: {
+      id: 'det_explorar', multi: false,
+      texto: '¿Qué te gustaría vender?',
+      opciones: sig([
+        { valor: 'dulces', texto: 'Pasteles y postres' },
+        { valor: 'panes', texto: 'Pan y panadería' },
+        { valor: 'comida', texto: 'Platillos y botanas' },
+        { valor: 'no_se', texto: 'Todavía no lo sé' }
+      ], 'formato')
+    },
+    det_actualizar: {
+      id: 'det_actualizar', multi: false,
+      texto: '¿Qué quieres actualizar?',
+      opciones: sig([
+        { valor: 'tecnicas', texto: 'Técnicas de mi área' },
+        { valor: 'normativas', texto: 'Normativas e inocuidad' },
+        { valor: 'tendencias', texto: 'Tendencias y productos nuevos' },
+        { valor: 'liderazgo', texto: 'Liderazgo de equipos' }
+      ], 'formato')
+    },
+    det_prof_costos: {
+      id: 'det_prof_costos', multi: false,
+      texto: '¿Qué te cuesta más trabajo controlar?',
+      opciones: sig([
+        { valor: 'costeo', texto: 'Costear recetas' },
+        { valor: 'inventario', texto: 'Inventarios y compras' },
+        { valor: 'merma', texto: 'Mermas y desperdicio' }
+      ], 'formato')
+    },
+    det_prof_procesos: {
+      id: 'det_prof_procesos', multi: false,
+      texto: '¿Qué necesitas ordenar primero?',
+      opciones: sig([
+        { valor: 'estandarizar', texto: 'Estandarizar recetas y procesos' },
+        { valor: 'planear', texto: 'Planear la producción' },
+        { valor: 'calidad', texto: 'Calidad e inocuidad' }
+      ], 'formato')
+    },
+    det_emp_precios: {
+      id: 'det_emp_precios', multi: false,
+      texto: '¿Qué te hace falta para poner tu precio?',
+      opciones: sig([
+        { valor: 'costo_real', texto: 'Saber cuánto me cuesta cada producto' },
+        { valor: 'precio_venta', texto: 'Fijar mi precio de venta' },
+        { valor: 'ganancia', texto: 'Saber cuánto gano realmente' }
+      ], 'formato')
+    },
+    det_emp_costos: {
+      id: 'det_emp_costos', multi: false,
+      texto: '¿Qué parte de tus costos te preocupa más?',
+      opciones: sig([
+        { valor: 'costeo', texto: 'Costear mis recetas' },
+        { valor: 'inventario', texto: 'Inventarios y compras' },
+        { valor: 'merma', texto: 'Mermas y desperdicio' }
+      ], 'formato')
+    },
+    det_emp_produccion: {
+      id: 'det_emp_produccion', multi: false,
+      texto: '¿Qué necesitas ordenar primero?',
+      opciones: sig([
+        { valor: 'estandarizar', texto: 'Estandarizar recetas y procesos' },
+        { valor: 'planear', texto: 'Planear la producción' },
+        { valor: 'calidad', texto: 'Calidad e inocuidad' }
+      ], 'formato')
+    },
+    det_emp_ventas: {
+      id: 'det_emp_ventas', multi: false,
+      texto: '¿Cómo quieres vender más?',
+      opciones: sig([
+        { valor: 'redes', texto: 'Más clientes por redes sociales' },
+        { valor: 'mayoreo', texto: 'Vender a restaurantes y cafeterías' },
+        { valor: 'pedidos', texto: 'Eventos y pedidos especiales' }
+      ], 'formato')
+    },
+
+    // ── Pasos 5 y 6: comunes a todos ──
     formato: {
       id: 'formato', multi: false,
-      texto: '¿Qué te ayudaría más para aprender?',
-      opciones: [
-        { valor: 'grabados', texto: 'Cursos grabados', sub: 'Los veo a mi ritmo, cuando puedo.', siguiente: 'tiempo_disponible' },
-        { valor: 'vivo', texto: 'Clases en vivo', sub: 'Con chefs y preguntas en tiempo real.', siguiente: 'tiempo_disponible' },
-        { valor: 'herramientas', texto: 'Plantillas y calculadoras', sub: 'Formatos listos para usar en mi cocina.', siguiente: 'tiempo_disponible' }
-      ]
+      texto: '¿Cómo te gustaría aprenderlo?',
+      opciones: sig([
+        { valor: 'grabados', texto: 'Cursos grabados', sub: 'Los veo a mi ritmo, cuando puedo.' },
+        { valor: 'vivo', texto: 'Clases en vivo', sub: 'Con chefs y preguntas en tiempo real.' },
+        { valor: 'herramientas', texto: 'Plantillas y calculadoras', sub: 'Formatos listos para usar en mi cocina.' },
+        { valor: 'asesoria', texto: 'Asesoría personalizada', sub: 'Orientación para mi caso.' }
+      ], 'freno')
     },
-    tiempo_disponible: {
-      id: 'tiempo_disponible', multi: false,
-      texto: '⏰ ¿Cuánto tiempo tienes en realidad a la semana para aprender?',
-      opciones: [
-        { valor: 'menos1', texto: 'Menos de 1 hora', siguiente: 'fin' },
-        { valor: 'uno_tres', texto: 'De 1 a 3 horas', siguiente: 'fin' },
-        { valor: 'mas3', texto: 'Más de 3 horas', siguiente: 'fin' }
-      ]
+    freno: {
+      id: 'freno', multi: false,
+      texto: '¿Qué te detiene hoy?',
+      opciones: sig([
+        { valor: 'precio', texto: 'El precio' },
+        { valor: 'tiempo', texto: 'El tiempo' },
+        { valor: 'tema', texto: 'No encuentro el tema que busco' },
+        { valor: 'dudas', texto: 'No estoy seguro de que sea para mí' },
+        { valor: 'listo', texto: 'Nada, estoy listo para empezar' }
+      ], 'fin')
     }
   };
 
-  var TOTAL_PASOS = 5; // tipo + reto + área + formato + tiempo, siempre
+  var TOTAL_PASOS = 6; // tipo + contexto + reto + detalle + formato + freno, siempre
 
   var ICONOS_OPCION = {
-    estudiante:'🎓', profesional:'👩‍🍳', emprendedor:'🚀',
-    desde_cero:'🌱', tecnica:'✨', empleo:'💼',
-    actualizar:'🔄', costos:'📊', procesos:'🧩', precios:'🏷️', produccion:'⚙️',
-    dulce:'🧁', cocina:'🍳', negocio:'📊',
-    grabados:'▶️', vivo:'🔴', herramientas:'🧮',
-    menos1:'⏳', uno_tres:'🕐', mas3:'🔥'
+    estudiante:'🎓', aficionado:'❤️', profesional:'👩‍🍳', emprendedor:'🚀',
+    cocina:'🍳', dulce:'🧁', otra:'✳️', otro:'✳️', nada:'🌱', basico:'🥄', confianza:'😎',
+    produccion:'⚙️', calidad:'🛡️', reposteria:'🧁', panaderia:'🥖', restaurante:'🍽️', cafeteria:'☕', catering:'🍱', casa:'🏠',
+    desde_cero:'🌱', tecnica:'✨', empleo:'💼', cocinar_mejor:'🍳', postres:'🍰', explorar:'🧭',
+    actualizar:'🔄', costos:'📊', procesos:'🧩', precios:'🏷️', ventas:'📣',
+    cocina_base:'🔪', higiene:'🧼', cortes:'🔪', masas:'🥐', decoracion:'🎨', salsas:'🥣', pasteleria:'🥧', emprender:'🚀',
+    diario:'🍲', especiales:'🎉', basicas:'📘', pasteles:'🎂', individuales:'🧁', galletas:'🍪',
+    dulces:'🍰', panes:'🥖', comida:'🥘', no_se:'🤔',
+    tecnicas:'🛠️', normativas:'📋', tendencias:'📈', liderazgo:'🧑‍🤝‍🧑',
+    costeo:'🧾', inventario:'📦', merma:'♻️', estandarizar:'📐', planear:'🗓️',
+    costo_real:'🧮', precio_venta:'🏷️', ganancia:'💵', redes:'📱', mayoreo:'🏪', pedidos:'🎁',
+    grabados:'▶️', vivo:'🔴', herramientas:'🧮', asesoria:'💬',
+    precio:'💰', tiempo:'⏳', tema:'🔎', dudas:'🤔', listo:'✅'
   };
 
   function iconoOpcion(valor) { return ICONOS_OPCION[valor] || '✦'; }
   function pistaPregunta(id) {
     var pistas = {
       tipo:'Elige la opción que más se parece a tu momento actual.',
-      area_interes:'Elige por dónde quieres dar tu primer paso.',
       formato:'Así sabemos si te conviene más un curso, una clase o una herramienta.',
-      tiempo_disponible:'Una ruta realista se adapta al tiempo que sí tienes.'
+      freno:'Sé sincero: así sabemos cómo ayudarte mejor.'
     };
+    if (id.indexOf('det_') === 0) return 'Ahora algo más concreto sobre lo que elegiste.';
+    if (id.indexOf('contexto_') === 0) return 'Esto nos ayuda a ubicarte.';
     return pistas[id] || 'Elige la respuesta que mejor describe tu situación.';
   }
   function imagenGuiaPaso(id) {
     if (id === 'tipo') return 'assets/chef-guia-senala.png';
-    if (id === 'tiempo_disponible') return 'assets/chef-guia-celebra.png';
+    if (id === 'freno') return 'assets/chef-guia-celebra.png';
     return 'assets/chef-guia-planea.png';
   }
 
   /* ---------- 3. Estado ---------- */
   var estado = { paso: 0, tipo: null, respuestas: {} };
 
+  function preguntaPorId(id) {
+    return id === 'tipo' ? PREGUNTAS.inicio : PREGUNTAS[id];
+  }
+  function opTexto(preguntaId, valor) {
+    var p = preguntaPorId(preguntaId);
+    var o = p && p.opciones.filter(function (x) { return x.valor === valor; })[0];
+    return o ? o.texto.replace(/^[^\wÁÉÍÓÚÑáéíóúñ¿]+/, '') : '';
+  }
+  function idDetalle() {
+    return Object.keys(estado.respuestas).filter(function (k) { return k.indexOf('det_') === 0; })[0];
+  }
+
   /* ---------- 4. Reglas de recomendación (sin IA, Fase 1) ---------- */
   var ICONOS = { curso: '🎓', linea: '📚', reto: '⚡', club: '👑' };
 
   function recomendar() {
     var t = estado.tipo, r = estado.respuestas;
-    var area = AREA_TXT[r.area_interes] || 'gastronomía';
-    var linea = function (titulo) { return { icono: ICONOS.linea, categoria: 'Línea', titulo: titulo }; };
-    var perfil, objetivo, foco, items;
+    var ctx = opTexto('contexto_' + t, r['contexto_' + t]);
+    var reto = opTexto(RETO_ID[t], r[RETO_ID[t]]);
+    var dId = idDetalle();
+    var det = dId ? opTexto(dId, r[dId]) : '';
 
-    if (t === 'estudiante') {
-      var objs = {
-        desde_cero: { o: 'Aprender desde cero.', f: 'Dominar los fundamentos de ' + area.toLowerCase() + ' y practicar seguido.' },
-        tecnica: { o: 'Mejorar tu técnica.', f: 'Pulir la técnica de ' + area.toLowerCase() + ' con práctica guiada.' },
-        empleo: { o: 'Prepararte para trabajar o emprender.', f: 'Tener práctica demostrable y bases de negocio en ' + area.toLowerCase() + '.' }
-      };
-      var oe = objs[r.objetivo_estudiante] || objs.desde_cero;
-      perfil = { icono: '🎓', texto: 'Aprendiz · ' + area };
-      objetivo = oe.o; foco = oe.f;
-      items = [{ icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Fundamentos de ' + area }];
-      if (r.objetivo_estudiante === 'empleo') items.push({ icono: ICONOS.club, categoria: 'Certificado', titulo: 'Certificado con QR al terminar' });
-      else items.push({ icono: ICONOS.reto, categoria: 'Reto', titulo: 'Reto de práctica semanal' });
+    var items = [{ icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: det || reto }];
+    if (t === 'emprendedor') {
+      items.push({ icono: ICONOS.reto, categoria: 'Reto', titulo: 'Calcula la rentabilidad de uno de tus productos' });
+      items.push({ icono: ICONOS.club, categoria: 'Club VIP', titulo: 'Comunidad de emprendedores gastronómicos' });
     } else if (t === 'profesional') {
-      var retos = {
-        actualizar: { o: 'Actualizarte y especializarte en ' + area.toLowerCase() + '.', f: 'Actualizar tus conocimientos.', i: { icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Especialización en ' + area } },
-        costos: { o: 'Reducir costos y mermas.', f: 'Controlar costos y mermas.', i: linea('Control Estratégico de Costos y Costeo de Recetas') },
-        procesos: { o: 'Ordenar tus procesos y calidad.', f: 'Estandarizar procesos y calidad.', i: linea('Compras, Inventarios y Control de Insumos') }
-      };
-      var rp = retos[r.reto_profesional] || retos.actualizar;
-      perfil = { icono: '👩‍🍳', texto: 'Profesional · ' + area };
-      objetivo = rp.o; foco = rp.f;
-      items = [rp.i, { icono: ICONOS.club, categoria: 'Club VIP', titulo: 'Comunidad y recursos para profesionales' }];
+      items.push({ icono: ICONOS.club, categoria: 'Club VIP', titulo: 'Comunidad y recursos para profesionales' });
+    } else if (r[RETO_ID[t]] === 'empleo') {
+      items.push({ icono: ICONOS.club, categoria: 'Certificado', titulo: 'Certificado con QR al terminar' });
     } else {
-      var probs = {
-        precios: { o: 'Ponerle precio correcto a tus productos.', f: 'No sabes cuánto cobrar.', i: linea('Fijación de Precios y Rentabilidad Operativa') },
-        costos: { o: 'Controlar tus costos, inventario y merma.', f: 'Costos, inventario y merma sin control.', i: linea('Control Estratégico de Costos y Costeo de Recetas') },
-        produccion: { o: 'Ordenar tu producción y calidad.', f: 'Producción y calidad sin un proceso claro.', i: linea('Compras, Inventarios y Control de Insumos') }
-      };
-      var pe = probs[r.problema_emprendedor] || probs.costos;
-      perfil = { icono: '🚀', texto: 'Emprendedor · ' + area };
-      objetivo = pe.o; foco = pe.f;
-      items = [pe.i, { icono: ICONOS.reto, categoria: 'Reto', titulo: 'Calcula la rentabilidad de uno de tus productos' }];
+      items.push({ icono: ICONOS.reto, categoria: 'Reto', titulo: 'Reto de práctica semanal' });
     }
-
     var porFormato = {
       grabados: 'Cursos grabados para ver a tu ritmo',
       vivo: 'Clases en vivo con chefs',
-      herramientas: 'Plantillas y calculadoras listas para usar'
+      herramientas: 'Plantillas y calculadoras listas para usar',
+      asesoria: 'Asesoría personalizada'
     };
     if (porFormato[r.formato]) items.push({ icono: ICONOS.club, categoria: 'Lo que pediste', titulo: porFormato[r.formato] });
-    return { perfil: perfil, objetivo: objetivo, foco: foco, ruta: items };
+
+    return {
+      perfil: { icono: TIPO_ICONO[t], texto: TIPO_TXT[t] + (t === 'aficionado' || !ctx ? '' : ' · ' + ctx) },
+      objetivo: reto + '.',
+      foco: det ? det + '.' : reto + '.',
+      ruta: items
+    };
   }
 
   /* ---------- 5. "Receta" en vez de barra de progreso ---------- */
@@ -401,21 +586,47 @@
   // Palabras que, si aparecen en un curso o módulo, lo hacen relevante para
   // cada respuesta. El peso 3 es para lo que dijo que más le urge.
   var PALABRAS = {
+    // retos
     costos: ['costo', 'food cost', 'rentab', 'merma', 'inventario', 'insumo'],
-    precios: ['precio', 'fijacion', 'rentab'],
+    precios: ['precio', 'fijacion', 'rentab'], ventas: ['precio', 'rentab', 'negocio'],
     produccion: ['estandariz', 'proceso', 'receta', 'inocuidad', 'calidad'],
     procesos: ['estandariz', 'proceso', 'inocuidad', 'calidad'],
-    actualizar: ['tecnica', 'receta'], tecnica: ['tecnica', 'receta'],
+    actualizar: ['tecnica'], tecnica: ['tecnica'],
     desde_cero: ['fundamento', 'basic', 'introduccion'], empleo: ['certific', 'inocuidad', 'negocio'],
-    dulce: ['reposter', 'postre', 'panader'], cocina: ['cocina'],
-    negocio: ['costo', 'precio', 'rentab', 'inventario', 'inocuidad', 'negocio']
+    cocinar_mejor: ['cocina', 'tecnica'], postres: ['reposter', 'postre'], explorar: ['negocio', 'emprend'],
+    // detalles
+    cocina_base: ['cocina', 'tecnica', 'fundamento'], reposteria: ['reposter', 'postre'], panaderia: ['panader', 'masa'],
+    higiene: ['higiene', 'inocuidad'], cortes: ['cocina', 'tecnica'], masas: ['panader', 'masa', 'reposter'],
+    decoracion: ['decoraci', 'reposter'], salsas: ['salsa', 'cocina'], restaurante: ['cocina', 'restaurante'],
+    pasteleria: ['reposter', 'panader'], emprender: ['negocio', 'emprend', 'rentab'],
+    diario: ['cocina'], especiales: ['cocina'], basicas: ['cocina', 'tecnica'],
+    pasteles: ['reposter', 'pastel'], individuales: ['reposter', 'postre'], galletas: ['galleta', 'panader'],
+    dulces: ['reposter', 'postre'], panes: ['panader'], comida: ['cocina'],
+    tecnicas: ['tecnica'], normativas: ['norma', 'inocuidad'], tendencias: ['tendencia', 'innovacion', 'producto'],
+    liderazgo: ['liderazgo', 'equipo'], costeo: ['costeo', 'costo', 'receta'], inventario: ['inventario', 'compras', 'insumo'],
+    merma: ['merma', 'desperdicio'], estandarizar: ['estandariz', 'receta', 'proceso'], planear: ['produccion', 'planeaci', 'planificaci'],
+    calidad: ['inocuidad', 'calidad', 'higiene'], costo_real: ['costo', 'costeo'], precio_venta: ['precio', 'fijacion'],
+    ganancia: ['rentab', 'utilidad'], redes: ['venta', 'negocio'], mayoreo: ['venta', 'negocio'], pedidos: ['venta', 'negocio'],
+    // contexto
+    dulce: ['reposter', 'panader'], cocina: ['cocina'], cafeteria: ['cafeter'], catering: ['catering', 'evento']
   };
+
+  // Peso de cada respuesta: el detalle es lo más específico (3), luego el
+  // reto (2) y al final el contexto (1).
+  function pesoDe(preguntaId) {
+    if (preguntaId.indexOf('det_') === 0) return 3;
+    if (preguntaId.indexOf('contexto_') === 0) return 1;
+    if (preguntaId === 'tipo' || preguntaId === 'formato' || preguntaId === 'freno') return 0;
+    return 2;
+  }
 
   function perfilPalabras() {
     var r = estado.respuestas, pesos = {};
-    function sumar(valor, peso) { (PALABRAS[valor] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); }); }
-    [r.problema_emprendedor, r.reto_profesional, r.objetivo_estudiante].forEach(function (v) { if (v) sumar(v, 3); });
-    if (r.area_interes) sumar(r.area_interes, 2);
+    Object.keys(r).forEach(function (id) {
+      var peso = pesoDe(id);
+      if (!peso) return;
+      (PALABRAS[r[id]] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); });
+    });
     return pesos;
   }
   function puntaje(texto, pesos) {
@@ -436,7 +647,7 @@
       var mejor = null, mejorP = 0;
       c.modulos.concat(c.materiales).forEach(function (m) { var pm = puntaje(m, pesos); if (pm > mejorP) { mejorP = pm; mejor = m; } });
       return { c: c, p: puntaje([c.titulo, c.area, c.descripcion].join(' '), pesos) + mejorP, modulo: mejor };
-    }).filter(function (x) { return x.p > 0; })
+    }).filter(function (x) { return x.p >= 3; }) // coincidencia mínima: mejor "próximamente" que recomendar algo que no es
       .sort(function (a, b) { return b.p - a.p; })
       .slice(0, 2)
       .forEach(function (x) {
@@ -444,7 +655,7 @@
         items.push({ icono: ICONOS.curso, categoria: 'Curso en la membresía', titulo: x.c.titulo, detalle: detalle });
       });
     if (!items.length) {
-      var tema = AREA_TXT[estado.respuestas.area_interes] || 'tu tema';
+      var dId = idDetalle(); var tema = (dId && opTexto(dId, estado.respuestas[dId])) || 'tu tema';
       items.push({ icono: '🔜', categoria: 'Próximamente en la membresía', titulo: tema, detalle: 'Todavía no hay un curso de este tema en la membresía; tu interés ya quedó registrado.' });
     }
     return items;
