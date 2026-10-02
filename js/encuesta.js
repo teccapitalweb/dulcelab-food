@@ -315,6 +315,7 @@
   function renderConsentimiento() {
     progressWrap.hidden = true;
     body.innerHTML =
+      '<img class="encuesta__guia-img" src="assets/chef-guia.webp" width="1086" height="1448" alt="Tu guía DulceLab">' +
       '<p class="encuesta__eyebrow">👩‍🍳 Tu guía DulceLab</p>' +
       '<h2 class="encuesta__pregunta">¡Hola! Voy a conocerte un poquito para prepararte una experiencia a tu medida.</h2>' +
       '<p class="encuesta__nota">¿Comenzamos? Toma menos de 2 minutos.</p>' +
@@ -466,6 +467,7 @@
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
+      '<img class="encuesta__guia-img encuesta__guia-img--chico" src="assets/chef-guia.webp" width="1086" height="1448" alt="Tu guía DulceLab">' +
       '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
