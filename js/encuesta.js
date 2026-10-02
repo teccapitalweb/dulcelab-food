@@ -33,6 +33,39 @@
     return opciones.map(function (o) { o.siguiente = siguiente; return o; });
   }
 
+  // El contexto (paso 2) decide qué variante del detalle (paso 4) ve cada
+  // persona: un repostero y un restaurantero no necesitan lo mismo aunque
+  // ambos digan "no controlo mis costos". '_' es la variante general.
+  var GRUPO_TXT = { dulce: 'Repostería', cocina: 'Cocina', catering: 'Catering', casa: 'Casa', produccion: 'Producción', calidad: 'Calidad', _: 'Otro' };
+  var GRUPO_DE = {
+    emprendedor: { reposteria: 'dulce', panaderia: 'dulce', restaurante: 'cocina', cafeteria: 'cocina', catering: 'catering', casa: 'casa', otro: '_' },
+    profesional: { dulce: 'dulce', cocina: 'cocina', produccion: 'produccion', calidad: 'calidad', otra: '_' }
+  };
+  var GRUPOS_RE = /^(.*)_(dulce|cocina|catering|casa|produccion|calidad)$/;
+  // def: { grupo: [[base, texto], ...] }. Cada valor guardado lleva el grupo
+  // (costeo_dulce) para saber QUIÉN pidió QUÉ sin cruzar datos aparte.
+  function detalleGrupos(id, texto, def) {
+    var porGrupo = {}, todas = [];
+    Object.keys(def).forEach(function (g) {
+      porGrupo[g] = def[g].map(function (par) {
+        var o = { valor: g === '_' ? par[0] : par[0] + '_' + g, texto: par[1], siguiente: 'formato', grupo: g };
+        todas.push(o);
+        return o;
+      });
+    });
+    return { id: id, multi: false, texto: texto, porGrupo: porGrupo, opciones: todas };
+  }
+  function grupoActual() {
+    var m = GRUPO_DE[estado.tipo];
+    return (m && m[estado.respuestas['contexto_' + estado.tipo]]) || '_';
+  }
+  // Devuelve la pregunta lista para mostrar (con las opciones de su grupo).
+  function resolverPregunta(q) {
+    if (!q || !q.porGrupo) return q;
+    var g = grupoActual();
+    return Object.assign({}, q, { opciones: q.porGrupo[g] || q.porGrupo._, porGrupo: null });
+  }
+
   /* ---------- 2. Árbol de preguntas: 6 pasos encadenados ---------- */
   // 1) quién es → 2) su contexto → 3) su reto principal → 4) el detalle de
   // ESE reto (cada reto tiene su propia pregunta de seguimiento) → 5) formato
@@ -192,61 +225,48 @@
         { valor: 'no_se', texto: 'Todavía no lo sé' }
       ], 'formato')
     },
-    det_actualizar: {
-      id: 'det_actualizar', multi: false,
-      texto: '¿Qué quieres actualizar?',
-      opciones: sig([
-        { valor: 'tecnicas', texto: 'Técnicas de mi área' },
-        { valor: 'normativas', texto: 'Normativas e inocuidad' },
-        { valor: 'tendencias', texto: 'Tendencias y productos nuevos' },
-        { valor: 'liderazgo', texto: 'Liderazgo de equipos' }
-      ], 'formato')
-    },
-    det_prof_costos: {
-      id: 'det_prof_costos', multi: false,
-      texto: '¿Qué te cuesta más trabajo controlar?',
-      opciones: sig([
-        { valor: 'costeo', texto: 'Costear recetas' },
-        { valor: 'inventario', texto: 'Inventarios y compras' },
-        { valor: 'merma', texto: 'Mermas y desperdicio' }
-      ], 'formato')
-    },
-    det_prof_procesos: {
-      id: 'det_prof_procesos', multi: false,
-      texto: '¿Qué necesitas ordenar primero?',
-      opciones: sig([
-        { valor: 'estandarizar', texto: 'Estandarizar recetas y procesos' },
-        { valor: 'planear', texto: 'Planear la producción' },
-        { valor: 'calidad', texto: 'Calidad e inocuidad' }
-      ], 'formato')
-    },
-    det_emp_precios: {
-      id: 'det_emp_precios', multi: false,
-      texto: '¿Qué te hace falta para poner tu precio?',
-      opciones: sig([
-        { valor: 'costo_real', texto: 'Saber cuánto me cuesta cada producto' },
-        { valor: 'precio_venta', texto: 'Fijar mi precio de venta' },
-        { valor: 'ganancia', texto: 'Saber cuánto gano realmente' }
-      ], 'formato')
-    },
-    det_emp_costos: {
-      id: 'det_emp_costos', multi: false,
-      texto: '¿Qué parte de tus costos te preocupa más?',
-      opciones: sig([
-        { valor: 'costeo', texto: 'Costear mis recetas' },
-        { valor: 'inventario', texto: 'Inventarios y compras' },
-        { valor: 'merma', texto: 'Mermas y desperdicio' }
-      ], 'formato')
-    },
-    det_emp_produccion: {
-      id: 'det_emp_produccion', multi: false,
-      texto: '¿Qué necesitas ordenar primero?',
-      opciones: sig([
-        { valor: 'estandarizar', texto: 'Estandarizar recetas y procesos' },
-        { valor: 'planear', texto: 'Planear la producción' },
-        { valor: 'calidad', texto: 'Calidad e inocuidad' }
-      ], 'formato')
-    },
+    det_actualizar: detalleGrupos('det_actualizar', '¿Qué quieres actualizar?', {
+      dulce: [['tecnicas', 'Técnicas avanzadas de repostería y panadería'], ['normativas', 'Normativas e inocuidad'], ['tendencias', 'Productos y tendencias nuevas'], ['liderazgo', 'Liderazgo de equipos']],
+      cocina: [['tecnicas', 'Técnicas y cocinas del mundo'], ['normativas', 'Normativas e inocuidad'], ['tendencias', 'Tendencias y menús nuevos'], ['liderazgo', 'Liderazgo de brigada']],
+      produccion: [['tecnicas', 'Procesos y tecnología de producción'], ['normativas', 'Normativas (NOM, COFEPRIS)'], ['tendencias', 'Desarrollo de productos nuevos'], ['liderazgo', 'Liderazgo de líneas y turnos']],
+      calidad: [['sistemas', 'Sistemas de calidad (HACCP, ISO 22000)'], ['normativas', 'Normativas (NOM, COFEPRIS)'], ['auditorias', 'Auditorías y certificaciones'], ['liderazgo', 'Liderazgo de equipos de calidad']],
+      _: [['tecnicas', 'Técnicas de mi área'], ['normativas', 'Normativas e inocuidad'], ['tendencias', 'Tendencias y productos nuevos'], ['liderazgo', 'Liderazgo de equipos']]
+    }),
+    det_prof_costos: detalleGrupos('det_prof_costos', '¿Qué te cuesta más trabajo controlar?', {
+      dulce: [['costeo', 'Costear recetas y rendimientos'], ['inventario', 'Inventarios y compras de insumos'], ['merma', 'Mermas de producción']],
+      cocina: [['costeo', 'Food cost del menú'], ['inventario', 'Inventarios y almacén'], ['merma', 'Mermas y caducidades']],
+      produccion: [['costeo', 'Costeo por lote'], ['inventario', 'Inventario de materia prima'], ['merma', 'Mermas de línea y rendimientos']],
+      calidad: [['reprocesos', 'Costos de la mala calidad (reprocesos)'], ['trazabilidad', 'Control de insumos y trazabilidad'], ['merma', 'Mermas y rechazos']],
+      _: [['costeo', 'Costear recetas'], ['inventario', 'Inventarios y compras'], ['merma', 'Mermas y desperdicio']]
+    }),
+    det_prof_procesos: detalleGrupos('det_prof_procesos', '¿Qué necesitas ordenar primero?', {
+      dulce: [['estandarizar', 'Estandarizar recetas y procesos'], ['planear', 'Planear la producción'], ['calidad', 'Calidad e inocuidad']],
+      cocina: [['estandarizar', 'Estandarizar menú y porciones'], ['planear', 'Organizar la operación de cocina'], ['calidad', 'Calidad e inocuidad']],
+      produccion: [['estandarizar', 'Estandarizar procesos y rendimientos'], ['planear', 'Planear producción y líneas'], ['calidad', 'Calidad e inocuidad en planta']],
+      calidad: [['bpm', 'Implementar BPM y HACCP'], ['auditar', 'Auditar y documentar'], ['capacitar', 'Capacitar al personal en inocuidad']],
+      _: [['estandarizar', 'Estandarizar recetas y procesos'], ['planear', 'Planear la producción'], ['calidad', 'Calidad e inocuidad']]
+    }),
+    det_emp_precios: detalleGrupos('det_emp_precios', '¿Qué te hace falta para poner tu precio?', {
+      dulce: [['costo_real', 'Saber cuánto me cuesta cada pastel o postre'], ['precio_venta', 'Fijar precio por porción, pieza o pedido'], ['ganancia', 'Saber cuánto gano después de decoración y mano de obra']],
+      cocina: [['costo_real', 'Saber cuánto me cuesta cada platillo (food cost)'], ['precio_venta', 'Fijar precios de menú y combos'], ['ganancia', 'Saber cuánto gano por platillo']],
+      catering: [['costo_real', 'Saber cuánto me cuesta cada evento y cada persona'], ['precio_venta', 'Cotizar un evento completo'], ['ganancia', 'Saber cuánto gano por evento']],
+      casa: [['costo_real', 'Saber cuánto me cuesta cada producto'], ['precio_venta', 'Fijar un precio sin perder clientes'], ['ganancia', 'Separar lo que gano yo de los gastos del negocio']],
+      _: [['costo_real', 'Saber cuánto me cuesta cada producto'], ['precio_venta', 'Fijar mi precio de venta'], ['ganancia', 'Saber cuánto gano realmente']]
+    }),
+    det_emp_costos: detalleGrupos('det_emp_costos', '¿Qué parte de tus costos te preocupa más?', {
+      dulce: [['costeo', 'Costear recetas y rendimientos'], ['inventario', 'Controlar insumos (harina, mantequilla, chocolate)'], ['merma', 'Reducir mermas y sobrantes']],
+      cocina: [['costeo', 'Costear platillos (food cost)'], ['inventario', 'Controlar inventario y almacén'], ['merma', 'Reducir mermas y caducidades']],
+      catering: [['costeo', 'Costear por evento y por persona'], ['inventario', 'Calcular las compras de cada evento'], ['merma', 'Reducir sobrantes y desperdicio']],
+      casa: [['costeo', 'Saber cuánto me cuesta cada producto'], ['inventario', 'Comprar mejor (mayoreo y proveedores)'], ['merma', 'Reducir lo que se me echa a perder']],
+      _: [['costeo', 'Costear mis recetas'], ['inventario', 'Inventarios y compras'], ['merma', 'Mermas y desperdicio']]
+    }),
+    det_emp_produccion: detalleGrupos('det_emp_produccion', '¿Qué necesitas ordenar primero?', {
+      dulce: [['estandarizar', 'Estandarizar recetas y rendimientos'], ['planear', 'Planear la producción por pedidos y fechas'], ['calidad', 'Calidad e inocuidad en mi cocina']],
+      cocina: [['estandarizar', 'Estandarizar recetas y porciones del menú'], ['planear', 'Organizar la cocina (mise en place y turnos)'], ['calidad', 'Calidad e inocuidad']],
+      catering: [['estandarizar', 'Estandarizar recetas para grandes cantidades'], ['planear', 'Planear producción y tiempos por evento'], ['calidad', 'Calidad e inocuidad al transportar']],
+      casa: [['estandarizar', 'Estandarizar mis recetas'], ['planear', 'Ordenar mis pedidos de la semana'], ['calidad', 'Inocuidad y permisos para vender']],
+      _: [['estandarizar', 'Estandarizar recetas y procesos'], ['planear', 'Planear la producción'], ['calidad', 'Calidad e inocuidad']]
+    }),
     det_emp_ventas: {
       id: 'det_emp_ventas', multi: false,
       texto: '¿Cómo quieres vender más?',
@@ -495,7 +515,7 @@
 
     transicion(function () {
       if (siguienteId === 'fin') { renderFin(); return; }
-      var siguientePregunta = PREGUNTAS[siguienteId];
+      var siguientePregunta = resolverPregunta(PREGUNTAS[siguienteId]);
       if (reaccion) siguientePregunta = Object.assign({}, siguientePregunta, { guia: reaccion });
       renderPregunta(siguientePregunta);
     });
@@ -622,6 +642,10 @@
     merma: ['merma', 'desperdicio'], estandarizar: ['estandariz', 'receta', 'proceso'], planear: ['produccion', 'planeaci', 'planificaci'],
     calidad: ['inocuidad', 'calidad', 'higiene'], costo_real: ['costo', 'costeo'], precio_venta: ['precio', 'fijacion'],
     ganancia: ['rentab', 'utilidad'], redes: ['venta', 'negocio'], mayoreo: ['venta', 'negocio'], pedidos: ['venta', 'negocio'],
+    sistemas: ['haccp', 'iso', 'calidad', 'inocuidad'], auditorias: ['auditor', 'certific'],
+    reprocesos: ['calidad', 'merma', 'costo'], trazabilidad: ['trazab', 'insumo', 'inventario'],
+    bpm: ['bpm', 'buenas practicas', 'inocuidad', 'higiene'], auditar: ['auditor', 'inocuidad'],
+    capacitar: ['inocuidad', 'higiene', 'capacit'],
     // contexto
     dulce: ['reposter', 'panader'], cocina: ['cocina'], cafeteria: ['cafeter'], catering: ['catering', 'evento']
   };
@@ -640,7 +664,8 @@
     Object.keys(r).forEach(function (id) {
       var peso = pesoDe(id);
       if (!peso) return;
-      (PALABRAS[r[id]] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); });
+      var m = GRUPOS_RE.exec(r[id]);
+      (PALABRAS[m ? m[1] : r[id]] || []).forEach(function (w) { pesos[w] = Math.max(pesos[w] || 0, peso); });
     });
     return pesos;
   }
