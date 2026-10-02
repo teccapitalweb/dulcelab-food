@@ -1259,18 +1259,19 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 .encuesta__nota{font-size:.88rem;color:var(--text-soft);margin:-.8rem 0 1.4rem}
 .encuesta__opciones{display:flex;flex-direction:column;gap:.65rem;margin-bottom:1rem}
-.encuesta__opciones--multi{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
+.encuesta__opciones--multi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}
 .encuesta__opcion{
-  position:relative;display:flex;align-items:center;gap:.6rem;
+  position:relative;display:flex;align-items:center;justify-content:flex-start;gap:.6rem;
   text-align:left;padding:.85rem 1rem;border-radius:var(--r-md);
   font-size:.92rem;font-weight:600;color:var(--text);
   background:var(--glass-bg);border:1px solid var(--glass-brd);
   transition:border-color .25s var(--ease), background-color .25s var(--ease), transform .2s var(--ease);
 }
 .encuesta__opcion-icon{display:grid;place-items:center;width:2.15rem;height:2.15rem;border-radius:.7rem;flex-shrink:0;background:color-mix(in srgb,var(--dorado) 14%,var(--glass-bg));font-size:1.08rem;transition:transform .2s var(--ease),background-color .2s var(--ease)}
-.encuesta__opcion-txt{display:flex;flex-direction:column;gap:.15rem}
+.encuesta__opcion-txt{display:flex;flex-direction:column;gap:.15rem;min-width:0;overflow-wrap:break-word}
 .encuesta__opcion-txt small{font-size:.76rem;font-weight:400;color:var(--text-soft)}
 .encuesta__check{
+  position:absolute;top:.4rem;right:.4rem;
   display:grid;place-items:center;width:18px;height:18px;border-radius:50%;flex-shrink:0;
   background:var(--frambuesa);color:var(--crema);font-size:.68rem;
   opacity:0;transform:scale(.4);transition:opacity .2s var(--ease), transform .2s var(--ease);
@@ -1337,21 +1338,31 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__ruta-icono{font-size:1.25rem;line-height:1}
 .encuesta__ruta-cat{display:block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-soft)}
 .encuesta__ruta-item p{font-size:.92rem;font-weight:600;color:var(--text)}
-@media (max-width:420px){
-  .encuesta__card{padding:1.4rem}
-  .encuesta__step{margin-right:2.2rem;font-size:.6rem}
-  .encuesta__opciones--multi{grid-template-columns:1fr}
+@media (max-width:640px){
+  .encuesta{padding:.7rem}
+  .encuesta__card{max-width:34rem;padding:1.15rem 1rem}
+  .encuesta__progress{padding-right:2.6rem;margin-bottom:.9rem}
+  .encuesta__receta-txt{font-size:.68rem}
+  .encuesta__ingredientes{font-size:.88rem}
+  .encuesta__lesson{display:block}
+  .encuesta__mentor{display:flex;align-items:center;gap:.6rem;min-height:0;margin-bottom:.85rem;padding:.5rem .75rem .5rem .9rem;border-radius:1rem;overflow:hidden;background:color-mix(in srgb,var(--frambuesa) 6%,var(--glass-bg));border:1px solid var(--glass-brd)}
+  .encuesta__mentor img{position:static;order:2;transform:none;width:auto;height:6.4rem;max-width:none;flex-shrink:0;margin-bottom:-.5rem;filter:none}
+  .encuesta__mentor-talk{position:static;flex:1;min-width:0;padding:0;background:transparent;border:0;box-shadow:none}
+  .encuesta__mentor-talk p{font-size:.78rem}.encuesta__mentor-talk span{font-size:.6rem}
+  .encuesta__step{margin-right:0;font-size:.6rem}
+  .encuesta__pregunta{font-size:1.1rem;margin-bottom:.8rem}
+  .encuesta__nota{margin:0 0 .9rem;font-size:.8rem}
+  .encuesta__opciones{gap:.5rem}
+  .encuesta__opciones--multi{gap:.5rem}
+  .encuesta__opcion{padding:.6rem .65rem;gap:.5rem;font-size:.84rem}
+  .encuesta__opcion-icon{width:1.75rem;height:1.75rem;font-size:.95rem;border-radius:.55rem}
+  .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi){grid-template-columns:1fr}
+  .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion{min-height:0}
   .encuesta__ctas{flex-direction:column}
   .encuesta__ctas .btn{width:100%;text-align:center;justify-content:center}
 }
-@media (max-width:640px){
-  .encuesta__card{max-width:34rem}
-  .encuesta__lesson{display:block}
-  .encuesta__mentor{display:flex;align-items:center;min-height:5.75rem;margin-bottom:1rem;padding:0 5.2rem 0 .2rem;border-radius:1rem}
-  .encuesta__mentor img{width:7.2rem;left:auto;right:-.7rem;bottom:-.9rem;transform:none}
-  .encuesta__mentor-talk{position:relative;inset:auto;background:transparent;border:0;box-shadow:none;padding:0}.encuesta__mentor-talk p{font-size:.75rem}.encuesta__mentor-talk span{font-size:.59rem}
-  .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi){grid-template-columns:1fr}
-  .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion{min-height:0}
+@media (max-width:340px){
+  .encuesta__opciones--multi{grid-template-columns:1fr}
 }
 
 /* Botón flotante que invita a la encuesta (abajo-izquierda, aparte del FAB de WhatsApp) */

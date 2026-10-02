@@ -75,7 +75,7 @@
         { valor: 'complementar', texto: 'Complementar mis estudios', siguiente: 'intereses_estudiante' }
       ]
     },
-    intereses_estudiante: { id: 'intereses_estudiante', multi: true, max: 3, texto: '¿Qué te interesa aprender?', nota: 'Elige hasta 3', opciones: TEMAS, siguiente: 'formato_estudiante' },
+    intereses_estudiante: { id: 'intereses_estudiante', multi: true, max: 3, texto: '¿Qué te interesa aprender?', opciones: TEMAS, siguiente: 'formato_estudiante' },
     formato_estudiante: { id: 'formato_estudiante', multi: true, texto: '¿Qué tipo de recursos te ayudarían más?', opciones: FORMATO, siguiente: 'membresia' },
 
     // ── Profesional ──
@@ -105,7 +105,7 @@
         { valor: 'crecer', texto: 'Crecer profesionalmente', siguiente: 'temas_profesional' }
       ]
     },
-    temas_profesional: { id: 'temas_profesional', multi: true, max: 3, texto: '¿Qué temas te gustaría profundizar?', nota: 'Elige hasta 3', opciones: TEMAS, siguiente: 'membresia' },
+    temas_profesional: { id: 'temas_profesional', multi: true, max: 3, texto: '¿Qué temas te gustaría profundizar?', opciones: TEMAS, siguiente: 'membresia' },
 
     // ── Emprendedor ──
     etapa_emprendedor: {
@@ -158,14 +158,14 @@
         { valor: 'ocasional', texto: 'Aprender para vender o regalar ocasionalmente', siguiente: 'intereses_aficionado' }
       ]
     },
-    intereses_aficionado: { id: 'intereses_aficionado', multi: true, max: 3, texto: '¿Qué te gustaría aprender?', nota: 'Elige hasta 3', opciones: TEMAS, siguiente: 'formato_aficionado' },
+    intereses_aficionado: { id: 'intereses_aficionado', multi: true, max: 3, texto: '¿Qué te gustaría aprender?', opciones: TEMAS, siguiente: 'formato_aficionado' },
     formato_aficionado: { id: 'formato_aficionado', multi: true, texto: '¿Qué tipo de recursos te ayudarían más?', opciones: FORMATO, siguiente: 'membresia' },
 
     // ── Común a todas las ramas ──
     membresia: {
       id: 'membresia', multi: true, max: 3,
       texto: '¿Qué recursos te interesan más?',
-      nota: 'Elige hasta 3 opciones',
+     
       opciones: [
         { valor: 'cursos', texto: 'Cursos completos' },
         { valor: 'vivo', texto: 'Clases en vivo' },
@@ -372,9 +372,9 @@
           '<div class="encuesta__mentor-talk"><span>Chef Dulce te guía</span><p>' + mensajeGuia + '</p></div>' +
         '</aside>' +
         '<div class="encuesta__question-panel">' +
-          '<div class="encuesta__step"><span>Paso ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + '</span><span>' + (esMulti ? 'Puedes elegir varias' : 'Una respuesta') + '</span></div>' +
+          '<div class="encuesta__step"><span>Paso ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + '</span><span>' + (esMulti ? (p.max ? 'Elige hasta ' + p.max : 'Puedes elegir varias') : 'Una respuesta') + '</span></div>' +
           '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
-          '<p class="encuesta__nota">' + (p.nota || pistaPregunta(p.id)) + '</p>' +
+          (p.nota ? '<p class="encuesta__nota">' + p.nota + '</p>' : '') +
           '<div class="encuesta__opciones' + (esMulti ? ' encuesta__opciones--multi' : '') + '">' +
           p.opciones.map(function (o) {
             return '<button type="button" class="encuesta__opcion" data-valor="' + o.valor + '">' +
