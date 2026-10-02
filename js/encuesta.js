@@ -4,8 +4,8 @@
    formulario): una guía (emoji + texto, no hay ilustración animada
    real todavía) acompaña con una línea de reacción, el avance se
    muestra como una receta que se va completando, y la pregunta de
-   intereses de membresía es una tarjeta de "me interesa / no es para
-   mí" en vez de una lista de casillas. Se ramifica en 4 rutas según
+   intereses permite elegir hasta tres recursos en una sola pantalla.
+   Se ramifica en 4 rutas según
    el tipo de visitante, converge en 2 preguntas comunes, y termina en
    un perfil con una ruta recomendada (reglas, no IA todavía).
    ========================================================= */
@@ -15,8 +15,6 @@
   var WEBHOOK_URL = 'https://dulcelab-webhook-production.up.railway.app';
   var STORAGE_DONE = 'dlf-encuesta';          // localStorage: ya la contestó o dijo "ahora no" definitivo
   var STORAGE_SKIP = 'dlf-encuesta-cerrada';  // sessionStorage: no insistir en esta misma visita
-  var DELAY_MS = 28000;
-  var SCROLL_PCT = 0.38;
   var STEP_EMOJIS = ['👤', '🎯', '🔥', '🍰', '🎮', '⏰'];
 
   var modal = document.getElementById('encuesta');
@@ -165,19 +163,17 @@
 
     // ── Común a todas las ramas ──
     membresia: {
-      id: 'membresia', multi: true, swipe: true,
-      texto: '¿Qué contenidos sí usarías?',
+      id: 'membresia', multi: true, max: 3,
+      texto: '¿Qué recursos te interesan más?',
+      nota: 'Elige hasta 3 opciones',
       opciones: [
         { valor: 'cursos', texto: 'Cursos completos' },
         { valor: 'vivo', texto: 'Clases en vivo' },
-        { valor: 'rapidos', texto: 'Videos rápidos' },
         { valor: 'plantillas', texto: 'Plantillas de trabajo' },
         { valor: 'calculadoras', texto: 'Calculadoras y herramientas' },
-        { valor: 'recetas', texto: 'Recetas' },
         { valor: 'retos', texto: 'Retos prácticos' },
-        { valor: 'certificados', texto: 'Certificados' },
         { valor: 'comunidad', texto: 'Comunidad' },
-        { valor: 'asesoria', texto: 'Asesoría' }
+        { valor: 'certificados', texto: 'Certificados' }
       ],
       siguiente: 'tiempo_disponible'
     },
@@ -194,6 +190,35 @@
   };
 
   var TOTAL_PASOS = 6; // tipo + 3 de la rama + membresía + tiempo, siempre
+
+  var ICONOS_OPCION = {
+    estudiante:'🎓', profesional:'👩‍🍳', emprendedor:'🚀', aficionado:'❤️',
+    cocina:'🍳', reposteria:'🧁', panaderia:'🥖', inocuidad:'🛡️', costos:'💰', produccion:'⚙️', emprendimiento:'📈',
+    vivo:'🔴', grabados:'▶️', pdfs:'📄', plantillas:'🧾', herramientas:'🧰', retos:'⚡',
+    cursos:'🎓', calculadoras:'🧮', comunidad:'🤝', certificados:'🏅',
+    idea:'💡', comenzando:'🌱', activo:'🏪', creciendo:'📈', restaurante:'🍽️', cafeteria:'☕', catering:'🍱', procesados:'🏭', casa:'🏠',
+    mejorar:'✨', trabajar:'💼', emprender:'🚀', complementar:'📚', hobby:'🎨', familia:'👨‍👩‍👧', explorar:'🧭', ocasional:'🎁',
+    precios:'🏷️', inventarios:'📦', merma:'♻️', ventas:'📣', productos:'🍽️', procesos:'🧩', normativas:'📋', especializarme:'🎯', actualizar:'🔄', crecer:'📈',
+    menos1:'⏳', uno_dos:'🕐', tres_cinco:'🗓️', mas5:'🔥', calidad:'🛡️', administracion:'📊', otra:'✳️', otro:'✳️'
+  };
+
+  function iconoOpcion(valor) { return ICONOS_OPCION[valor] || '✦'; }
+  function pistaPregunta(id) {
+    var pistas = {
+      tipo:'Elige la opción que más se parece a tu momento actual.',
+      intereses_estudiante:'No necesitas dominarlo todo: empieza por lo que más te entusiasma.',
+      temas_profesional:'Tus elecciones nos ayudan a recomendar una ruta más útil para tu trabajo.',
+      intereses_aficionado:'Elige lo que más ganas tienes de practicar primero.',
+      membresia:'Selecciona los recursos que realmente aprovecharías.',
+      tiempo_disponible:'Una ruta realista se adapta al tiempo que sí tienes.'
+    };
+    return pistas[id] || 'Elige la respuesta que mejor describe tu situación.';
+  }
+  function imagenGuiaPaso(id) {
+    if (id === 'tipo') return 'assets/chef-guia-senala.png';
+    if (id === 'tiempo_disponible') return 'assets/chef-guia-celebra.png';
+    return 'assets/chef-guia-planea.png';
+  }
 
   /* ---------- 3. Estado ---------- */
   var estado = { paso: 0, tipo: null, respuestas: {} };
@@ -216,7 +241,7 @@
       var objetivo = r.objetivo_estudiante;
       var perfil = { icono: '🎓', texto: 'Estudiante en formación' };
       var foco = 'Dominar la técnica de ' + area.toLowerCase() + ' y practicar seguido.';
-      var items = [{ icono: ICONOS.curso, categoria: 'Curso', titulo: 'Curso de ' + area }];
+      var items = [{ icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Fundamentos de ' + area }];
       if (objetivo === 'trabajar') {
         perfil = { icono: '🎓', texto: 'Estudiante enfocado a emplearse' };
         foco = 'Certificarte y tener práctica demostrable en ' + area.toLowerCase() + '.';
@@ -239,9 +264,9 @@
         inventarios: { texto: 'Controlar inventarios y reducir mermas.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Compras, Inventarios y Control de Insumos' } },
         crecer: { texto: 'Dar el siguiente paso profesional.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Fijación de Precios y Rentabilidad Operativa' } },
         procesos: { texto: 'Ordenar y estandarizar tus procesos.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Compras, Inventarios y Control de Insumos' } },
-        normativas: { texto: 'Actualizarte en normativas de inocuidad.', item: { icono: ICONOS.curso, categoria: 'Curso', titulo: 'Curso avanzado de ' + areaProf } },
-        especializarme: { texto: 'Especializarte en ' + areaProf.toLowerCase() + '.', item: { icono: ICONOS.curso, categoria: 'Curso', titulo: 'Curso avanzado de ' + areaProf } },
-        actualizar: { texto: 'Actualizar tu técnica en ' + areaProf.toLowerCase() + '.', item: { icono: ICONOS.curso, categoria: 'Curso', titulo: 'Curso avanzado de ' + areaProf } }
+        normativas: { texto: 'Actualizarte en normativas de inocuidad.', item: { icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Actualización en ' + areaProf } },
+        especializarme: { texto: 'Especializarte en ' + areaProf.toLowerCase() + '.', item: { icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Especialización en ' + areaProf } },
+        actualizar: { texto: 'Actualizar tu técnica en ' + areaProf.toLowerCase() + '.', item: { icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Actualización en ' + areaProf } }
       };
       var m = mapa[reto] || mapa.actualizar;
       return {
@@ -261,7 +286,7 @@
         inventarios: { texto: 'Tus inventarios no están bajo control.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Compras, Inventarios y Control de Insumos' } },
         merma: { texto: 'Estás perdiendo dinero en merma.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Control de Mermas y Desperdicios' } },
         ventas: { texto: 'Necesitas vender más.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Fijación de Precios y Rentabilidad Operativa' } },
-        productos: { texto: 'Quieres mejores productos para ' + negocio.toLowerCase() + '.', item: { icono: ICONOS.curso, categoria: 'Curso', titulo: 'Curso técnico de ' + negocio } },
+        productos: { texto: 'Quieres mejores productos para ' + negocio.toLowerCase() + '.', item: { icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Desarrollo de productos para ' + negocio } },
         produccion: { texto: 'Tu producción necesita orden.', item: { icono: ICONOS.linea, categoria: 'Línea', titulo: 'Compras, Inventarios y Control de Insumos' } },
         inocuidad: { texto: 'Quieres mejorar inocuidad y calidad.', item: { icono: ICONOS.club, categoria: 'Club VIP', titulo: 'Recursos de inocuidad y calidad' } }
       };
@@ -277,7 +302,7 @@
     // aficionado
     var objAfi = r.objetivo_aficionado;
     var areaAfi = AREA_TXT[primero(r.intereses_aficionado)] || 'gastronomía';
-    var itemsAfi = [{ icono: ICONOS.curso, categoria: 'Curso', titulo: 'Curso introductorio de ' + areaAfi }];
+    var itemsAfi = [{ icono: ICONOS.curso, categoria: 'Ruta recomendada', titulo: 'Fundamentos de ' + areaAfi }];
     var focoAfi = 'Aprender lo básico de ' + areaAfi.toLowerCase() + ' sin presión.';
     if (objAfi === 'explorar') {
       focoAfi = 'Probar si la gastronomía puede ser algo más que un hobby.';
@@ -339,19 +364,29 @@
     if (p.swipe) { renderSwipe(p); return; }
 
     var esMulti = p.multi;
+    var mensajeGuia = p.guia || pistaPregunta(p.id);
     body.innerHTML =
-      (p.guia ? '<p class="encuesta__guia">' + p.guia + '</p>' : '') +
-      '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
-      (p.nota ? '<p class="encuesta__nota">' + p.nota + '</p>' : '') +
-      '<div class="encuesta__opciones' + (esMulti ? ' encuesta__opciones--multi' : '') + '">' +
-      p.opciones.map(function (o) {
-        return '<button type="button" class="encuesta__opcion" data-valor="' + o.valor + '">' +
-          '<span class="encuesta__check">✓</span>' +
-          '<span class="encuesta__opcion-txt">' + o.texto + (o.sub ? '<small>' + o.sub + '</small>' : '') + '</span>' +
-          '</button>';
-      }).join('') +
-      '</div>' +
-      (esMulti ? '<button type="button" class="btn btn--primary encuesta__continuar" id="encuestaContinuar" disabled>Continuar</button>' : '');
+      '<div class="encuesta__lesson">' +
+        '<aside class="encuesta__mentor">' +
+          '<img src="' + imagenGuiaPaso(p.id) + '" width="1024" height="1536" alt="Chef Dulce, tu guía de aprendizaje">' +
+          '<div class="encuesta__mentor-talk"><span>Chef Dulce te guía</span><p>' + mensajeGuia + '</p></div>' +
+        '</aside>' +
+        '<div class="encuesta__question-panel">' +
+          '<div class="encuesta__step"><span>Paso ' + (estado.paso + 1) + ' de ' + TOTAL_PASOS + '</span><span>' + (esMulti ? 'Puedes elegir varias' : 'Una respuesta') + '</span></div>' +
+          '<h2 class="encuesta__pregunta">' + p.texto + '</h2>' +
+          '<p class="encuesta__nota">' + (p.nota || pistaPregunta(p.id)) + '</p>' +
+          '<div class="encuesta__opciones' + (esMulti ? ' encuesta__opciones--multi' : '') + '">' +
+          p.opciones.map(function (o) {
+            return '<button type="button" class="encuesta__opcion" data-valor="' + o.valor + '">' +
+              '<span class="encuesta__opcion-icon">' + iconoOpcion(o.valor) + '</span>' +
+              '<span class="encuesta__check">✓</span>' +
+              '<span class="encuesta__opcion-txt">' + o.texto + (o.sub ? '<small>' + o.sub + '</small>' : '') + '</span>' +
+              '</button>';
+          }).join('') +
+          '</div>' +
+          (esMulti ? '<button type="button" class="btn btn--primary encuesta__continuar" id="encuestaContinuar" disabled>Continuar con mi ruta</button>' : '') +
+        '</div>' +
+      '</div>';
 
     var seleccionMulti = [];
     var max = p.max || Infinity;
@@ -467,7 +502,7 @@
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
-      '<img class="encuesta__guia-img encuesta__guia-img--chico" src="assets/chef-guia.webp" width="1086" height="1448" alt="Tu guía DulceLab">' +
+      '<img class="encuesta__guia-img encuesta__guia-img--chico" src="assets/chef-guia-celebra.png" width="1024" height="1536" alt="Tu guía DulceLab">' +
       '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
       '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
@@ -529,7 +564,7 @@
   });
   if (btnAbrir) btnAbrir.addEventListener('click', function () { disparar(true); });
 
-  /* ---------- 9. Disparo: tiempo en página, % de scroll, o botón manual ---------- */
+  /* ---------- 9. Disparo: solo por el botón manual ---------- */
   var yaDisparada = false;
   function disparar(manual) {
     // El botón manual ("🍰 Descubre…") siempre debe poder reabrirla, ya
@@ -547,17 +582,4 @@
     abrir();
   }
 
-  setTimeout(function () { disparar(false); }, DELAY_MS);
-
-  var scrollTicking = false;
-  window.addEventListener('scroll', function () {
-    if (scrollTicking || yaDisparada) return;
-    scrollTicking = true;
-    requestAnimationFrame(function () {
-      scrollTicking = false;
-      var doc = document.documentElement;
-      var pct = (window.scrollY || doc.scrollTop) / Math.max(1, doc.scrollHeight - window.innerHeight);
-      if (pct >= SCROLL_PCT) disparar(false);
-    });
-  }, { passive: true });
 })();

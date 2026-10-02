@@ -1202,7 +1202,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta[hidden]{display:none}
 .encuesta.is-open{opacity:1}
 .encuesta__card{
-  position:relative;width:100%;max-width:32rem;
+  position:relative;width:100%;max-width:50rem;
   max-height:min(42rem,88svh);overflow-y:auto;
   background:var(--panel-bg);
   border:1px solid var(--glass-brd);
@@ -1232,6 +1232,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__ingredientes{font-size:1rem;letter-spacing:.15em}
 .encuesta__body{transition:opacity .18s var(--ease), transform .18s var(--ease)}
 .encuesta__body.is-leaving{opacity:0;transform:translateY(6px)}
+.encuesta__lesson{display:grid;grid-template-columns:10.5rem minmax(0,1fr);gap:1.25rem;align-items:stretch}
+.encuesta__mentor{position:relative;overflow:visible;min-height:29rem;background:transparent;border:0}
+.encuesta__mentor::after{display:none}
+.encuesta__mentor img{position:absolute;z-index:1;bottom:-1.4rem;left:50%;width:15.5rem;max-width:none;height:auto;transform:translateX(-50%);filter:drop-shadow(0 12px 10px rgba(60,20,16,.16))}
+.encuesta__mentor-talk{position:absolute;z-index:2;top:.85rem;left:.15rem;right:.15rem;padding:.65rem .7rem;border-radius:.7rem;background:var(--panel-bg);border:1px solid var(--glass-brd);box-shadow:0 6px 16px rgba(80,35,25,.08)}
+.encuesta__mentor-talk span{display:block;font-size:.62rem;font-weight:800;letter-spacing:.065em;text-transform:uppercase;color:var(--frambuesa);margin-bottom:.22rem}.encuesta__mentor-talk p{font-size:.72rem;font-weight:650;line-height:1.35;color:var(--text)}
+.encuesta__question-panel{min-width:0;padding:.25rem 0}
+.encuesta__step{display:flex;justify-content:space-between;gap:.75rem;margin:0 2.8rem .9rem 0;font-family:var(--ff-mono,monospace);font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft)}
+.encuesta__step span:last-child{color:var(--frambuesa);background:color-mix(in srgb,var(--frambuesa) 9%,transparent);border-radius:var(--r-pill);padding:.15rem .45rem;letter-spacing:.03em;text-transform:none}
 .encuesta__guia-img{
   display:block;width:108px;height:144px;margin:0 auto 1rem;
   object-fit:cover;object-position:50% 12%;border-radius:var(--r-md);
@@ -1253,11 +1262,12 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__opciones--multi{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem}
 .encuesta__opcion{
   position:relative;display:flex;align-items:center;gap:.6rem;
-  text-align:left;padding:.9rem 1.1rem;border-radius:var(--r-md);
+  text-align:left;padding:.85rem 1rem;border-radius:var(--r-md);
   font-size:.92rem;font-weight:600;color:var(--text);
   background:var(--glass-bg);border:1px solid var(--glass-brd);
   transition:border-color .25s var(--ease), background-color .25s var(--ease), transform .2s var(--ease);
 }
+.encuesta__opcion-icon{display:grid;place-items:center;width:2.15rem;height:2.15rem;border-radius:.7rem;flex-shrink:0;background:color-mix(in srgb,var(--dorado) 14%,var(--glass-bg));font-size:1.08rem;transition:transform .2s var(--ease),background-color .2s var(--ease)}
 .encuesta__opcion-txt{display:flex;flex-direction:column;gap:.15rem}
 .encuesta__opcion-txt small{font-size:.76rem;font-weight:400;color:var(--text-soft)}
 .encuesta__check{
@@ -1275,6 +1285,9 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   border-color:var(--frambuesa);color:var(--frambuesa);
   background:color-mix(in srgb,var(--frambuesa) 14%,var(--glass-bg));
 }
+.encuesta__opcion.is-selected .encuesta__opcion-icon,.encuesta__opcion.is-chosen .encuesta__opcion-icon{background:color-mix(in srgb,var(--frambuesa) 18%,var(--glass-bg));transform:scale(1.06)}
+.encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi){display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion{min-height:5.35rem}
 .encuesta__opcion.is-chosen{transform:scale(1.03)}
 .encuesta__opcion.is-selected .encuesta__check,
 .encuesta__opcion.is-chosen .encuesta__check{opacity:1;transform:scale(1)}
@@ -1326,9 +1339,19 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__ruta-item p{font-size:.92rem;font-weight:600;color:var(--text)}
 @media (max-width:420px){
   .encuesta__card{padding:1.4rem}
+  .encuesta__step{margin-right:2.2rem;font-size:.6rem}
   .encuesta__opciones--multi{grid-template-columns:1fr}
   .encuesta__ctas{flex-direction:column}
   .encuesta__ctas .btn{width:100%;text-align:center;justify-content:center}
+}
+@media (max-width:640px){
+  .encuesta__card{max-width:34rem}
+  .encuesta__lesson{display:block}
+  .encuesta__mentor{display:flex;align-items:center;min-height:5.75rem;margin-bottom:1rem;padding:0 5.2rem 0 .2rem;border-radius:1rem}
+  .encuesta__mentor img{width:7.2rem;left:auto;right:-.7rem;bottom:-.9rem;transform:none}
+  .encuesta__mentor-talk{position:relative;inset:auto;background:transparent;border:0;box-shadow:none;padding:0}.encuesta__mentor-talk p{font-size:.75rem}.encuesta__mentor-talk span{font-size:.59rem}
+  .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi){grid-template-columns:1fr}
+  .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion{min-height:0}
 }
 
 /* Botón flotante que invita a la encuesta (abajo-izquierda, aparte del FAB de WhatsApp) */
