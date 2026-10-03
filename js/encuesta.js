@@ -21,7 +21,6 @@
   var body = document.getElementById('encuestaBody');
   var progressWrap = document.getElementById('encuestaProgressWrap');
   var btnClose = document.getElementById('encuestaClose');
-  var btnAbrir = document.getElementById('encuestaTrigger');
 
   /* ---------- 1. Textos base ---------- */
   var TIPO_TXT = { estudiante: 'Estudiante', aficionado: 'Aprende por gusto', profesional: 'Profesional', emprendedor: 'Emprendedor' };
@@ -611,6 +610,8 @@
     setTimeout(function () {
       body.classList.remove('is-leaving');
       cb();
+      // Está dentro de la página: si el usuario ya se había desplazado, volver a la tarjeta
+      if (modal.getBoundingClientRect().top < 0) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 260);
   }
 
@@ -794,69 +795,33 @@
     }).catch(function () { /* silencioso: no interrumpir al visitante si falla */ });
   }
 
-  /* ---------- 8. Abrir / cerrar ---------- */
-  // El aviso de cookies (fijo abajo, z-index altísimo) tapaba la parte baja de
-  // la encuesta en celular: se mide su altura y la tarjeta se acomoda encima.
-  function ajustarCookies() {
-    var b = document.getElementById('dlf-cookie-banner');
-    var h = (b && getComputedStyle(b).display !== 'none') ? b.offsetHeight : 0;
-    modal.style.setProperty('--cookie-h', h + 'px');
-  }
-  (function vigilarCookies() {
-    var b = document.getElementById('dlf-cookie-banner');
-    if (b && window.MutationObserver) new MutationObserver(ajustarCookies).observe(b, { attributes: true, attributeFilter: ['style'] });
-    window.addEventListener('resize', ajustarCookies);
-  })();
+  /* ---------- 8. Mostrar / ocultar (sección dentro de la página) ---------- */
+  var wrap = modal.closest('section') || modal;
 
   function abrir() {
     precargarPoses();
-    ajustarCookies();
     cargarCursos();
     renderConsentimiento();
-    modal.hidden = false;
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-    document.body.style.overflow = 'hidden';
+    wrap.hidden = false;
   }
 
+  // "Ahora no" / X: se oculta durante esta visita; si no la contestó, vuelve
+  // a aparecer en la siguiente (igual que mientras siga sin contestarse).
   function cerrar() {
-    modal.classList.remove('is-open');
-    document.body.style.overflow = '';
-    setTimeout(function () { modal.hidden = true; }, 250);
+    wrap.hidden = true;
     try {
-      if (localStorage.getItem(STORAGE_DONE) !== 'completada') {
-        sessionStorage.setItem(STORAGE_SKIP, '1');
-      }
+      if (localStorage.getItem(STORAGE_DONE) !== 'completada') sessionStorage.setItem(STORAGE_SKIP, '1');
     } catch (e) {}
   }
-
-  function cerrarDefinitivo() {
-    try { localStorage.setItem(STORAGE_DONE, 'completada'); } catch (e) {}
-    cerrar();
-  }
+  function cerrarDefinitivo() { cerrar(); }
 
   btnClose.addEventListener('click', cerrar);
-  modal.addEventListener('click', function (e) { if (e.target === modal) cerrar(); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('is-open')) cerrar();
-  });
-  if (btnAbrir) btnAbrir.addEventListener('click', function () { disparar(true); });
 
-  /* ---------- 9. Disparo: solo por el botón manual ---------- */
-  var yaDisparada = false;
-  function disparar(manual) {
-    // El botón manual ("🍰 Descubre…") siempre debe poder reabrirla, ya
-    // la haya contestado o cerrado antes; esas banderas solo frenan los
-    // disparos AUTOMÁTICOS (tiempo en página / scroll) para no insistir.
-    if (!manual) {
-      if (yaDisparada) return;
-      var completada, cerradaEstaVisita;
-      try { completada = localStorage.getItem(STORAGE_DONE) === 'completada'; } catch (e) { completada = false; }
-      try { cerradaEstaVisita = sessionStorage.getItem(STORAGE_SKIP) === '1'; } catch (e) { cerradaEstaVisita = false; }
-      if (completada || cerradaEstaVisita) return;
-      yaDisparada = true;
-    }
-    if (modal.classList.contains('is-open')) return;
-    abrir();
-  }
+  /* ---------- 9. Aparece sola, mientras no se haya contestado ---------- */
+  var forzar = /[?&]encuesta=1\b/.test(location.search);
+  var completada = false, ocultaEstaVisita = false;
+  try { completada = localStorage.getItem(STORAGE_DONE) === 'completada'; } catch (e) {}
+  try { ocultaEstaVisita = sessionStorage.getItem(STORAGE_SKIP) === '1'; } catch (e) {}
+  if (forzar || (!completada && !ocultaEstaVisita)) abrir();
 
 })();

@@ -1191,29 +1191,23 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 
 /* ---------- 25. Encuesta de segmentación ---------- */
-.encuesta{
-  position:fixed;inset:0;z-index:310;
-  display:flex;align-items:center;justify-content:center;
-  padding:1.25rem;
-  background:rgba(26,15,13,.6);
-  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-  opacity:0;transition:opacity .3s var(--ease);
-}
+/* Sección dentro de la página (debajo de la portada), no ventana flotante */
+.section--encuesta{padding-block:clamp(1.5rem,4vw,3rem);scroll-margin-top:5.5rem}
+.section--encuesta[hidden]{display:none}
+.encuesta{position:relative;max-width:50rem;margin:0 auto}
 .encuesta[hidden]{display:none}
 .encuesta.is-open{opacity:1}
 .encuesta__card{
   position:relative;width:100%;max-width:50rem;
-  /* --cookie-h: alto del aviso de cookies (si está visible) para que no tape la encuesta */
-  max-height:min(42rem,calc(88svh - var(--cookie-h,0px)));margin-bottom:var(--cookie-h,0px);overflow-y:auto;
   background:var(--panel-bg);
   border:1px solid var(--glass-brd);
   border-radius:var(--r-lg);
   box-shadow:0 30px 80px -30px rgba(0,0,0,.5);
   padding:clamp(1.5rem,4vw,2.25rem);
-  transform:translateY(16px) scale(.97);opacity:0;
-  transition:transform .35s var(--ease), opacity .35s var(--ease);
+  animation:encuestaEntra .5s var(--ease) both;
 }
-.encuesta.is-open .encuesta__card{transform:none;opacity:1}
+@keyframes encuestaEntra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.encuesta__card{animation:none}}
 .encuesta__close{
   position:absolute;top:1rem;right:1rem;z-index:2;
   display:grid;place-items:center;width:38px;height:38px;border-radius:50%;
@@ -1373,8 +1367,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__ruta-cat{display:block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-soft)}
 .encuesta__ruta-item p{font-size:.92rem;font-weight:600;color:var(--text)}
 @media (max-width:640px){
-  .encuesta{padding:.7rem}
-  .encuesta__card{max-width:34rem;padding:1.15rem 1rem}
+  .encuesta__card{padding:1.15rem 1rem}
   .encuesta__progress{padding-right:2.6rem;margin-bottom:.9rem}
   .encuesta__receta-txt{font-size:.68rem}
   .encuesta__ingredientes{font-size:.88rem}
@@ -1397,26 +1390,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 @media (max-width:340px){
   .encuesta__opciones--multi{grid-template-columns:1fr}
-}
-
-/* Botón flotante que invita a la encuesta (abajo-izquierda, aparte del FAB de WhatsApp) */
-.encuesta-trigger{
-  position:fixed;z-index:190;
-  left:calc(16px + env(safe-area-inset-left, 0px));
-  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
-  max-width:min(78vw,17rem);
-  padding:.7rem 1.1rem;border-radius:var(--r-pill);
-  font-size:.8rem;font-weight:700;color:var(--text);text-align:left;
-  background:var(--glass-bg-strong);border:1px solid var(--glass-brd-hi);
-  -webkit-backdrop-filter:blur(14px) saturate(150%);backdrop-filter:blur(14px) saturate(150%);
-  box-shadow:var(--glass-shadow);
-  transition:transform .3s var(--ease), border-color .3s var(--ease);
-}
-@media (hover:hover){
-  .encuesta-trigger:hover{transform:translateY(-3px);border-color:var(--frambuesa)}
-}
-@media (max-width:640px){
-  .encuesta-trigger{bottom:calc(76px + env(safe-area-inset-bottom, 0px));font-size:.74rem;padding:.6rem .9rem}
 }
 
 /* ---------- 10. Movimiento reducido ---------- */

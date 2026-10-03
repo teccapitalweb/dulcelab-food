@@ -318,6 +318,21 @@
   </a>
 </section>
 
+<!-- ============ ENCUESTA (dentro de la página, debajo de la portada) ============
+     Aparece mientras no se haya contestado; al terminarla ya no vuelve a salir.
+     Para volver a verla al probar: agregar ?encuesta=1 a la dirección. -->
+<section class="section section--encuesta" id="descubre-ruta" aria-label="Encuesta rápida" hidden>
+  <div class="encuesta" id="encuesta">
+    <div class="encuesta__card">
+      <button class="encuesta__close" type="button" id="encuestaClose" aria-label="Ocultar encuesta">
+        <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+      <div class="encuesta__progress" id="encuestaProgressWrap"><div class="encuesta__progress-bar" id="encuestaProgressBar"></div></div>
+      <div class="encuesta__body" id="encuestaBody"></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ QUIÉNES SOMOS ============ -->
 <section class="section section--about" id="quienes-somos">
   <div class="section__inner about">
@@ -725,17 +740,6 @@
   </button>
 </div>
 
-<!-- ============ ENCUESTA ============ -->
-<div class="encuesta" id="encuesta" role="dialog" aria-modal="true" aria-label="Encuesta rápida" hidden>
-  <div class="encuesta__card">
-    <button class="encuesta__close" type="button" id="encuestaClose" aria-label="Cerrar">
-      <svg class="ico" aria-hidden="true"><use href="#i-close"></use></svg>
-    </button>
-    <div class="encuesta__progress" id="encuestaProgressWrap"><div class="encuesta__progress-bar" id="encuestaProgressBar"></div></div>
-    <div class="encuesta__body" id="encuestaBody"></div>
-  </div>
-</div>
-
 <!-- ============ FOOTER ============ -->
 <footer class="footer">
   <div class="footer__inner footer__inner--simple">
@@ -756,9 +760,6 @@
    aria-label="Escríbenos por WhatsApp">
   <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
 </a>
-
-<!-- ============ ENCUESTA: invitación manual ============ -->
-<button type="button" class="encuesta-trigger" id="encuestaTrigger">🍰 Descubre tu perfil DulceLab</button>
 
 <script src="js/main.js" defer></script>
 <script src="js/encuesta.js" defer></script>
