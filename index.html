@@ -763,6 +763,7 @@
 
 <script src="js/main.js" defer></script>
 <script src="js/encuesta.js" defer></script>
+<script src="js/chatbot.js" defer></script>
 <!-- ═══════════════════════════════════════════════════════════════
      Aviso de cookies · DulceLab Food (tarjeta oscura flotante con un solo botón
      "Acepto"; "sigues navegando = aceptas").
@@ -807,7 +808,7 @@
   // a la dirección. Solo borra estas marcas del propio navegador.
   var q = location.search;
   if (/[?&]reset=1/.test(q)) {
-    try { localStorage.removeItem(KEY); localStorage.removeItem('dlf-encuesta'); sessionStorage.removeItem('dlf-encuesta-cerrada'); } catch(e){}
+    try { localStorage.removeItem(KEY); localStorage.removeItem('dlf-encuesta'); sessionStorage.removeItem('dlf-encuesta-cerrada'); sessionStorage.removeItem('dlf-bot-tip'); } catch(e){}
     try { history.replaceState(null, '', location.pathname + location.hash); } catch(e){}
   }
   function yaVisto(){ try{ return localStorage.getItem(KEY) === '1'; }catch(e){ return false; } }

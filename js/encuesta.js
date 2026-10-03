@@ -824,4 +824,9 @@
   try { ocultaEstaVisita = sessionStorage.getItem(STORAGE_SKIP) === '1'; } catch (e) {}
   if (forzar || (!completada && !ocultaEstaVisita)) abrir();
 
+  // Lo usa el asistente virtual (js/chatbot.js): comparte la lectura de cursos
+  // y puede llevar a la persona a la encuesta.
+  window.dlfCursos = cargarCursos;
+  window.dlfAbrirEncuesta = function () { abrir(); wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+
 })();

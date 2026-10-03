@@ -1392,6 +1392,63 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .encuesta__opciones--multi{grid-template-columns:1fr}
 }
 
+/* ---------- 26. Asistente virtual ("Tu guía") ---------- */
+.dlfbot-launcher{position:fixed;z-index:210;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(max(84px, var(--cookie-h,0px) + 16px) + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;transition:bottom .3s var(--ease)}
+.dlfbot-launcher.is-oculto{display:none}
+.dlfbot-tip{padding:.5rem .85rem;border-radius:var(--r-pill);font-size:.78rem;font-weight:800;color:var(--text);background:var(--panel-bg);border:1px solid var(--glass-brd);box-shadow:0 8px 22px rgba(60,20,16,.18);cursor:pointer;animation:dlfbotPop .4s var(--ease) both}
+.dlfbot-tip[hidden]{display:none}
+.dlfbot-btn{position:relative;width:64px;height:64px;border-radius:50%;padding:0;background:var(--panel-bg);border:2px solid var(--frambuesa);box-shadow:0 10px 26px rgba(60,20,16,.28);cursor:pointer;transition:transform .25s var(--ease)}
+.dlfbot-btn img{display:block;width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 12%}
+.dlfbot-btn__dot{position:absolute;right:2px;bottom:2px;width:15px;height:15px;border-radius:50%;background:#2fb457;border:2px solid var(--panel-bg)}
+@media (hover:hover){.dlfbot-btn:hover{transform:translateY(-3px) scale(1.04)}}
+.dlfbot-panel{position:fixed;z-index:100000;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(24rem,calc(100vw - 32px));height:min(36rem,calc(100vh - 32px));height:min(36rem,calc(100dvh - 32px));display:none;flex-direction:column;background:var(--panel-bg);color:var(--text);border:1px solid var(--glass-brd);border-radius:1.25rem;box-shadow:0 30px 80px -20px rgba(0,0,0,.5);overflow:hidden}
+.dlfbot-panel.is-open{display:flex;animation:dlfbotPop .35s var(--ease) both}
+@keyframes dlfbotPop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.dlfbot-head{display:flex;align-items:center;gap:.7rem;padding:.8rem .9rem;border-bottom:1px solid var(--glass-brd)}
+.dlfbot-avatar{flex-shrink:0;width:46px;height:46px;border-radius:50%;overflow:hidden;background:var(--panel-bg);border:2px solid var(--frambuesa)}
+.dlfbot-avatar img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.dlfbot-head__txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.15}
+.dlfbot-head__txt small{font-size:.62rem;font-weight:800;letter-spacing:.1em;color:var(--frambuesa)}
+.dlfbot-head__txt strong{font-size:1.05rem}
+.dlfbot-head__txt span{font-size:.72rem;color:var(--text-soft)}
+.dlfbot-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:1rem;line-height:1;color:var(--text-soft);background:var(--glass-bg);border:1px solid var(--glass-brd);cursor:pointer}
+.dlfbot-icon:hover{color:var(--frambuesa);border-color:var(--frambuesa)}
+.dlfbot-aviso{margin:0;padding:.5rem .9rem;font-size:.7rem;line-height:1.35;color:var(--text-soft);background:color-mix(in srgb,var(--frambuesa) 6%,transparent)}
+.dlfbot-msgs{flex:1;min-height:0;overflow-y:auto;padding:.9rem;display:flex;flex-direction:column;gap:.55rem;overscroll-behavior:contain}
+.dlfbot-msg{max-width:88%;padding:.6rem .8rem;border-radius:1rem;font-size:.86rem;line-height:1.45;word-wrap:break-word}
+.dlfbot-msg--bot{align-self:flex-start;border-bottom-left-radius:.3rem;background:color-mix(in srgb,var(--frambuesa) 7%,var(--panel-bg));border:1px solid var(--glass-brd)}
+.dlfbot-msg--user{align-self:flex-end;border-bottom-right-radius:.3rem;color:#fff;background:var(--frambuesa);font-weight:600}
+.dlfbot-peque{font-size:.76rem;color:var(--text-soft)}
+.dlfbot-typing{display:flex;gap:.28rem;padding:.75rem .9rem}
+.dlfbot-typing i{width:7px;height:7px;border-radius:50%;background:var(--text-soft);opacity:.5;animation:dlfbotPunto 1s infinite}
+.dlfbot-typing i:nth-child(2){animation-delay:.15s}
+.dlfbot-typing i:nth-child(3){animation-delay:.3s}
+@keyframes dlfbotPunto{0%,60%,100%{transform:none;opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+.dlfbot-chips{display:flex;flex-wrap:wrap;gap:.4rem;transition:opacity .3s}
+.dlfbot-chips.is-usado{opacity:.4;pointer-events:none}
+.dlfbot-chips.is-usado .is-elegido{opacity:1;background:var(--frambuesa);color:#fff}
+.dlfbot-chip,.dlfbot-wa{font:inherit;font-size:.8rem;font-weight:700;padding:.45rem .8rem;border-radius:var(--r-pill);cursor:pointer;color:var(--frambuesa);background:var(--panel-bg);border:1px solid color-mix(in srgb,var(--frambuesa) 45%,transparent);transition:background .2s,color .2s}
+.dlfbot-chip:hover{background:var(--frambuesa);color:#fff}
+.dlfbot-wa{text-decoration:none;color:#fff;background:#25a35a;border-color:#25a35a}
+.dlfbot-wa:hover{filter:brightness(1.08)}
+.dlfbot-cards{display:flex;flex-direction:column;gap:.45rem}
+.dlfbot-card{display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.6rem .75rem;border-radius:.9rem;text-decoration:none;color:var(--text);background:var(--panel-bg);border:1px solid var(--glass-brd);transition:border-color .2s,transform .2s}
+.dlfbot-card:hover{border-color:var(--frambuesa);transform:translateY(-1px)}
+.dlfbot-card b{display:block;font-size:.82rem;line-height:1.3}
+.dlfbot-card small{display:block;font-size:.7rem;color:var(--text-soft);margin-top:.15rem}
+.dlfbot-card em{flex-shrink:0;font-style:normal;font-size:.76rem;font-weight:800;color:var(--frambuesa)}
+.dlfbot-form{display:flex;gap:.5rem;padding:.6rem .8rem .3rem;border-top:1px solid var(--glass-brd)}
+.dlfbot-form input{flex:1;min-width:0;font:inherit;font-size:.9rem;padding:.6rem .9rem;border-radius:var(--r-pill);color:var(--text);background:var(--glass-bg);border:1px solid var(--glass-brd)}
+.dlfbot-form input:focus{outline:0;border-color:var(--frambuesa)}
+.dlfbot-send{flex-shrink:0;width:42px;height:42px;border-radius:50%;font-size:1.15rem;color:#fff;background:var(--frambuesa);border:0;cursor:pointer}
+.dlfbot-pie{display:flex;justify-content:space-between;gap:.6rem;padding:.2rem .9rem .7rem;font-size:.72rem}
+.dlfbot-pie a,.dlfbot-pie button{font:inherit;color:var(--text-soft);text-decoration:underline;background:none;border:0;padding:0;cursor:pointer}
+@media (max-width:640px){
+  .dlfbot-panel{left:0;right:0;bottom:0;width:auto;height:min(86vh,40rem);height:min(86dvh,40rem);border-radius:1.25rem 1.25rem 0 0}
+  .dlfbot-form input{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){.dlfbot-panel.is-open,.dlfbot-tip{animation:none}}
+
 /* ---------- 10. Movimiento reducido ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
