@@ -764,8 +764,8 @@
 <script src="js/main.js" defer></script>
 <script src="js/encuesta.js" defer></script>
 <!-- ═══════════════════════════════════════════════════════════════
-     Aviso de cookies · DulceLab Food (estilo aviso simple, tipo Starbucks:
-     "sigues navegando = aceptas", fondo blanco y limpio, no un bloque oscuro).
+     Aviso de cookies · DulceLab Food (tarjeta oscura flotante con un solo botón
+     "Acepto"; "sigues navegando = aceptas").
      Autocontenido (no depende de las variables CSS del sitio) para
      poder pegarse igual en dulcelabfood.com y club.dulcelabfood.com.
      Se guarda que ya se mostró en localStorage bajo "dlf-cookie-notice"
@@ -775,21 +775,41 @@
          // aquí va el código del Pixel / Analytics
        }
      ═══════════════════════════════════════════════════════════════ -->
-<div id="dlf-cookie-banner" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#FFFFFF;border-top:1px solid #E7DAD5;box-shadow:0 -8px 28px rgba(35,28,24,.12);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <div style="max-width:1040px;margin:0 auto;padding:20px 24px;display:flex;flex-wrap:wrap;align-items:center;gap:18px;justify-content:space-between;">
-    <p style="margin:0;flex:1;min-width:260px;color:#231C18;">
-      <strong style="display:block;font-size:15px;margin-bottom:3px;">Este sitio usa cookies.</strong>
-      <span style="font-size:13.5px;line-height:1.55;color:#5B5049;">
-        Al navegar en nuestro sitio aceptas que usemos cookies para personalizar tu experiencia según nuestra
-        <a href="https://club.dulcelabfood.com/terminos.html#cookies" target="_blank" rel="noopener" style="color:#6B1526;text-decoration:underline;">Política de Cookies</a>.
+<style>
+#dlf-cookie-banner{display:none;position:fixed;z-index:99999;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;animation:dlfCookieSube .45s cubic-bezier(.22,1,.36,1) both}
+.dlf-cookie__card{max-width:44rem;margin:0 auto;padding:1rem 1.1rem;border-radius:1.25rem;background:#231C18;color:#fff;border:1px solid rgba(201,154,61,.35);box-shadow:0 18px 44px rgba(20,10,8,.4);display:flex;flex-wrap:wrap;align-items:center;gap:.9rem 1.25rem}
+.dlf-cookie__txt{flex:1;min-width:15rem;margin:0}
+.dlf-cookie__txt strong{display:block;font-size:.95rem;margin-bottom:.2rem}
+.dlf-cookie__txt span{font-size:.82rem;line-height:1.45;color:rgba(255,255,255,.82)}
+.dlf-cookie__txt a{color:#E2B965;font-weight:700;text-decoration:underline}
+#dlf-cookie-ok{flex-shrink:0;border:0;border-radius:100px;padding:.7rem 2.1rem;font-size:.9rem;font-weight:800;cursor:pointer;color:#231C18;background:linear-gradient(135deg,#E2B965,#C99A3D);box-shadow:0 6px 16px rgba(201,154,61,.35);transition:transform .2s}
+#dlf-cookie-ok:hover{transform:translateY(-2px)}
+@media (max-width:560px){#dlf-cookie-ok{width:100%}}
+@keyframes dlfCookieSube{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#dlf-cookie-banner{animation:none}}
+</style>
+<div id="dlf-cookie-banner" role="dialog" aria-label="Aviso de cookies">
+  <div class="dlf-cookie__card">
+    <p class="dlf-cookie__txt">
+      <strong>Tu privacidad importa</strong>
+      <span>
+        Usamos cookies para que el sitio funcione y para personalizar tu experiencia. Al seguir navegando aceptas su uso. Más información en nuestra
+        <a href="https://club.dulcelabfood.com/terminos.html#cookies" target="_blank" rel="noopener">Política de Cookies</a>.
       </span>
     </p>
-    <button type="button" id="dlf-cookie-ok" style="background:#231C18;border:none;color:#fff;padding:12px 26px;border-radius:100px;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;">Acepto</button>
+    <button type="button" id="dlf-cookie-ok">Acepto</button>
   </div>
 </div>
 <script>
 (function(){
   var KEY = 'dlf-cookie-notice';
+  // Para volver a ver la primera visita (cookies + encuesta): agregar ?reset=1
+  // a la dirección. Solo borra estas marcas del propio navegador.
+  var q = location.search;
+  if (/[?&]reset=1/.test(q)) {
+    try { localStorage.removeItem(KEY); localStorage.removeItem('dlf-encuesta'); sessionStorage.removeItem('dlf-encuesta-cerrada'); } catch(e){}
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch(e){}
+  }
   function yaVisto(){ try{ return localStorage.getItem(KEY) === '1'; }catch(e){ return false; } }
   function marcarVisto(){
     try{ localStorage.setItem(KEY, '1'); }catch(e){}
