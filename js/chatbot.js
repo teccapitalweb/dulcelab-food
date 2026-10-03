@@ -11,7 +11,19 @@
   var WA = '522361223226';
   var CLUB = 'https://club.dulcelabfood.com';
   var CONFIG_URL = 'https://firestore.googleapis.com/v1/projects/dulcelab-club/databases/(default)/documents/config/club';
-  var CHEF = 'assets/chef-guia.webp';
+  // Mientras la membresía no tenga todos sus cursos, el asistente ofrece solo los
+  // que se venden por separado (los de "Cursos en Vivo"). Para que también
+  // recomiende los cursos de la membresía, cambia esto a true.
+  var MOSTRAR_CURSOS_MEMBRESIA = false;
+
+  // La chef cambia de cara según lo que está pasando.
+  var AVATAR = {
+    normal: 'assets/bot-normal.webp',   // sonriendo (por defecto)
+    piensa: 'assets/bot-piensa.webp',   // mientras prepara la respuesta
+    celebra: 'assets/bot-celebra.webp', // cuando encuentra un curso o termina algo
+    ok: 'assets/bot-ok.webp'            // al resolver una duda
+  };
+  var BIENVENIDA = 'assets/bot-saluda.webp';
 
   /* ---------- utilidades ---------- */
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -23,7 +35,7 @@
   /* ---------- datos reales ---------- */
   var cursosClub = null; // promesa (la comparte la encuesta)
   function cargarClub() {
-    if (!cursosClub) cursosClub = (window.dlfCursos ? window.dlfCursos() : Promise.resolve([])).catch(function () { return []; });
+    if (!cursosClub) cursosClub = (MOSTRAR_CURSOS_MEMBRESIA && window.dlfCursos ? window.dlfCursos() : Promise.resolve([])).catch(function () { return []; });
     return cursosClub;
   }
 
@@ -87,17 +99,17 @@
 
   /* ---------- interfaz ---------- */
   var launcher = el('div', 'dlfbot-launcher');
-  var tip = el('div', 'dlfbot-tip', 'Tu asistente virtual');
+  var tip = el('div', 'dlfbot-tip', 'Tu asistente DulceLab');
   var btn = el('button', 'dlfbot-btn'); btn.type = 'button'; btn.setAttribute('aria-label', 'Abrir el asistente virtual');
-  btn.innerHTML = '<img src="' + CHEF + '" width="1086" height="1448" alt=""><span class="dlfbot-btn__dot" aria-hidden="true"></span>';
+  btn.innerHTML = '<img class="dlfbot-cara" src="' + AVATAR.normal + '" width="256" height="256" alt=""><span class="dlfbot-btn__dot" aria-hidden="true"></span>';
   launcher.appendChild(tip); launcher.appendChild(btn);
 
   var panel = el('section', 'dlfbot-panel');
   panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-label', 'Asistente virtual de DulceLab Food');
   panel.innerHTML =
     '<header class="dlfbot-head">' +
-      '<span class="dlfbot-avatar"><img src="' + CHEF + '" width="1086" height="1448" alt=""></span>' +
-      '<div class="dlfbot-head__txt"><small>DULCELAB FOOD</small><strong>Tu guía</strong><span>Guía virtual de cursos</span></div>' +
+      '<span class="dlfbot-avatar"><img class="dlfbot-cara" src="' + AVATAR.normal + '" width="256" height="256" alt=""></span>' +
+      '<div class="dlfbot-head__txt"><small>DULCELAB FOOD</small><strong>Tu guía</strong><span>Asistente de aprendizaje</span></div>' +
       '<button type="button" class="dlfbot-icon" id="dlfbotReiniciar" aria-label="Empezar de nuevo" title="Empezar de nuevo">↻</button>' +
       '<button type="button" class="dlfbot-icon" id="dlfbotCerrar" aria-label="Minimizar" title="Minimizar">—</button>' +
     '</header>' +
@@ -117,6 +129,19 @@
   var abierto = false, iniciado = false, token = 0, cola = Promise.resolve();
 
   function bajar() { msgs.scrollTop = msgs.scrollHeight; }
+
+  // Cara de la chef (botón y encabezado del chat)
+  var animo = 'normal', animoTimer = null;
+  function cara(nombre) {
+    [].forEach.call(document.querySelectorAll('.dlfbot-cara'), function (i) { i.src = AVATAR[nombre] || AVATAR.normal; });
+  }
+  // Cambia el ánimo por unos segundos y luego vuelve a sonreír normal
+  function animar(nombre, ms) {
+    animo = nombre; cara(nombre);
+    clearTimeout(animoTimer);
+    animoTimer = setTimeout(function () { animo = 'normal'; cara('normal'); }, ms || 3000);
+  }
+  function precargarCaras() { Object.keys(AVATAR).forEach(function (k) { var i = new Image(); i.src = AVATAR[k]; }); }
   function espera(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
   // Todo lo que dice el bot pasa por una cola: así nada se mezcla ni se
@@ -127,10 +152,12 @@
     return encolar(function (t) {
       var typing = el('div', 'dlfbot-msg dlfbot-msg--bot dlfbot-typing', '<i></i><i></i><i></i>');
       msgs.appendChild(typing); bajar();
+      cara('piensa');
       return espera(380 + Math.min(html.length * 2, 500)).then(function () {
         if (t !== token) return;
         typing.className = 'dlfbot-msg dlfbot-msg--bot';
         typing.innerHTML = html;
+        cara(animo);
         bajar();
       });
     });
@@ -188,15 +215,16 @@
     return cargarClub().then(function (club) {
       var r = buscar(claves, club);
       if (!r.club.length && !r.vivo.length) {
-        decir('Por ahora no tenemos un curso de <b>' + esc(etiqueta) + '</b> en el catálogo, pero tu interés nos sirve para decidir qué grabar después. 💛<br>Un asesor puede orientarte con lo que sí hay.');
+        decir('Por ahora no tenemos un curso de <b>' + esc(etiqueta) + '</b> disponible, pero tu interés nos sirve para decidir qué ofrecer después. 💛<br>Un asesor puede orientarte con lo que sí hay.');
         return opciones([{ t: 'Hablar con un asesor', fn: asesor }, { t: 'Buscar otra área', fn: elegirArea }, { t: 'Menú principal', fn: menu }]);
       }
-      decir('Esto encontré de <b>' + esc(etiqueta) + '</b>:');
+      animar('celebra', 3500);
+      decir('¡Mira! Esto encontré de <b>' + esc(etiqueta) + '</b>:');
       if (r.club.length) {
         tarjetas(r.club.slice(0, 3).map(function (c) { return { titulo: c.titulo, sub: 'Club VIP' + (c.area ? ' · ' + c.area : '') + (c.tieneGratis ? ' · clases de muestra gratis' : ''), cta: 'Ver', href: CLUB }; }));
       }
       if (r.vivo.length) {
-        decir('Y en vivo:');
+        if (r.club.length) decir('Y en vivo:');
         tarjetas(r.vivo.slice(0, 3).map(function (c) { return { titulo: c.titulo, sub: c.chef + ' · ' + c.precio, cta: 'Inscribirme', href: c.href }; }));
       }
       return opciones([{ t: 'Buscar otra área', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }, { t: 'Menú principal', fn: menu }]);
@@ -256,6 +284,7 @@
   }
   function responderDuda(k) {
     return DUDAS[k].r().then(function (html) {
+      animar('ok', 3000);
       decir(html);
       return opciones([{ t: 'Otra duda', fn: dudas }, { t: 'Buscar un curso', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }]);
     });
@@ -272,6 +301,7 @@
   }
 
   function ruta() {
+    animar('celebra', 3000);
     decir('¡Va! Son 6 preguntas rápidas y te armo una ruta con los cursos que sí tenemos. Te llevo a la encuesta. 👇');
     return encolar(function () {
       return espera(500).then(function () { cerrarPanel(); if (window.dlfAbrirEncuesta) window.dlfAbrirEncuesta(); });
@@ -298,14 +328,16 @@
   /* ---------- abrir / cerrar / reiniciar ---------- */
   function iniciar() {
     token += 1; cola = Promise.resolve(); msgs.innerHTML = ''; iniciado = true;
-    decir('¡Hola! Soy tu guía virtual. 👩‍🍳 Te ayudo a encontrar el curso que de verdad te sirva y a resolver tus dudas.');
+    clearTimeout(animoTimer); animo = 'normal'; cara('normal');
+    var hola = el('img', 'dlfbot-bienvenida'); hola.src = BIENVENIDA; hola.width = 560; hola.height = 700; hola.alt = '¡Hola! Soy tu guía DulceLab'; msgs.appendChild(hola);
+    decir('Te ayudo a encontrar el curso que de verdad te sirva y a resolver tus dudas.');
     menu('¿Qué te gustaría hacer?');
   }
   function abrirPanel() {
     abierto = true; panel.classList.add('is-open'); launcher.classList.add('is-oculto');
     try { sessionStorage.setItem('dlf-bot-tip', '1'); } catch (e) {}
     if (!iniciado) iniciar();
-    cargarClub(); cargarPrecios();
+    precargarCaras(); cargarClub(); cargarPrecios();
     setTimeout(function () { try { input.focus({ preventScroll: true }); } catch (e) {} }, 200);
   }
   function cerrarPanel() { abierto = false; panel.classList.remove('is-open'); launcher.classList.remove('is-oculto'); tip.hidden = true; }
