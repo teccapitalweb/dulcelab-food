@@ -925,7 +925,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .about__journey li span{font-size:.76rem;line-height:1.4;color:rgba(255,243,229,.8)}
 .btn--gold{justify-self:center;color:var(--chocolate);background:var(--dorado);border-color:var(--dorado)}
 .btn--gold:hover{filter:brightness(1.08);transform:translateY(-2px)}
-.about__media{perspective:1200px}
+.about__media{position:relative;perspective:1200px}
+.about__media > .about__journey{margin-top:clamp(1.5rem,3vw,2rem)}
 .media--about{
   aspect-ratio:4/3;min-height:100%;
   border:1px solid var(--glass-brd-hi);
@@ -1120,13 +1121,16 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .section--about .section__inner{max-width:1440px}
   .about{
     grid-template-columns:minmax(0,1.35fr) minmax(440px,.85fr);
-    grid-template-areas:"text media" "quote journey";
+    grid-template-areas:"text media" "quote .";
     gap:clamp(1.5rem,2.5vw,2.4rem) clamp(2.5rem,4vw,4rem);
   }
   .about__text{grid-area:text}
   .about__media{grid-area:media}
-  .about .quote{grid-area:quote;margin-top:0;align-self:stretch}
-  .about__journey{grid-area:journey;align-self:stretch}
+  .about .quote{grid-area:quote;margin-top:0;align-self:start}
+  .about__media > .about__journey{
+    position:absolute;z-index:1;top:calc(100% + clamp(1.25rem,2vw,1.75rem));left:0;
+    width:100%;margin-top:0;
+  }
   .vip{grid-template-columns:.9fr 1.1fr;gap:clamp(2.5rem,4vw,4rem)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
   .about__cards.about__cards--essence{grid-template-columns:repeat(3,minmax(0,1fr))}
