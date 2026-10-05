@@ -843,6 +843,19 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 /* ---------- 16. Quiénes Somos ---------- */
 .about{display:grid;gap:clamp(2rem,4vw,3rem);align-items:center}
 .about__cards{display:grid;gap:clamp(1rem,2vw,1.4rem);margin-top:clamp(1.4rem,3vw,2rem)}
+.about__eyebrow{
+  display:inline-flex;padding:.48rem .9rem;border-radius:var(--r-pill);
+  color:var(--frambuesa);background:color-mix(in srgb,var(--frambuesa) 9%,var(--glass-bg));
+  border:1px solid color-mix(in srgb,var(--frambuesa) 24%,transparent);
+  font-size:.68rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.85rem;
+}
+.about__lead{max-width:62ch;font-size:clamp(1rem,.94rem + .45vw,1.22rem);line-height:1.55;color:var(--text-soft);text-wrap:balance}
+.about__cards--essence .card--mv{display:flex;flex-direction:column;min-height:100%;padding:clamp(1.25rem,2.3vw,1.75rem)}
+.about__cards--essence .card__title{font-size:clamp(1.3rem,1.05rem + .55vw,1.7rem);margin-bottom:.7rem}
+.about__cards--essence .card__body{font-size:.9rem;line-height:1.62}
+.about__values{display:grid;gap:.62rem;margin:0;padding:0;list-style:none}
+.about__values li{padding-bottom:.62rem;color:var(--text-soft);font-size:.9rem;line-height:1.4;border-bottom:1px solid var(--glass-brd)}
+.about__values li:last-child{padding-bottom:0;border-bottom:0}
 .quote{
   position:relative;margin-top:clamp(1.2rem,2.5vw,1.8rem);
   padding:clamp(1.2rem,2.4vw,1.7rem) clamp(1.2rem,2.4vw,1.9rem);
@@ -858,6 +871,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   font-size:clamp(.98rem,.92rem + .35vw,1.15rem);
   font-weight:300;font-style:italic;line-height:1.65;text-wrap:balance;
 }
+.quote cite{display:block;margin-top:.8rem;text-align:right;font-style:normal;font-weight:800;color:var(--frambuesa);font-size:.84rem}
 .about__media{perspective:1200px}
 .media--about{
   aspect-ratio:4/5;
@@ -1035,6 +1049,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 @media (min-width:768px){
   .grid--3{grid-template-columns:repeat(2,1fr)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
+  .about__cards--essence{grid-template-columns:repeat(3,1fr)}
   .band__list{grid-template-columns:repeat(2,1fr);gap:.85rem}
   .lightbox__close{
     top:calc(1.5rem + env(safe-area-inset-top, 0px));
@@ -1049,6 +1064,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .about{grid-template-columns:1.15fr .85fr;gap:clamp(2.5rem,4vw,4rem)}
   .vip{grid-template-columns:.9fr 1.1fr;gap:clamp(2.5rem,4vw,4rem)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
+  .about__cards.about__cards--essence{grid-template-columns:repeat(3,minmax(0,1fr))}
   .band__list{grid-template-columns:repeat(3,1fr)}
 }
 
