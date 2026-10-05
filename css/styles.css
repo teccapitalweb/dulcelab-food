@@ -1372,7 +1372,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .encuesta__receta-txt{font-size:.68rem}
   .encuesta__ingredientes{font-size:.88rem}
   .encuesta__lesson{display:block}
-  .encuesta__mentor{display:flex;align-items:center;gap:.6rem;min-height:0;margin-bottom:.85rem;padding:.5rem .75rem .5rem .9rem;border-radius:1rem;overflow:hidden;background:color-mix(in srgb,var(--frambuesa) 6%,var(--glass-bg));border:1px solid var(--glass-brd)}
+  .encuesta__mentor{display:flex;align-items:center;gap:.6rem;min-height:0;margin-bottom:.85rem;padding:.5rem .75rem .5rem .9rem;overflow:visible;background:transparent;border:0}
   .encuesta__mentor img{position:static;order:2;transform:none;width:auto;height:6.4rem;max-width:none;flex-shrink:0;margin-bottom:-.5rem;filter:none}
   .encuesta__mentor-talk{position:static;flex:1;min-width:0;padding:0;background:transparent;border:0;box-shadow:none}
   .encuesta__mentor-talk p{font-size:.78rem}.encuesta__mentor-talk span{font-size:.6rem}

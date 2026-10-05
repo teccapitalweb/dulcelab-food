@@ -201,6 +201,7 @@
       { t: 'Conocer la membresía', fn: membresia },
       { t: 'Ver cursos en vivo', fn: enVivo },
       { t: 'Resolver una duda', fn: dudas },
+      { t: 'Conceptos gastronómicos', fn: conceptos },
       { t: 'Descubrir mi ruta', fn: ruta },
       { t: 'Hablar con un asesor', fn: asesor }
     ]);
@@ -263,6 +264,40 @@
     });
   }
 
+  // Respuestas breves para dudas generales. No requieren IA ni conexión a
+  // ningún servicio externo: amplían lo que la guía puede explicar por sí sola.
+  var CONCEPTOS = {
+    reposteria: { t: '¿Qué es repostería?', claves: ['reposteria', 'pasteleria', 'postre', 'postres'], r: 'La <b>repostería</b> es el área dedicada a preparar postres, pasteles, galletas, panes dulces, decoraciones y otras piezas dulces. Combina técnica, precisión en medidas, horneado, sabor y presentación.' },
+    catering: { t: '¿Qué es catering?', claves: ['catering', 'banquete', 'banquetes', 'evento', 'eventos'], r: 'El <b>catering</b> es el servicio profesional de alimentos y bebidas para eventos. Incluye planear el menú, calcular porciones y costos, preparar, transportar, montar y atender a las personas invitadas.' },
+    panaderia: { t: '¿Qué es panadería?', claves: ['panaderia', 'pan', 'masas', 'masa madre', 'fermentacion'], r: 'La <b>panadería</b> trabaja masas y panes: ingredientes, amasado, fermentación, formado y horneado. La temperatura, el tiempo y las proporciones hacen una gran diferencia en el resultado.' },
+    gastronomia: { t: '¿Qué es gastronomía?', claves: ['gastronomia', 'gastronomico', 'chef', 'cocinar'], r: 'La <b>gastronomía</b> une cocina, técnica, cultura, servicio y negocio. No es solo preparar alimentos: también implica higiene, organización, costos, experiencia del cliente y mejora continua.' },
+    inocuidad: { t: '¿Qué es inocuidad alimentaria?', claves: ['inocuidad', 'higiene', 'contaminacion', 'contaminacion cruzada', 'bpm', 'buenas practicas'], r: 'La <b>inocuidad alimentaria</b> busca que los alimentos sean seguros para consumir. Incluye higiene personal, limpieza y desinfección, conservación correcta, separación de crudo y cocido, y control de temperaturas.' },
+    costos: { t: '¿Qué es costeo o food cost?', claves: ['costeo', 'costos', 'costo', 'food cost', 'precio de venta'], r: 'El <b>costeo</b> sirve para saber cuánto cuesta producir una receta o platillo. Considera ingredientes, porciones, mermas y otros gastos; con eso puedes definir un precio de venta que deje ganancia.' },
+    merma: { t: '¿Qué es merma?', claves: ['merma', 'mermas', 'desperdicio', 'desperdicios'], r: 'La <b>merma</b> es la pérdida de producto o dinero por caducidad, mala conservación, porciones incorrectas, errores de producción o desperdicio. Medirla ayuda a mejorar la utilidad del negocio.' },
+    inventario: { t: '¿Qué es inventario?', claves: ['inventario', 'inventarios', 'existencias', 'insumos'], r: 'El <b>inventario</b> es el control de los insumos que tienes: qué entra, qué sale, cuánto queda y qué está por caducar. Ayuda a comprar mejor, evitar faltantes y reducir mermas.' },
+    estandarizacion: { t: '¿Qué es estandarizar una receta?', claves: ['estandarizar', 'estandarizacion', 'receta estandar', 'porciones'], r: '<b>Estandarizar una receta</b> es dejar definidos ingredientes, cantidades, proceso, rendimiento, porción y costo. Así el producto sale igual aunque lo prepare otra persona.' },
+    emprendimiento: { t: '¿Qué es emprender en gastronomía?', claves: ['emprender', 'emprendimiento', 'negocio', 'vender'], r: '<b>Emprender en gastronomía</b> es convertir una habilidad culinaria en un proyecto sostenible: identificar clientes, diseñar una oferta, calcular costos y precios, organizar producción y vender con claridad.' }
+  };
+
+  function responderConcepto(k) {
+    var c = CONCEPTOS[k];
+    if (!c) return;
+    animar('ok', 3000);
+    decir(c.r);
+    return opciones([{ t: 'Otro concepto', fn: conceptos }, { t: 'Buscar un curso', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }]);
+  }
+  function conceptos() {
+    decir('Claro. Elige un tema o escríbeme una pregunta como «¿qué es catering?»');
+    return opciones(Object.keys(CONCEPTOS).map(function (k) { return { t: CONCEPTOS[k].t.replace(/^¿Qué es |\?$/g, ''), fn: function () { responderConcepto(k); } }; }).concat([{ t: 'Menú principal', fn: menu }]));
+  }
+  function conceptoEn(texto) {
+    var pideExplicacion = /que es|que significa|explic|dime|informacion|para que sirve|definicion|quiero saber/.test(texto);
+    if (!pideExplicacion) return null;
+    return Object.keys(CONCEPTOS).filter(function (k) {
+      return CONCEPTOS[k].claves.some(function (palabra) { return texto.indexOf(palabra) !== -1; });
+    })[0] || null;
+  }
+
   var DUDAS = {
     prueba: { t: '¿Cómo funciona la prueba gratuita?', r: function () { return Promise.resolve('Creas tu cuenta en el Club VIP <b>sin tarjeta</b> y puedes ver las primeras clases de los cursos sin costo. Activas tu membresía cuando quieras.'); } },
     precio: { t: '¿Cuánto cuesta?', r: function () {
@@ -319,7 +354,10 @@
     if (/cuanto (cuesta|cobran|es|vale|pago)|cuanto sale|mensual|anual|pagar/.test(t) || /^precio(s)?( de)?( la)?( membresia| curso| cursos)?$/.test(t)) return responderDuda('precio');
     if (/membres|club|vip|suscri/.test(t)) return membresia();
     if (/en vivo|clase|meet|horario|fecha|cuando (inicia|empieza|es)|modalidad/.test(t)) return /como/.test(t) ? responderDuda('clases') : enVivo();
+    if (/(que|cuales|ver|explic).*curso|catalogo/.test(t)) return verTodos();
     if (/ruta|encuesta|recomiend/.test(t)) return ruta();
+    var concepto = conceptoEn(t);
+    if (concepto) return responderConcepto(concepto);
     var claves = clavesDeTexto(texto);
     if (!claves.length) { decir('No te entendí del todo. Elige una opción o escribe una palabra, por ejemplo «costos» o «panadería».'); return menu(); }
     return mostrarResultados(claves, texto.trim());

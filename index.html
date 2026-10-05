@@ -785,7 +785,12 @@
 .dlf-cookie__txt a{color:#E2B965;font-weight:700;text-decoration:underline}
 #dlf-cookie-ok{flex-shrink:0;border:0;border-radius:100px;padding:.7rem 2.1rem;font-size:.9rem;font-weight:800;cursor:pointer;color:#231C18;background:linear-gradient(135deg,#E2B965,#C99A3D);box-shadow:0 6px 16px rgba(201,154,61,.35);transition:transform .2s}
 #dlf-cookie-ok:hover{transform:translateY(-2px)}
-@media (max-width:560px){#dlf-cookie-ok{width:100%}}
+@media (max-width:560px){
+  .dlf-cookie__card{padding:.8rem .9rem;gap:.65rem;border-radius:1.05rem}
+  .dlf-cookie__txt{min-width:0}.dlf-cookie__txt strong{font-size:.88rem}
+  .dlf-cookie__txt span{font-size:.75rem;line-height:1.35}
+  #dlf-cookie-ok{width:100%;padding:.6rem 1.2rem}
+}
 @keyframes dlfCookieSube{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#dlf-cookie-banner{animation:none}}
 </style>
