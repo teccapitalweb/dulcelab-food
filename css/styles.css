@@ -841,7 +841,14 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .grid--3{grid-template-columns:1fr}
 
 /* ---------- 16. Quiénes Somos ---------- */
-.about{display:grid;gap:clamp(2rem,4vw,3rem);align-items:center}
+.section--about{
+  overflow:hidden;
+  background:
+    linear-gradient(rgba(247,238,236,.86),rgba(247,238,236,.86)),
+    url("../assets/quienes-somos-fondo.png") center/cover no-repeat;
+}
+.section--about .section__inner{position:relative}
+.about{display:grid;gap:clamp(2rem,4vw,3rem);align-items:start}
 .about__cards{display:grid;gap:clamp(1rem,2vw,1.4rem);margin-top:clamp(1.4rem,3vw,2rem)}
 .about__eyebrow{
   display:inline-flex;padding:.48rem .9rem;border-radius:var(--r-pill);
@@ -850,7 +857,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   font-size:.68rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.85rem;
 }
 .about__lead{max-width:62ch;font-size:clamp(1rem,.94rem + .45vw,1.22rem);line-height:1.55;color:var(--text-soft);text-wrap:balance}
-.about__cards--essence .card--mv{display:flex;flex-direction:column;min-height:100%;padding:clamp(1.25rem,2.3vw,1.75rem)}
+.about__cards--essence .card--mv{display:flex;flex-direction:column;min-height:100%;padding:clamp(1.25rem,2.3vw,1.75rem);background:rgba(255,253,252,.78)}
 .about__cards--essence .card__title{font-size:clamp(1.3rem,1.05rem + .55vw,1.7rem);margin-bottom:.7rem}
 .about__cards--essence .card__body{font-size:.9rem;line-height:1.62}
 .about__values{display:grid;gap:.62rem;margin:0;padding:0;list-style:none}
@@ -872,9 +879,17 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   font-weight:300;font-style:italic;line-height:1.65;text-wrap:balance;
 }
 .quote cite{display:block;margin-top:.8rem;text-align:right;font-style:normal;font-weight:800;color:var(--frambuesa);font-size:.84rem}
+.about__stats{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  overflow:hidden;border-radius:var(--r-lg);color:var(--crema);
+  background:var(--frambuesa);box-shadow:var(--glass-shadow);
+}
+.about__stats div{display:grid;gap:.24rem;place-items:center;padding:1.1rem .7rem;text-align:center;background:rgba(61,7,22,.18)}
+.about__stats strong{font-family:var(--ff-title);font-size:clamp(1.03rem,.92rem + .45vw,1.35rem);line-height:1}
+.about__stats span{font-size:.76rem;line-height:1.25;color:rgba(255,243,229,.82)}
 .about__media{perspective:1200px}
 .media--about{
-  aspect-ratio:4/5;
+  aspect-ratio:4/5;min-height:100%;
   border:1px solid var(--glass-brd-hi);
   box-shadow:var(--glass-shadow);
   transform-style:preserve-3d;
@@ -1049,7 +1064,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 @media (min-width:768px){
   .grid--3{grid-template-columns:repeat(2,1fr)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
-  .about__cards--essence{grid-template-columns:repeat(3,1fr)}
+  .about__cards--essence{grid-template-columns:repeat(2,1fr)}
+  .about__stats{grid-template-columns:repeat(4,1fr)}
   .band__list{grid-template-columns:repeat(2,1fr);gap:.85rem}
   .lightbox__close{
     top:calc(1.5rem + env(safe-area-inset-top, 0px));
@@ -1061,7 +1077,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 @media (min-width:1200px){
   .grid--3{grid-template-columns:repeat(3,1fr)}
-  .about{grid-template-columns:1.15fr .85fr;gap:clamp(2.5rem,4vw,4rem)}
+  .about{
+    grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);
+    grid-template-areas:"text media" "quote stats";
+    gap:clamp(1.5rem,2.5vw,2.4rem) clamp(2.5rem,4vw,4rem);
+  }
+  .about__text{grid-area:text}
+  .about__media{grid-area:media}
+  .about .quote{grid-area:quote;margin-top:0;align-self:stretch}
+  .about__stats{grid-area:stats;align-self:stretch}
   .vip{grid-template-columns:.9fr 1.1fr;gap:clamp(2.5rem,4vw,4rem)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
   .about__cards.about__cards--essence{grid-template-columns:repeat(3,minmax(0,1fr))}
