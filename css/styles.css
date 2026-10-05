@@ -870,6 +870,11 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
     url("../assets/quienes-somos-fondo.png") center/100% 100% no-repeat;
 }
 .section--about .section__inner{position:relative}
+:root[data-theme="dark"] .section--about{
+  background:
+    linear-gradient(rgba(26,10,16,.91),rgba(26,10,16,.91)),
+    url("../assets/quienes-somos-fondo.png") center/100% 100% no-repeat;
+}
 .about{display:grid;gap:clamp(2rem,4vw,3rem);align-items:start}
 .about__cards{display:grid;gap:clamp(1rem,2vw,1.4rem);margin-top:clamp(1.4rem,3vw,2rem)}
 .about__eyebrow{
@@ -880,6 +885,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 .about__lead{max-width:62ch;font-size:clamp(1rem,.94rem + .45vw,1.22rem);line-height:1.55;color:var(--text-soft);text-wrap:balance}
 .about__cards--essence .card--mv{display:flex;flex-direction:column;min-height:100%;padding:clamp(1.25rem,2.3vw,1.75rem);background:rgba(255,253,252,.78)}
+:root[data-theme="dark"] .about__cards--essence .card--mv{background:rgba(61,16,29,.82)}
 .about__cards--essence .card__title{font-size:clamp(1.3rem,1.05rem + .55vw,1.7rem);margin-bottom:.7rem}
 .about__cards--essence .card__body{font-size:.9rem;line-height:1.62}
 .about__values{display:grid;gap:.62rem;margin:0;padding:0;list-style:none}
@@ -901,6 +907,23 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   font-weight:300;font-style:italic;line-height:1.65;text-wrap:balance;
 }
 .quote cite{display:block;margin-top:.8rem;text-align:right;font-style:normal;font-weight:800;color:var(--frambuesa);font-size:.84rem}
+.about__journey{
+  display:grid;gap:1.15rem;padding:clamp(1.35rem,2.8vw,2rem);
+  border-radius:var(--r-lg);color:var(--crema);
+  background:linear-gradient(135deg,#6B1526,#3F0B18);
+  box-shadow:var(--glass-shadow),var(--glow-frambuesa);
+}
+.about__journey h3{margin:0;font-size:clamp(1.3rem,1.05rem + .6vw,1.8rem);text-align:center;color:var(--crema)}
+.about__journey h3 span{color:var(--dorado)}
+.about__journey ol{display:grid;gap:1rem;margin:0;padding:0;list-style:none}
+.about__journey li{display:grid;grid-template-columns:auto 1fr;column-gap:.6rem;align-content:start}
+.about__journey b{grid-row:span 2;font-family:var(--ff-title);font-size:1.3rem;color:var(--dorado);line-height:1}
+.about__journey strong{font-size:1rem;color:var(--crema)}
+.about__journey li span{font-size:.78rem;line-height:1.4;color:rgba(255,243,229,.78)}
+.btn--gold{justify-self:center;color:var(--chocolate);background:var(--dorado);border-color:var(--dorado)}
+.btn--gold:hover{filter:brightness(1.08);transform:translateY(-2px)}
+.about__signature{margin:0;text-align:center;font-family:'Caveat',cursive;font-size:clamp(1.45rem,1.1rem + 1.2vw,2.1rem);color:var(--frambuesa)}
+:root[data-theme="dark"] .about__signature{color:var(--dorado)}
 .about__media{perspective:1200px}
 .media--about{
   aspect-ratio:4/3;min-height:100%;
@@ -1079,6 +1102,9 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .grid--3{grid-template-columns:repeat(2,1fr)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
   .about__cards--essence{grid-template-columns:repeat(2,1fr)}
+  .about__journey ol{grid-template-columns:repeat(3,1fr);gap:.7rem}
+  .about__journey li{grid-template-columns:1fr;gap:.25rem}
+  .about__journey b{grid-row:auto}
   .band__list{grid-template-columns:repeat(2,1fr);gap:.85rem}
   .lightbox__close{
     top:calc(1.5rem + env(safe-area-inset-top, 0px));
@@ -1093,12 +1119,14 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .section--about .section__inner{max-width:1440px}
   .about{
     grid-template-columns:minmax(0,1.35fr) minmax(440px,.85fr);
-    grid-template-areas:"text media" "quote media";
+    grid-template-areas:"text media" "quote journey" "signature signature";
     gap:clamp(1.5rem,2.5vw,2.4rem) clamp(2.5rem,4vw,4rem);
   }
   .about__text{grid-area:text}
   .about__media{grid-area:media}
   .about .quote{grid-area:quote;margin-top:0;align-self:stretch}
+  .about__journey{grid-area:journey;align-self:stretch}
+  .about__signature{grid-area:signature}
   .vip{grid-template-columns:.9fr 1.1fr;gap:clamp(2.5rem,4vw,4rem)}
   .about__cards{grid-template-columns:repeat(2,1fr)}
   .about__cards.about__cards--essence{grid-template-columns:repeat(3,minmax(0,1fr))}
