@@ -531,6 +531,28 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .hero__pill--3{bottom:28%;right:21%;animation-delay:-5.2s}
 .hero__pill--4{bottom:16%;right:6%;animation-delay:-2.1s}
 
+/* En pantallas amplias la chef ocupa el lado izquierdo de la fotografía.
+   El mensaje se sitúa en el espacio libre de la derecha para no cubrirla. */
+@media (min-width:981px){
+  .hero--photo::before{
+    background:linear-gradient(260deg,
+      color-mix(in srgb,var(--crema) 64%,transparent) 0%,
+      color-mix(in srgb,var(--crema) 42%,transparent) 28%,
+      color-mix(in srgb,var(--crema) 12%,transparent) 52%,
+      transparent 70%);
+  }
+  :root[data-theme="dark"] .hero--photo::before{
+    background:linear-gradient(260deg,
+      color-mix(in srgb,var(--chocolate) 68%,transparent) 0%,
+      color-mix(in srgb,var(--chocolate) 46%,transparent) 28%,
+      color-mix(in srgb,var(--chocolate) 14%,transparent) 52%,
+      transparent 70%);
+  }
+  .hero__wrap{display:flex;justify-content:flex-end}
+  .hero__copy{margin-left:auto}
+  .hero__pill{display:none}
+}
+
 @media (max-width:980px){
   /* La foto deja de ser fondo de pantalla completa: ahora es una franja
      (con las categorías encima) de alto fijo al principio del hero, y el
