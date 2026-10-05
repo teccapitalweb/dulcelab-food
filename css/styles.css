@@ -844,8 +844,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .section--about{
   overflow:hidden;
   background:
-    linear-gradient(rgba(247,238,236,.86),rgba(247,238,236,.86)),
-    url("../assets/quienes-somos-fondo.png") center/cover no-repeat;
+    linear-gradient(rgba(247,238,236,.68),rgba(247,238,236,.68)),
+    url("../assets/quienes-somos-fondo.png") center/100% 100% no-repeat;
 }
 .section--about .section__inner{position:relative}
 .about{display:grid;gap:clamp(2rem,4vw,3rem);align-items:start}
@@ -1077,8 +1077,9 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 @media (min-width:1200px){
   .grid--3{grid-template-columns:repeat(3,1fr)}
+  .section--about .section__inner{max-width:1440px}
   .about{
-    grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);
+    grid-template-columns:minmax(0,1.35fr) minmax(440px,.85fr);
     grid-template-areas:"text media" "quote stats";
     gap:clamp(1.5rem,2.5vw,2.4rem) clamp(2.5rem,4vw,4rem);
   }
