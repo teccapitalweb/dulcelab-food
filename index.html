@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=20261006-19">
+<link rel="stylesheet" href="css/styles.css?v=20261007-1">
 <style>
   /* Botón de acceso al Club VIP (club.dulcelabfood.com) — mismo layout que el de WhatsApp, color propio */
   .btn--vip{background:var(--dorado);color:var(--chocolate);border:none;font-weight:700}
@@ -511,164 +511,175 @@
       <p class="section__sub rv">Inician el 17 de agosto · Modalidad Google Meet · Certificado digital con QR y folio válido</p>
     </header>
 
-    <div class="grid grid--3" id="coursesGrid" data-rv-group>
+    <div class="carrusel" id="carruselCursos" role="region" aria-roledescription="carrusel" aria-label="Cursos en vivo">
+      <div class="carrusel__viewport" tabindex="0">
+        <div class="carrusel__track" id="coursesGrid" data-rv-group>
 
-      <article class="card card--course rv tilt-card">
-        <button class="course__flyer media" type="button"
-                data-lightbox="assets/flyers/diseno-menus.png"
-                aria-label="Ampliar flyer del curso Diseño Profesional de Menús">
-          <img src="assets/flyers/diseno-menus.png" width="1000" height="1000"
-               alt="Flyer del curso Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios"
-               loading="lazy" decoding="async"
-               onload="this.parentNode.classList.add('is-loaded')"
-               onerror="this.parentNode.classList.add('is-broken')">
-          <span class="media__fb" aria-hidden="true">
-            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
-            <span class="media__fb-label">Diseño Profesional de Menús</span>
-          </span>
-          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
-        </button>
-        <div class="course__body">
-          <h3 class="card__title card__title--course">Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios</h3>
-          <p class="course__chef">Chef Eduardo Lastra Vargas</p>
-          <p class="course__price">$550 <span>MXN</span></p>
-          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
-             href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Dise%C3%B1o%20Profesional%20de%20Men%C3%BAs%3A%20Planeaci%C3%B3n%2C%20Estructura%20y%20Fijaci%C3%B3n%20de%20Precios">
-            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
-          </a>
+          <article class="card card--course rv tilt-card">
+            <button class="course__flyer media" type="button"
+                    data-lightbox="assets/flyers/diseno-menus.png"
+                    aria-label="Ampliar flyer del curso Diseño Profesional de Menús">
+              <img src="assets/flyers/diseno-menus.png" width="1000" height="1000"
+                   alt="Flyer del curso Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios"
+                   loading="lazy" decoding="async"
+                   onload="this.parentNode.classList.add('is-loaded')"
+                   onerror="this.parentNode.classList.add('is-broken')">
+              <span class="media__fb" aria-hidden="true">
+                <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+                <span class="media__fb-label">Diseño Profesional de Menús</span>
+              </span>
+              <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+            </button>
+            <div class="course__body">
+              <h3 class="card__title card__title--course">Diseño Profesional de Menús: Planeación, Estructura y Fijación de Precios</h3>
+              <p class="course__chef">Chef Eduardo Lastra Vargas</p>
+              <p class="course__price">$550 <span>MXN</span></p>
+              <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+                 href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Dise%C3%B1o%20Profesional%20de%20Men%C3%BAs%3A%20Planeaci%C3%B3n%2C%20Estructura%20y%20Fijaci%C3%B3n%20de%20Precios">
+                <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card card--course rv tilt-card">
+            <button class="course__flyer media" type="button"
+                    data-lightbox="assets/flyers/pan-artesanal.png"
+                    aria-label="Ampliar flyer del curso Pan Artesanal con Masa Madre">
+              <img src="assets/flyers/pan-artesanal.png" width="1000" height="1000"
+                   alt="Flyer del curso Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación"
+                   loading="lazy" decoding="async"
+                   onload="this.parentNode.classList.add('is-loaded')"
+                   onerror="this.parentNode.classList.add('is-broken')">
+              <span class="media__fb" aria-hidden="true">
+                <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+                <span class="media__fb-label">Pan Artesanal con Masa Madre</span>
+              </span>
+              <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+            </button>
+            <div class="course__body">
+              <h3 class="card__title card__title--course">Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación</h3>
+              <p class="course__chef">Chef Oscar Benitez Elioza</p>
+              <p class="course__price">$550 <span>MXN</span></p>
+              <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+                 href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Pan%20Artesanal%20con%20Masa%20Madre%3A%20T%C3%A9cnicas%20de%20Elaboraci%C3%B3n%20y%20Fermentaci%C3%B3n">
+                <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card card--course rv tilt-card">
+            <button class="course__flyer media" type="button"
+                    data-lightbox="assets/flyers/catering-profesional.png"
+                    aria-label="Ampliar flyer del curso Catering Profesional">
+              <img src="assets/flyers/catering-profesional.png" width="1000" height="1000"
+                   alt="Flyer del curso Catering Profesional: Planeación y Operación de Servicios Gastronómicos"
+                   loading="lazy" decoding="async"
+                   onload="this.parentNode.classList.add('is-loaded')"
+                   onerror="this.parentNode.classList.add('is-broken')">
+              <span class="media__fb" aria-hidden="true">
+                <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+                <span class="media__fb-label">Catering Profesional</span>
+              </span>
+              <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+            </button>
+            <div class="course__body">
+              <h3 class="card__title card__title--course">Catering Profesional: Planeación y Operación de Servicios Gastronómicos</h3>
+              <p class="course__chef">Chef Carlos Efrain Rodriguez Vazquez</p>
+              <p class="course__price">$550 <span>MXN</span></p>
+              <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+                 href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Catering%20Profesional%3A%20Planeaci%C3%B3n%20y%20Operaci%C3%B3n%20de%20Servicios%20Gastron%C3%B3micos">
+                <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card card--course rv tilt-card">
+            <button class="course__flyer media" type="button"
+                    data-lightbox="assets/flyers/cocina-mexicana.png"
+                    aria-label="Ampliar flyer del curso Cocina Mexicana Tradicional">
+              <img src="assets/flyers/cocina-mexicana.png" width="1000" height="1000"
+                   alt="Flyer del curso Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones"
+                   loading="lazy" decoding="async"
+                   onload="this.parentNode.classList.add('is-loaded')"
+                   onerror="this.parentNode.classList.add('is-broken')">
+              <span class="media__fb" aria-hidden="true">
+                <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+                <span class="media__fb-label">Cocina Mexicana Tradicional</span>
+              </span>
+              <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+            </button>
+            <div class="course__body">
+              <h3 class="card__title card__title--course">Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones</h3>
+              <p class="course__chef">Chef Rodrigo Rojas Torres</p>
+              <p class="course__price">$550 <span>MXN</span></p>
+              <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+                 href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Cocina%20Mexicana%20Tradicional%3A%20T%C3%A9cnicas%2C%20Criterios%20y%20Preparaciones">
+                <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card card--course rv tilt-card">
+            <button class="course__flyer media" type="button"
+                    data-lightbox="assets/flyers/control-costos.png"
+                    aria-label="Ampliar flyer del curso Control Estratégico de Costos">
+              <img src="assets/flyers/control-costos.png" width="1000" height="1000"
+                   alt="Flyer del curso Control Estratégico de Costos en Negocios de Alimentos y Bebidas"
+                   loading="lazy" decoding="async"
+                   onload="this.parentNode.classList.add('is-loaded')"
+                   onerror="this.parentNode.classList.add('is-broken')">
+              <span class="media__fb" aria-hidden="true">
+                <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+                <span class="media__fb-label">Control Estratégico de Costos</span>
+              </span>
+              <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+            </button>
+            <div class="course__body">
+              <h3 class="card__title card__title--course">Control Estratégico de Costos en Negocios de Alimentos y Bebidas</h3>
+              <p class="course__chef">Chef Carlos Efrain Rodriguez Vazquez</p>
+              <p class="course__price">$550 <span>MXN</span></p>
+              <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+                 href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Control%20Estrat%C3%A9gico%20de%20Costos%20en%20Negocios%20de%20Alimentos%20y%20Bebidas">
+                <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="card card--course rv tilt-card">
+            <button class="course__flyer media" type="button"
+                    data-lightbox="assets/flyers/decoracion-pasteles.png"
+                    aria-label="Ampliar flyer del curso Decoración Profesional de Pasteles">
+              <img src="assets/flyers/decoracion-pasteles.png" width="1000" height="1000"
+                   alt="Flyer del curso Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación"
+                   loading="lazy" decoding="async"
+                   onload="this.parentNode.classList.add('is-loaded')"
+                   onerror="this.parentNode.classList.add('is-broken')">
+              <span class="media__fb" aria-hidden="true">
+                <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
+                <span class="media__fb-label">Decoración Profesional de Pasteles</span>
+              </span>
+              <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
+            </button>
+            <div class="course__body">
+              <h3 class="card__title card__title--course">Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación</h3>
+              <p class="course__chef">Chef Ismael Galicia Sanchez</p>
+              <p class="course__price">$550 <span>MXN</span></p>
+              <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
+                 href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Decoraci%C3%B3n%20Profesional%20de%20Pasteles%3A%20T%C3%A9cnicas%2C%20Acabados%20y%20Presentaci%C3%B3n">
+                <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
+              </a>
+            </div>
+          </article>
+
         </div>
-      </article>
-
-      <article class="card card--course rv tilt-card">
-        <button class="course__flyer media" type="button"
-                data-lightbox="assets/flyers/pan-artesanal.png"
-                aria-label="Ampliar flyer del curso Pan Artesanal con Masa Madre">
-          <img src="assets/flyers/pan-artesanal.png" width="1000" height="1000"
-               alt="Flyer del curso Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación"
-               loading="lazy" decoding="async"
-               onload="this.parentNode.classList.add('is-loaded')"
-               onerror="this.parentNode.classList.add('is-broken')">
-          <span class="media__fb" aria-hidden="true">
-            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
-            <span class="media__fb-label">Pan Artesanal con Masa Madre</span>
-          </span>
-          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
-        </button>
-        <div class="course__body">
-          <h3 class="card__title card__title--course">Pan Artesanal con Masa Madre: Técnicas de Elaboración y Fermentación</h3>
-          <p class="course__chef">Chef Oscar Benitez Elioza</p>
-          <p class="course__price">$550 <span>MXN</span></p>
-          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
-             href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Pan%20Artesanal%20con%20Masa%20Madre%3A%20T%C3%A9cnicas%20de%20Elaboraci%C3%B3n%20y%20Fermentaci%C3%B3n">
-            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="card card--course rv tilt-card">
-        <button class="course__flyer media" type="button"
-                data-lightbox="assets/flyers/catering-profesional.png"
-                aria-label="Ampliar flyer del curso Catering Profesional">
-          <img src="assets/flyers/catering-profesional.png" width="1000" height="1000"
-               alt="Flyer del curso Catering Profesional: Planeación y Operación de Servicios Gastronómicos"
-               loading="lazy" decoding="async"
-               onload="this.parentNode.classList.add('is-loaded')"
-               onerror="this.parentNode.classList.add('is-broken')">
-          <span class="media__fb" aria-hidden="true">
-            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
-            <span class="media__fb-label">Catering Profesional</span>
-          </span>
-          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
-        </button>
-        <div class="course__body">
-          <h3 class="card__title card__title--course">Catering Profesional: Planeación y Operación de Servicios Gastronómicos</h3>
-          <p class="course__chef">Chef Carlos Efrain Rodriguez Vazquez</p>
-          <p class="course__price">$550 <span>MXN</span></p>
-          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
-             href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Catering%20Profesional%3A%20Planeaci%C3%B3n%20y%20Operaci%C3%B3n%20de%20Servicios%20Gastron%C3%B3micos">
-            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="card card--course rv tilt-card">
-        <button class="course__flyer media" type="button"
-                data-lightbox="assets/flyers/cocina-mexicana.png"
-                aria-label="Ampliar flyer del curso Cocina Mexicana Tradicional">
-          <img src="assets/flyers/cocina-mexicana.png" width="1000" height="1000"
-               alt="Flyer del curso Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones"
-               loading="lazy" decoding="async"
-               onload="this.parentNode.classList.add('is-loaded')"
-               onerror="this.parentNode.classList.add('is-broken')">
-          <span class="media__fb" aria-hidden="true">
-            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
-            <span class="media__fb-label">Cocina Mexicana Tradicional</span>
-          </span>
-          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
-        </button>
-        <div class="course__body">
-          <h3 class="card__title card__title--course">Cocina Mexicana Tradicional: Técnicas, Criterios y Preparaciones</h3>
-          <p class="course__chef">Chef Rodrigo Rojas Torres</p>
-          <p class="course__price">$550 <span>MXN</span></p>
-          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
-             href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Cocina%20Mexicana%20Tradicional%3A%20T%C3%A9cnicas%2C%20Criterios%20y%20Preparaciones">
-            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="card card--course rv tilt-card">
-        <button class="course__flyer media" type="button"
-                data-lightbox="assets/flyers/control-costos.png"
-                aria-label="Ampliar flyer del curso Control Estratégico de Costos">
-          <img src="assets/flyers/control-costos.png" width="1000" height="1000"
-               alt="Flyer del curso Control Estratégico de Costos en Negocios de Alimentos y Bebidas"
-               loading="lazy" decoding="async"
-               onload="this.parentNode.classList.add('is-loaded')"
-               onerror="this.parentNode.classList.add('is-broken')">
-          <span class="media__fb" aria-hidden="true">
-            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
-            <span class="media__fb-label">Control Estratégico de Costos</span>
-          </span>
-          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
-        </button>
-        <div class="course__body">
-          <h3 class="card__title card__title--course">Control Estratégico de Costos en Negocios de Alimentos y Bebidas</h3>
-          <p class="course__chef">Chef Carlos Efrain Rodriguez Vazquez</p>
-          <p class="course__price">$550 <span>MXN</span></p>
-          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
-             href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Control%20Estrat%C3%A9gico%20de%20Costos%20en%20Negocios%20de%20Alimentos%20y%20Bebidas">
-            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="card card--course rv tilt-card">
-        <button class="course__flyer media" type="button"
-                data-lightbox="assets/flyers/decoracion-pasteles.png"
-                aria-label="Ampliar flyer del curso Decoración Profesional de Pasteles">
-          <img src="assets/flyers/decoracion-pasteles.png" width="1000" height="1000"
-               alt="Flyer del curso Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación"
-               loading="lazy" decoding="async"
-               onload="this.parentNode.classList.add('is-loaded')"
-               onerror="this.parentNode.classList.add('is-broken')">
-          <span class="media__fb" aria-hidden="true">
-            <svg class="ico" aria-hidden="true"><use href="#i-whisk"></use></svg>
-            <span class="media__fb-label">Decoración Profesional de Pasteles</span>
-          </span>
-          <span class="course__zoom" aria-hidden="true"><svg class="ico"><use href="#i-zoom"></use></svg></span>
-        </button>
-        <div class="course__body">
-          <h3 class="card__title card__title--course">Decoración Profesional de Pasteles: Técnicas, Acabados y Presentación</h3>
-          <p class="course__chef">Chef Ismael Galicia Sanchez</p>
-          <p class="course__price">$550 <span>MXN</span></p>
-          <a class="btn btn--primary btn--block" target="_blank" rel="noopener"
-             href="https://wa.me/522361223226?text=Hola%2C%20quiero%20informes%20del%20curso%20Decoraci%C3%B3n%20Profesional%20de%20Pasteles%3A%20T%C3%A9cnicas%2C%20Acabados%20y%20Presentaci%C3%B3n">
-            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"></use></svg><span>Inscribirme por WhatsApp</span>
-          </a>
-        </div>
-      </article>
-
+      </div>
+      <div class="carrusel__controles">
+        <button type="button" class="carrusel__btn" data-dir="-1" aria-label="Cursos anteriores"><svg class="ico" aria-hidden="true"><use href="#i-chev-left"></use></svg></button>
+        <div class="carrusel__puntos" role="group" aria-label="Grupos de cursos"></div>
+        <button type="button" class="carrusel__btn" data-dir="1" aria-label="Cursos siguientes"><svg class="ico" aria-hidden="true"><use href="#i-chev-right"></use></svg></button>
+      </div>
+      <p class="carrusel__estado" aria-live="polite"></p>
+    </div>
     </div>
   </div>
 </section>
@@ -839,6 +850,7 @@
 <script src="js/main.js" defer></script>
 <script src="js/encuesta.js" defer></script>
 <script src="js/chatbot.js" defer></script>
+<script src="js/carrusel.js?v=20261007-2" defer></script>
 <!-- ═══════════════════════════════════════════════════════════════
      Aviso de cookies · DulceLab Food (tarjeta oscura flotante con un solo botón
      "Acepto"; "sigues navegando = aceptas").

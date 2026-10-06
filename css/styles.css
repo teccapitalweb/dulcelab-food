@@ -1240,6 +1240,47 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .lightbox__nav--next{right:calc(.6rem + env(safe-area-inset-right, 0px));top:50%;margin-top:-23px}
 .lightbox__nav[hidden]{display:none}
 
+/* ---------- 17b. Carrusel de Cursos en Vivo ---------- */
+.carrusel{--carr-n:1.12;--carr-gap:1rem;position:relative}
+.carrusel__viewport{
+  overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+  margin-inline:-.75rem;padding:1.1rem .75rem 1.5rem;scroll-padding-inline:.75rem;
+}
+.carrusel__viewport::-webkit-scrollbar{display:none}
+.carrusel__viewport:focus-visible{outline:2px solid var(--frambuesa);outline-offset:-2px;border-radius:var(--r-lg)}
+.carrusel__viewport.is-arrastrando{cursor:grabbing}
+.carrusel__viewport.is-arrastrando .card--course{pointer-events:none}
+.carrusel__track{display:flex;gap:var(--carr-gap)}
+.carrusel__track > .card--course{
+  flex:0 0 calc((100% - (var(--carr-n) - 1) * var(--carr-gap)) / var(--carr-n));
+  min-width:0;scroll-snap-align:start;
+}
+.carrusel__track img{-webkit-user-drag:none;user-select:none}
+.carrusel__controles{display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-top:.2rem}
+.carrusel--sin-nav .carrusel__controles{display:none}
+.carrusel__btn{
+  display:grid;place-items:center;width:2.9rem;height:2.9rem;border-radius:50%;
+  color:var(--frambuesa);background:var(--glass-bg-strong);border:1px solid color-mix(in srgb,var(--frambuesa) 40%,transparent);
+  box-shadow:0 8px 18px -12px rgba(74,14,26,.6);cursor:pointer;
+  transition:background .25s var(--ease), color .25s var(--ease), transform .25s var(--ease), opacity .25s;
+}
+.carrusel__btn .ico{width:1.3rem;height:1.3rem;stroke-width:2.2}
+.carrusel__btn:hover:not(:disabled),.carrusel__btn:focus-visible{background:var(--frambuesa);color:#fff}
+.carrusel__btn:disabled{opacity:.35;cursor:default}
+:root[data-theme="dark"] .carrusel__btn{color:var(--dorado);border-color:rgba(226,185,101,.45)}
+:root[data-theme="dark"] .carrusel__btn:hover:not(:disabled){background:var(--dorado);color:var(--chocolate)}
+.carrusel__puntos{display:flex;align-items:center;gap:.5rem}
+.carrusel__punto{width:.6rem;height:.6rem;padding:0;border:0;border-radius:var(--r-pill);cursor:pointer;
+  background:color-mix(in srgb,var(--frambuesa) 28%,transparent);transition:width .3s var(--ease), background .3s var(--ease)}
+.carrusel__punto.is-activo{width:1.7rem;background:var(--frambuesa)}
+:root[data-theme="dark"] .carrusel__punto{background:rgba(226,185,101,.3)}
+:root[data-theme="dark"] .carrusel__punto.is-activo{background:var(--dorado)}
+.carrusel__estado{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+@media (min-width:768px){.carrusel{--carr-n:2;--carr-gap:1.2rem}}
+@media (min-width:1200px){.carrusel{--carr-n:3;--carr-gap:1.6rem}}
+@media (prefers-reduced-motion:reduce){.carrusel__viewport{scroll-behavior:auto}}
+
 /* ---------- 20. Breakpoints Fase 2 ---------- */
 @media (min-width:768px){
   .grid--3{grid-template-columns:repeat(2,1fr)}
