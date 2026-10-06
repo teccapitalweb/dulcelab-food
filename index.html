@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=20261006-12">
+<link rel="stylesheet" href="css/styles.css?v=20261006-14">
 <style>
   /* Botón de acceso al Club VIP (club.dulcelabfood.com) — mismo layout que el de WhatsApp, color propio */
   .btn--vip{background:var(--dorado);color:var(--chocolate);border:none;font-weight:700}
@@ -145,6 +145,10 @@
       <path d="M3.6 3.4v17.2h17"/>
       <path d="m7 15.8 3.6-4.3 3.1 2.4 4.8-6.1"/>
       <path d="M15.9 7.8h2.6v2.6"/>
+    </symbol>
+    <symbol id="i-book" viewBox="0 0 24 24">
+      <path d="M12 6.2C10.4 4.9 8 4.4 4 4.5v13.6c4-.1 6.4.4 8 1.7 1.6-1.3 4-1.8 8-1.7V4.5c-4-.1-6.4.4-8 1.7Z"/>
+      <path d="M12 6.2v13.6"/>
     </symbol>
     <symbol id="i-eye" viewBox="0 0 24 24">
       <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/>
@@ -354,19 +358,16 @@
 
       <div class="about__cards about__cards--essence">
         <article class="card card--mv rv">
-          <span class="mv__ico" aria-hidden="true"><svg class="ico"><use href="#i-target"></use></svg></span>
           <h3 class="card__title">Misión</h3>
           <p class="card__body">Impulsar el talento gastronómico mediante cursos, asesorías y capacitaciones prácticas de alta calidad, brindando conocimientos, técnicas y herramientas empresariales que permitan a nuestros alumnos perfeccionar sus habilidades, emprender y convertir su pasión por la repostería y la gastronomía en un negocio rentable.</p>
         </article>
 
         <article class="card card--mv rv">
-          <span class="mv__ico mv__ico--oro" aria-hidden="true"><svg class="ico"><use href="#i-eye"></use></svg></span>
           <h3 class="card__title">Visión</h3>
           <p class="card__body">Ser la consultora de capacitación gastronómica número uno en México, reconocida por la calidad de sus programas, la experiencia de sus especialistas, su innovación educativa y su compromiso con el crecimiento profesional y empresarial de cada alumno.</p>
         </article>
 
         <article class="card card--mv card--values rv">
-          <span class="mv__ico" aria-hidden="true"><svg class="ico"><use href="#i-gem"></use></svg></span>
           <h3 class="card__title">Valores</h3>
           <ul class="about__values">
             <li>Calidad educativa</li>
@@ -382,8 +383,8 @@
     <div class="about__media rv">
       <p class="about__nota">Más que cursos, creamos oportunidades<svg class="ico" aria-hidden="true"><use href="#i-heart"></use></svg></p>
       <figure class="media media--about tilt-soft">
-        <img src="assets/quienes-somos-equipo-chefs.png" width="1448" height="1086"
-             alt="Equipo de chefs profesionales en una cocina"
+        <img src="assets/quienes-somos-equipo-pastel.webp" width="1536" height="1024"
+             alt="Equipo de chefs sonriendo en una cocina profesional con un pastel de chocolate y cupcakes"
              loading="lazy" decoding="async"
              onload="this.parentNode.classList.add('is-loaded')"
              onerror="this.parentNode.classList.add('is-broken')">
@@ -395,9 +396,9 @@
       <aside class="about__journey rv" aria-label="Cómo aprendemos en DulceLab">
         <h3>Así aprendemos en <span>DulceLab</span></h3>
         <ol>
-          <li><b>01</b><strong>Aprende</strong><span>Contenido claro, práctico y actualizado.</span></li>
-          <li><b>02</b><strong>Practica</strong><span>Herramientas y ejercicios para aplicar lo aprendido.</span></li>
-          <li><b>03</b><strong>Transforma</strong><span>Lleva el conocimiento a tu trabajo o negocio.</span></li>
+          <li><i class="j__ico" aria-hidden="true"><svg class="ico"><use href="#i-book"></use></svg></i><b>01</b><strong>Aprende</strong><span>Contenido claro, práctico y actualizado.</span></li>
+          <li><i class="j__ico j__ico--rosa" aria-hidden="true"><svg class="ico"><use href="#i-hat"></use></svg></i><b>02</b><strong>Practica</strong><span>Herramientas y ejercicios para aplicar lo aprendido.</span></li>
+          <li><i class="j__ico" aria-hidden="true"><svg class="ico"><use href="#i-chart"></use></svg></i><b>03</b><strong>Transforma</strong><span>Lleva el conocimiento a tu trabajo o negocio.</span></li>
         </ol>
         <a class="btn btn--gold" href="#cursos">Explorar cursos <span aria-hidden="true">→</span></a>
       </aside>
