@@ -461,7 +461,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .hero__media{position:absolute;inset:0;z-index:-2}
 .hero__photo-bg{
   position:absolute;inset:0;
-  width:100%;height:100%;object-fit:cover;object-position:42% 50%;
+  width:100%;height:100%;object-fit:cover;object-position:42% 0%;
 }
 /* Velo tenue para que el texto se lea sobre la foto sin tapar la imagen
    (translúcido siempre: nunca llega a verse como un panel blanco sólido). */
@@ -552,8 +552,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
       var(--chocolate) 100%);
   }
   .hero__wrap{display:flex;justify-content:flex-end}
-  .hero__copy{max-width:33rem;margin-left:auto;padding-block:1rem}
-  .hero__headline{font-size:3.2rem}
+  .hero__copy{
+    max-width:25rem;margin-left:auto;padding-block:1rem;
+  }
+  .hero__headline{font-size:2.6rem}
   .hero__headline,.hero__sub{text-shadow:none}
   .hero__pill{display:none}
 }
