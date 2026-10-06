@@ -789,6 +789,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   color:var(--text-soft);max-width:56ch;margin-inline:auto;text-wrap:balance;
 }
 
+/* Menos aire entre "Líneas de Capacitación" y "Cursos en Vivo" */
+.section--lines{padding-bottom:clamp(1.5rem,3vw,2.5rem)}
+.section--courses{padding-top:clamp(1.5rem,3vw,2.5rem)}
+
 /* Alternancia sutil de fondo entre secciones */
 .section--lines::before,
 .section--courses::before{
@@ -1270,6 +1274,12 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .carrusel__btn:disabled{opacity:.35;cursor:default}
 :root[data-theme="dark"] .carrusel__btn{color:var(--dorado);border-color:rgba(226,185,101,.45)}
 :root[data-theme="dark"] .carrusel__btn:hover:not(:disabled){background:var(--dorado);color:var(--chocolate)}
+.carrusel__btn--pausa{width:2.4rem;height:2.4rem;margin-left:.4rem}
+.carrusel__btn--pausa .ico{width:1.05rem;height:1.05rem;stroke-width:2.4}
+.carrusel__btn--pausa .ico--play{display:none;fill:currentColor;stroke-width:1.5}
+.carrusel__btn--pausa[aria-pressed="true"] .ico--pausa{display:none}
+.carrusel__btn--pausa[aria-pressed="true"] .ico--play{display:block}
+.carrusel--sin-auto .carrusel__btn--pausa{display:none}
 .carrusel__puntos{display:flex;align-items:center;gap:.5rem}
 .carrusel__punto{width:.6rem;height:.6rem;padding:0;border:0;border-radius:var(--r-pill);cursor:pointer;
   background:color-mix(in srgb,var(--frambuesa) 28%,transparent);transition:width .3s var(--ease), background .3s var(--ease)}

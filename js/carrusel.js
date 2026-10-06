@@ -119,6 +119,55 @@
   }, true);
   vp.addEventListener('dragstart', function (e) { e.preventDefault(); });
 
+  /* ---------- avance automático ----------
+     Cada 5 s pasa al siguiente grupo y, al llegar al final, vuelve al principio.
+     Se detiene mientras se pasa el mouse o hay foco dentro, mientras se toca o
+     arrastra, cuando la pestaña o el carrusel no están a la vista, o si la persona
+     pulsa "pausa". No corre si el sistema pide menos movimiento. */
+  var AUTO_MS = 5000;
+  var btnPausa = root.querySelector('.carrusel__btn--pausa');
+  var pausaUsuario = false, pausaPuntero = false, enVista = false, timerAuto = null, reanudar = null;
+
+  function puedeAvanzar() {
+    return !reduce && !pausaUsuario && !pausaPuntero && enVista && !document.hidden && !arrastre && paginas > 1;
+  }
+  function avanzarAuto() {
+    if (!puedeAvanzar()) return;
+    irAPagina(actual >= paginas - 1 ? 0 : actual + 1);
+  }
+  function reiniciarAuto() {
+    clearInterval(timerAuto);
+    if (!reduce) timerAuto = setInterval(avanzarAuto, AUTO_MS);
+  }
+
+  if (reduce) {
+    root.classList.add('carrusel--sin-auto');
+  } else {
+    if (btnPausa) btnPausa.addEventListener('click', function () {
+      pausaUsuario = !pausaUsuario;
+      btnPausa.setAttribute('aria-pressed', pausaUsuario ? 'true' : 'false');
+      btnPausa.setAttribute('aria-label', pausaUsuario ? 'Reanudar el avance automático' : 'Pausar el avance automático');
+      if (!pausaUsuario) reiniciarAuto();
+    });
+    root.addEventListener('mouseenter', function () { pausaPuntero = true; });
+    root.addEventListener('mouseleave', function () { pausaPuntero = false; reiniciarAuto(); });
+    root.addEventListener('focusin', function () { pausaPuntero = true; });
+    root.addEventListener('focusout', function () { pausaPuntero = false; reiniciarAuto(); });
+    // En el celular: se detiene al tocar y se reanuda unos segundos después de soltar
+    root.addEventListener('touchstart', function () { pausaPuntero = true; clearTimeout(reanudar); }, { passive: true });
+    root.addEventListener('touchend', function () {
+      clearTimeout(reanudar);
+      reanudar = setTimeout(function () { pausaPuntero = false; reiniciarAuto(); }, 6000);
+    }, { passive: true });
+    // Si la persona usa flechas o puntos, el reloj empieza de nuevo (no salta justo después)
+    [btnPrev, btnNext].forEach(function (b) { b.addEventListener('click', reiniciarAuto); });
+    puntos.addEventListener('click', reiniciarAuto);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (e) { enVista = e[0].isIntersecting; }, { threshold: 0.35 }).observe(root);
+    } else { enVista = true; }
+    reiniciarAuto();
+  }
+
   var rz;
   window.addEventListener('resize', function () {
     clearTimeout(rz);
