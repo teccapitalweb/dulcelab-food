@@ -579,14 +579,14 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 @media (min-width:1280px){
   .hero--photo{padding-left:clamp(2rem,6vw,8rem)}
   .hero__wrap{max-width:none}
-  .hero__copy{max-width:min(35rem,33vw)}
+  .hero__copy{max-width:min(40rem,38vw)}
   .hero__eyebrow{font-size:clamp(.68rem,.78vw,.82rem);letter-spacing:.04em;padding:.7em 1.35em;margin-bottom:1.6rem;color:var(--text);background:rgba(255,255,255,.8)}
   .hero__eyebrow .ico{width:clamp(16px,1.2vw,20px);height:clamp(16px,1.2vw,20px);color:var(--frambuesa)}
   :root[data-theme="dark"] .hero__eyebrow{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
   :root[data-theme="dark"] .hero__eyebrow .ico{color:var(--dorado)}
-  .hero__headline{font-size:clamp(2.3rem,3.2vw,3.6rem);white-space:nowrap}
-  .hero__sub{font-size:clamp(.92rem,1.05vw,1.12rem);max-width:42ch}
-  .hero__ctas .btn{padding:clamp(.8rem,.9vw,1.05rem) clamp(1.3rem,1.5vw,2rem);font-size:clamp(.86rem,.95vw,1rem)}
+  .hero__headline{font-size:clamp(2.5rem,3.5vw,4rem);white-space:nowrap}
+  .hero__sub{font-size:clamp(.95rem,1.12vw,1.2rem);max-width:42ch}
+  .hero__ctas .btn{padding:clamp(.8rem,.9vw,1.05rem) clamp(1.3rem,1.5vw,2rem);font-size:clamp(.9rem,1vw,1.05rem)}
   .btn__arrow{margin-left:.35rem;vertical-align:-3px}
   .hero__features{gap:.6rem clamp(1rem,1.2vw,2rem)}
   .hero__features li{font-size:clamp(.72rem,.82vw,.88rem);gap:.65rem}
@@ -598,6 +598,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 @media (min-width:1500px){
   .hero__features{flex-wrap:nowrap}
+}
+/* Con buena altura de pantalla el texto sube un poco: queda arriba, cerca de la barra, como en la referencia */
+@media (min-width:1280px) and (min-height:860px){
+  .hero__copy{transform:translateY(-8vh)}
 }
 
 @media (max-width:980px){
