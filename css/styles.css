@@ -960,6 +960,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 /* ---------- 16. Quiénes Somos ---------- */
 .section--about{
+  padding-top:clamp(2.6rem,6vw,5rem);
   overflow:hidden;
   background:
     linear-gradient(rgba(247,238,236,.68),rgba(247,238,236,.68)),
@@ -981,6 +982,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 .about__lead{max-width:62ch;font-size:clamp(1rem,.94rem + .45vw,1.22rem);line-height:1.55;color:var(--text-soft);text-wrap:balance}
 /* Tarjetas de Misión, Visión y Valores: cada una con su color, título con filete dorado y los valores como etiquetas */
+.about__cards--essence{align-items:start}
 .about__cards--essence .card--mv{
   position:relative;display:flex;flex-direction:column;min-height:0;overflow:hidden;
   padding:clamp(1.1rem,1.8vw,1.35rem) clamp(1.1rem,1.7vw,1.4rem) clamp(1.15rem,1.8vw,1.4rem);
@@ -1043,8 +1045,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   font-size:clamp(.98rem,.92rem + .35vw,1.15rem);
   font-weight:300;font-style:italic;line-height:1.65;text-wrap:balance;
 }
-.quote{padding-left:clamp(3.6rem,6vw,4.7rem)}
-.quote::before{content:"\201C";position:absolute;left:clamp(.9rem,1.8vw,1.4rem);top:.2rem;font-family:Georgia,'Times New Roman',serif;font-size:clamp(3.8rem,6vw,5rem);line-height:1;color:var(--frambuesa)}
 .quote cite{display:flex;align-items:center;justify-content:flex-end;gap:.7rem;margin-top:.8rem;font-style:normal;font-weight:800;color:var(--frambuesa);font-size:.86rem}
 .quote cite::before{content:"";width:2.6rem;height:1px;background:var(--frambuesa)}
 .about__journey{
@@ -1262,12 +1262,12 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .about{
     grid-template-columns:minmax(0,1.35fr) minmax(440px,.85fr);
     grid-template-areas:"text media" "quote ." "cierre cierre";
-    gap:clamp(1.5rem,2.5vw,2.4rem) clamp(2.5rem,4vw,4rem);
+    gap:clamp(.9rem,1.5vw,1.3rem) clamp(2.5rem,4vw,4rem);
   }
   .about__text{grid-area:text}
   .about__media{grid-area:media}
   .about .quote{grid-area:quote;margin-top:0;align-self:start}
-  .about__cierre{grid-area:cierre;margin-top:clamp(1rem,3vw,2.5rem)}
+  .about__cierre{grid-area:cierre;margin-top:clamp(.1rem,.6vw,.5rem)}
   .about__media > .about__journey{
     position:absolute;z-index:1;top:calc(100% + clamp(1.25rem,2vw,1.75rem));left:0;
     width:100%;margin-top:0;
