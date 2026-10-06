@@ -534,22 +534,34 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 /* En pantallas amplias la chef ocupa el lado izquierdo de la fotografía.
    El mensaje se sitúa en el espacio libre de la derecha para no cubrirla. */
 @media (min-width:981px){
-  .hero--photo{min-height:min(100svh,52rem)}
+  .hero--photo{min-height:100vh;min-height:100svh;padding-bottom:calc(clamp(3rem,7vw,5rem) + 2vw)}
+  /* Foto a todo lo ancho; la chef queda a la izquierda y el texto en la zona clara de la derecha */
+  .hero__photo-bg{inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 90%}
+  /* Velo del color de la página (crema; oscuro en modo oscuro) que cubre el lado del texto */
   .hero--photo::before{
-    background:linear-gradient(90deg,
-      transparent 0%,
-      transparent 53%,
-      rgba(247,238,236,.08) 58%,
-      rgba(247,238,236,.62) 68%,
-      rgba(247,238,236,.94) 77%,
-      var(--crema) 100%);
+    background:linear-gradient(270deg,
+      var(--bg) 0%,
+      color-mix(in srgb,var(--bg) 96%,transparent) 20%,
+      color-mix(in srgb,var(--bg) 88%,transparent) 32%,
+      color-mix(in srgb,var(--bg) 55%,transparent) 42%,
+      color-mix(in srgb,var(--bg) 16%,transparent) 52%,
+      transparent 60%);
   }
   :root[data-theme="dark"] .hero--photo::before{
-    background:linear-gradient(90deg,
-      transparent 0%,
-      rgba(42,13,22,.18) 42%,
-      rgba(42,13,22,.72) 58%,
-      var(--chocolate) 100%);
+    background:linear-gradient(270deg,
+      var(--bg) 0%,
+      color-mix(in srgb,var(--bg) 96%,transparent) 20%,
+      color-mix(in srgb,var(--bg) 88%,transparent) 32%,
+      color-mix(in srgb,var(--bg) 55%,transparent) 42%,
+      color-mix(in srgb,var(--bg) 16%,transparent) 52%,
+      transparent 60%);
+  }
+  /* Borde inferior curvo: la siguiente sección "sube" con un arco suave */
+  .hero--photo::after{
+    content:"";position:absolute;z-index:0;inset:auto -2% -1px -2%;
+    height:clamp(28px,3.6vw,68px);
+    background:var(--bg);border-radius:50% 50% 0 0 / 100% 100% 0 0;
+    pointer-events:none;
   }
   .hero__wrap{display:flex;justify-content:flex-end}
   .hero__copy{
@@ -564,18 +576,13 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
    se vea completa (el pastel entero), el hero llena la pantalla y el texto crece a la derecha.
    Todo escala con el ancho de la pantalla (vw), así la composición se ve igual en 1280, 1440, 1706 o 1920. */
 @media (min-width:1280px){
-  .hero--photo{min-height:min(100vh,56vw);min-height:min(100svh,56vw);padding-right:clamp(2rem,6vw,8rem)}
-  /* La foto se ajusta al ALTO del hero para verse completa (la chef, el pastel y los ingredientes de abajo);
-     solo se desvanece hacia la derecha, donde va el texto. */
-  .hero__photo-bg{
-    inset:auto;top:0;left:0;width:auto;height:100%;max-width:none;object-fit:cover;
-    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 52%,transparent 90%);
-            mask-image:linear-gradient(90deg,#000 0,#000 52%,transparent 90%);
-  }
+  .hero--photo{padding-right:clamp(2rem,6vw,8rem)}
   .hero__wrap{max-width:none}
   .hero__copy{max-width:min(35rem,33vw)}
   .hero__eyebrow{font-size:clamp(.68rem,.78vw,.82rem);letter-spacing:.04em;padding:.7em 1.35em;margin-bottom:1.6rem;color:var(--text);background:rgba(255,255,255,.8)}
   .hero__eyebrow .ico{width:clamp(16px,1.2vw,20px);height:clamp(16px,1.2vw,20px);color:var(--frambuesa)}
+  :root[data-theme="dark"] .hero__eyebrow{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
+  :root[data-theme="dark"] .hero__eyebrow .ico{color:var(--dorado)}
   .hero__headline{font-size:clamp(2.3rem,3.2vw,3.6rem);white-space:nowrap}
   .hero__sub{font-size:clamp(.92rem,1.05vw,1.12rem);max-width:42ch}
   .hero__ctas .btn{padding:clamp(.8rem,.9vw,1.05rem) clamp(1.3rem,1.5vw,2rem);font-size:clamp(.86rem,.95vw,1rem)}
@@ -608,7 +615,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
     margin-inline:calc(-1*clamp(1rem,4vw,2rem));
     height:64vh;overflow:hidden;
   }
-  .hero__photo-bg{object-position:50% 22%}
+  .hero__photo-bg{object-position:30% 40%}
   .hero__wrap{order:2;padding-block:2rem}
   .hero__copy{max-width:none;text-align:center;margin-inline:auto}
   .hero__ctas--split,.hero__features{justify-content:center}
