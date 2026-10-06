@@ -534,49 +534,50 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 /* En pantallas amplias la chef ocupa el lado izquierdo de la fotografía.
    El mensaje se sitúa en el espacio libre de la derecha para no cubrirla. */
 @media (min-width:981px){
-  .hero--photo{min-height:100vh;min-height:100svh;padding-bottom:calc(clamp(3rem,7vw,5rem) + 2vw)}
-  /* Foto a todo lo ancho; la chef queda a la izquierda y el texto en la zona clara de la derecha */
-  .hero__photo-bg{inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 90%}
-  /* Velo del color de la página (crema; oscuro en modo oscuro) que cubre el lado del texto */
+  .hero--photo{min-height:100vh;min-height:100svh;padding-bottom:clamp(3rem,7vw,5rem)}
+  /* La foto va COMPLETA (sin recortes) a la derecha, debajo de la barra de navegación, para que se vea la
+     cabeza entera. Su borde izquierdo y el de arriba se desvanecen en el fondo de la página, donde va el texto. */
+  .hero__photo-bg{
+    inset:auto;top:auto;right:0;bottom:0;
+    height:calc(100% - var(--nav-h) - var(--nav-gap) - .5rem);width:auto;max-width:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%),linear-gradient(180deg,transparent 0,#000 6%);
+    -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(90deg,transparent 0,#000 26%),linear-gradient(180deg,transparent 0,#000 6%);
+            mask-composite:intersect;
+  }
+  /* Velo del color de la página (crema; oscuro en modo oscuro) que asegura el contraste del texto de la izquierda */
   .hero--photo::before{
-    background:linear-gradient(270deg,
+    background:linear-gradient(90deg,
       var(--bg) 0%,
-      color-mix(in srgb,var(--bg) 96%,transparent) 20%,
-      color-mix(in srgb,var(--bg) 88%,transparent) 32%,
-      color-mix(in srgb,var(--bg) 55%,transparent) 42%,
-      color-mix(in srgb,var(--bg) 16%,transparent) 52%,
-      transparent 60%);
+      color-mix(in srgb,var(--bg) 96%,transparent) 16%,
+      color-mix(in srgb,var(--bg) 86%,transparent) 28%,
+      color-mix(in srgb,var(--bg) 45%,transparent) 38%,
+      color-mix(in srgb,var(--bg) 10%,transparent) 46%,
+      transparent 52%);
   }
   :root[data-theme="dark"] .hero--photo::before{
-    background:linear-gradient(270deg,
+    background:linear-gradient(90deg,
       var(--bg) 0%,
-      color-mix(in srgb,var(--bg) 96%,transparent) 20%,
-      color-mix(in srgb,var(--bg) 88%,transparent) 32%,
-      color-mix(in srgb,var(--bg) 55%,transparent) 42%,
-      color-mix(in srgb,var(--bg) 16%,transparent) 52%,
-      transparent 60%);
+      color-mix(in srgb,var(--bg) 96%,transparent) 16%,
+      color-mix(in srgb,var(--bg) 86%,transparent) 28%,
+      color-mix(in srgb,var(--bg) 45%,transparent) 38%,
+      color-mix(in srgb,var(--bg) 10%,transparent) 46%,
+      transparent 52%);
   }
-  /* Borde inferior curvo: la siguiente sección "sube" con un arco suave */
-  .hero--photo::after{
-    content:"";position:absolute;z-index:0;inset:auto -2% -1px -2%;
-    height:clamp(28px,3.6vw,68px);
-    background:var(--bg);border-radius:50% 50% 0 0 / 100% 100% 0 0;
-    pointer-events:none;
-  }
-  .hero__wrap{display:flex;justify-content:flex-end}
+  .hero--photo::after{content:none}
+  .hero__wrap{display:flex;justify-content:flex-start}
   .hero__copy{
-    max-width:25rem;margin-left:auto;padding-block:1rem;
+    max-width:25rem;margin-right:auto;padding-block:1rem;
   }
   .hero__headline{font-size:2.6rem}
   .hero__headline,.hero__sub{text-shadow:none}
   .hero__pill{display:none}
 }
 
-/* Pantallas de escritorio (1280px en adelante): la foto va a la izquierda, algo más chica para que
-   se vea completa (el pastel entero), el hero llena la pantalla y el texto crece a la derecha.
+/* Pantallas de escritorio (1280px en adelante): el texto va a la izquierda y la foto completa a la derecha.
    Todo escala con el ancho de la pantalla (vw), así la composición se ve igual en 1280, 1440, 1706 o 1920. */
 @media (min-width:1280px){
-  .hero--photo{padding-right:clamp(2rem,6vw,8rem)}
+  .hero--photo{padding-left:clamp(2rem,6vw,8rem)}
   .hero__wrap{max-width:none}
   .hero__copy{max-width:min(35rem,33vw)}
   .hero__eyebrow{font-size:clamp(.68rem,.78vw,.82rem);letter-spacing:.04em;padding:.7em 1.35em;margin-bottom:1.6rem;color:var(--text);background:rgba(255,255,255,.8)}
@@ -598,10 +599,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 @media (min-width:1500px){
   .hero__features{flex-wrap:nowrap}
 }
-/* Con buena altura de pantalla el texto sube un poco (queda más centrado respecto a la foto) */
-@media (min-width:1280px) and (min-height:860px){
-  .hero__copy{transform:translateY(-8vh)}
-}
 
 @media (max-width:980px){
   /* La foto deja de ser fondo de pantalla completa: ahora es una franja
@@ -615,7 +612,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
     margin-inline:calc(-1*clamp(1rem,4vw,2rem));
     height:64vh;overflow:hidden;
   }
-  .hero__photo-bg{object-position:30% 40%}
+  .hero__photo-bg{object-position:72% 40%}
   .hero__wrap{order:2;padding-block:2rem}
   .hero__copy{max-width:none;text-align:center;margin-inline:auto}
   .hero__ctas--split,.hero__features{justify-content:center}
