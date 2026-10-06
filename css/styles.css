@@ -538,9 +538,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .hero--photo::before{
     background:linear-gradient(90deg,
       transparent 0%,
-      rgba(247,238,236,.08) 42%,
-      rgba(247,238,236,.7) 52%,
-      rgba(247,238,236,.94) 63%,
+      transparent 53%,
+      rgba(247,238,236,.08) 58%,
+      rgba(247,238,236,.62) 68%,
+      rgba(247,238,236,.94) 77%,
       var(--crema) 100%);
   }
   :root[data-theme="dark"] .hero--photo::before{
@@ -551,7 +552,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
       var(--chocolate) 100%);
   }
   .hero__wrap{display:flex;justify-content:flex-end}
-  .hero__copy{max-width:36rem;margin-left:auto;padding-block:1rem}
+  .hero__copy{max-width:33rem;margin-left:auto;padding-block:1rem}
+  .hero__headline{font-size:3.2rem}
   .hero__headline,.hero__sub{text-shadow:none}
   .hero__pill{display:none}
 }
