@@ -607,30 +607,45 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 
 @media (max-width:980px){
-  /* La foto deja de ser fondo de pantalla completa: ahora es una franja
-     (con las categorías encima) de alto fijo al principio del hero, y el
-     texto va debajo, en la franja crema -legible siempre, sin pelear con
-     la foto-. assets/hero-chef-mobile.webp es el recorte vertical. */
-  .hero--photo{flex-direction:column;justify-content:flex-start;min-height:0;padding-top:calc(var(--nav-h) + var(--nav-gap))}
-  .hero__media{
-    position:relative;inset:auto;z-index:0;order:1;
-    width:calc(100% + 2*clamp(1rem,4vw,2rem));
-    margin-inline:calc(-1*clamp(1rem,4vw,2rem));
-    height:64vh;overflow:hidden;
+  /* Celular y tableta: la foto es el fondo del hero (ocupa la parte de arriba y se desvanece hacia abajo)
+     y el título y el texto van ENCIMA de ese desvanecido, no aparte. Sin las etiquetas de categorías. */
+  .hero--photo{
+    flex-direction:column;justify-content:flex-end;align-items:stretch;
+    min-height:100vh;min-height:100svh;
+    /* abajo se deja espacio para el botón del asistente virtual y el de WhatsApp, que flotan ahí */
+    padding:calc(var(--nav-h) + var(--nav-gap) + 1rem) clamp(1rem,5vw,1.6rem) calc(9.9rem + env(safe-area-inset-bottom,0px));
   }
-  .hero__photo-bg{object-position:72% 40%}
-  .hero__wrap{order:2;padding-block:2rem}
-  .hero__copy{max-width:none;text-align:center;margin-inline:auto}
+  .hero__media{position:absolute;inset:0 0 auto 0;z-index:-2;width:auto;height:72vh;height:72svh;margin:0;overflow:hidden}
+  .hero__photo-bg{inset:0;width:100%;height:100%;object-fit:cover;object-position:72% 36%}
+  .hero--photo::before{
+    content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,
+      transparent 0%,
+      transparent 34%,
+      color-mix(in srgb,var(--bg) 50%,transparent) 46%,
+      color-mix(in srgb,var(--bg) 88%,transparent) 58%,
+      var(--bg) 72%);
+  }
+  .hero__wrap{padding-block:0}
+  .hero__copy{max-width:none;text-align:center;margin-inline:auto;padding:0}
+  .hero__eyebrow{margin-bottom:.8rem;padding:.4rem .85rem;font-size:.66rem;letter-spacing:.05em}
+  .hero__headline{font-size:clamp(1.95rem,8.4vw,2.6rem);margin-bottom:.6rem;text-wrap:balance}
+  .hero__sub{font-size:.88rem;line-height:1.5;margin-inline:auto;margin-bottom:1rem}
   .hero__ctas--split,.hero__features{justify-content:center}
-  .hero--photo::before{content:none}
+  .hero__ctas--split{flex-wrap:nowrap;gap:.55rem;margin-bottom:.9rem}
+  .hero__ctas .btn{padding:.8rem 1.05rem;font-size:.86rem;white-space:nowrap}
+  .hero__features{gap:.35rem 1rem;max-width:17rem;margin-inline:auto}
+  .hero__features li{font-size:.72rem}
   .hero__headline,.hero__sub{text-shadow:none}
-  .hero__note{margin-inline:auto}
-  .hero__pill{font-size:.72rem;padding:.48rem .85rem}
-  .hero__pill--1{top:6%;left:5%;right:auto}
-  .hero__pill--2{top:20%;right:5%}
-  .hero__pill--3{top:34%;left:5%;right:auto;bottom:auto}
-  .hero__pill--4{top:48%;right:5%;bottom:auto}
-  .hero--photo .scroll-cue{position:static;order:3;margin:0 auto 1rem}
+  .hero__note{margin-inline:auto;margin-top:.55rem;font-size:1.25rem}
+  .hero__pill{display:none}
+  .hero--photo .scroll-cue{display:none}
+}
+@media (max-width:640px){
+  /* En el celular el texto ya es mucho: se quita la fila de características para dejar la foto respirar */
+  .hero__features{display:none}
+  /* ...y solo se deja la carita del asistente (sin la burbuja) para que no tape los botones */
+  .dlfbot-tip{display:none !important}
 }
 @media (prefers-reduced-motion:reduce){.hero__pill{animation:none}}
 
