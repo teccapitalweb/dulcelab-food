@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=20261006-11">
+<link rel="stylesheet" href="css/styles.css?v=20261006-12">
 <style>
   /* Botón de acceso al Club VIP (club.dulcelabfood.com) — mismo layout que el de WhatsApp, color propio */
   .btn--vip{background:var(--dorado);color:var(--chocolate);border:none;font-weight:700}
@@ -145,6 +145,17 @@
       <path d="M3.6 3.4v17.2h17"/>
       <path d="m7 15.8 3.6-4.3 3.1 2.4 4.8-6.1"/>
       <path d="M15.9 7.8h2.6v2.6"/>
+    </symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24">
+      <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </symbol>
+    <symbol id="i-gem" viewBox="0 0 24 24">
+      <path d="M6.5 4h11l4 5.2L12 20.5 2.5 9.2l4-5.2Z"/>
+      <path d="M2.5 9.2h19M9 4l-1.6 5.2L12 20.5M15 4l1.6 5.2L12 20.5"/>
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24">
+      <path d="M12 20.5s-8-4.9-8-10.7A4.4 4.4 0 0 1 12 7.2a4.4 4.4 0 0 1 8 2.6c0 5.8-8 10.7-8 10.7Z"/>
     </symbol>
     <symbol id="i-medal" viewBox="0 0 24 24">
       <circle cx="12" cy="9.2" r="5.9"/>
@@ -343,16 +354,19 @@
 
       <div class="about__cards about__cards--essence">
         <article class="card card--mv rv">
+          <span class="mv__ico" aria-hidden="true"><svg class="ico"><use href="#i-target"></use></svg></span>
           <h3 class="card__title">Misión</h3>
           <p class="card__body">Impulsar el talento gastronómico mediante cursos, asesorías y capacitaciones prácticas de alta calidad, brindando conocimientos, técnicas y herramientas empresariales que permitan a nuestros alumnos perfeccionar sus habilidades, emprender y convertir su pasión por la repostería y la gastronomía en un negocio rentable.</p>
         </article>
 
         <article class="card card--mv rv">
+          <span class="mv__ico mv__ico--oro" aria-hidden="true"><svg class="ico"><use href="#i-eye"></use></svg></span>
           <h3 class="card__title">Visión</h3>
           <p class="card__body">Ser la consultora de capacitación gastronómica número uno en México, reconocida por la calidad de sus programas, la experiencia de sus especialistas, su innovación educativa y su compromiso con el crecimiento profesional y empresarial de cada alumno.</p>
         </article>
 
         <article class="card card--mv card--values rv">
+          <span class="mv__ico" aria-hidden="true"><svg class="ico"><use href="#i-gem"></use></svg></span>
           <h3 class="card__title">Valores</h3>
           <ul class="about__values">
             <li>Calidad educativa</li>
@@ -366,6 +380,7 @@
     </div>
 
     <div class="about__media rv">
+      <p class="about__nota">Más que cursos, creamos oportunidades<svg class="ico" aria-hidden="true"><use href="#i-heart"></use></svg></p>
       <figure class="media media--about tilt-soft">
         <img src="assets/quienes-somos-equipo-chefs.png" width="1448" height="1086"
              alt="Equipo de chefs profesionales en una cocina"
@@ -392,6 +407,8 @@
       <p>La mayoría de nuestros alumnos ya sabe hacer algo delicioso; lo que necesita es técnica profesional y herramientas de negocio para llevar su pasión más lejos.</p>
       <cite>DulceLab Food</cite>
     </blockquote>
+
+    <p class="about__cierre rv">Tu pasión, nuestro ingrediente principal</p>
 
   </div>
 </section>

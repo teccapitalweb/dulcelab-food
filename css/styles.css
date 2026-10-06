@@ -937,13 +937,48 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   font-size:.68rem;font-weight:800;letter-spacing:.11em;text-transform:uppercase;margin-bottom:.85rem;
 }
 .about__lead{max-width:62ch;font-size:clamp(1rem,.94rem + .45vw,1.22rem);line-height:1.55;color:var(--text-soft);text-wrap:balance}
-.about__cards--essence .card--mv{display:flex;flex-direction:column;min-height:100%;padding:clamp(1.25rem,2.3vw,1.75rem);background:rgba(255,253,252,.78)}
-:root[data-theme="dark"] .about__cards--essence .card--mv{background:rgba(61,16,29,.82)}
-.about__cards--essence .card__title{font-size:clamp(1.3rem,1.05rem + .55vw,1.7rem);margin-bottom:.7rem}
-.about__cards--essence .card__body{font-size:.9rem;line-height:1.62}
-.about__values{display:grid;gap:.62rem;margin:0;padding:0;list-style:none}
-.about__values li{padding-bottom:.62rem;color:var(--text-soft);font-size:.9rem;line-height:1.4;border-bottom:1px solid var(--glass-brd)}
-.about__values li:last-child{padding-bottom:0;border-bottom:0}
+.about__cards--essence .card--mv{
+  position:relative;display:flex;flex-direction:column;min-height:100%;
+  padding:clamp(1.4rem,2.4vw,1.9rem);border-radius:1.4rem;
+  background:rgba(255,253,252,.72);border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 20px 42px -24px rgba(74,14,26,.38);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+@media (hover:hover){.about__cards--essence .card--mv:hover{transform:translateY(-4px);box-shadow:0 26px 48px -24px rgba(74,14,26,.5)}}
+:root[data-theme="dark"] .about__cards--essence .card--mv{background:rgba(61,16,29,.82);border-color:rgba(255,255,255,.08)}
+/* Círculo con icono arriba de cada tarjeta */
+.mv__ico{display:grid;place-items:center;width:3.5rem;height:3.5rem;border-radius:50%;margin-bottom:1.1rem;color:#fff;background:var(--frambuesa);box-shadow:0 10px 20px -10px rgba(107,21,38,.65)}
+.mv__ico .ico{width:1.65rem;height:1.65rem;stroke-width:1.7}
+.mv__ico--oro{background:var(--dorado);box-shadow:0 10px 20px -10px rgba(201,154,61,.8)}
+.about__cards--essence .card__title{font-size:clamp(1.45rem,1.15rem + .6vw,1.85rem);margin-bottom:.8rem;color:var(--chocolate)}
+:root[data-theme="dark"] .about__cards--essence .card__title{color:var(--crema)}
+.about__cards--essence .card__body{font-size:.92rem;line-height:1.66}
+.about__values{display:grid;gap:.8rem;margin:0;padding:0;list-style:none}
+.about__values li{display:flex;align-items:center;gap:.75rem;padding:0;border:0;color:var(--text-soft);font-size:.93rem;line-height:1.35}
+.about__values li::before{
+  content:"";flex:none;width:1.5rem;height:1.5rem;border-radius:50%;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B1526' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.2 4.2L19 7'/%3E%3C/svg%3E") center/.82rem no-repeat, color-mix(in srgb,var(--frambuesa) 13%,#fff);
+}
+:root[data-theme="dark"] .about__values li::before{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B1526' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.2 4.2L19 7'/%3E%3C/svg%3E") center/.82rem no-repeat, rgba(255,255,255,.88)}
+/* Frases: la manuscrita junto a la foto (solo pantallas muy anchas, donde hay espacio) y la de cierre */
+.about__nota{display:none}
+.about__cierre{
+  display:flex;align-items:center;justify-content:center;gap:clamp(1rem,3vw,2.2rem);
+  margin:clamp(.4rem,1.6vw,1.2rem) 0 0;text-align:center;
+  font-family:'Caveat',cursive;font-weight:600;font-size:clamp(1.55rem,2.5vw,2.3rem);line-height:1.1;color:var(--frambuesa);
+}
+.about__cierre::before,.about__cierre::after{content:"";flex:0 1 clamp(36px,8vw,130px);height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--dorado))}
+.about__cierre::after{transform:scaleX(-1)}
+:root[data-theme="dark"] .about__cierre,:root[data-theme="dark"] .about__nota{color:var(--dorado)}
+@media (min-width:1800px){
+  .about__nota{
+    display:block;position:absolute;z-index:1;left:calc(100% + 1.5rem);top:2%;width:11.5rem;
+    font-family:'Caveat',cursive;font-weight:600;font-size:2.15rem;line-height:1.02;color:var(--frambuesa);
+    transform:rotate(-13deg);transform-origin:left center;text-wrap:balance;
+  }
+  .about__nota::after{content:"";display:block;width:72%;height:3px;margin:.55rem 0 .7rem 18%;border-radius:3px;background:linear-gradient(90deg,transparent,var(--dorado) 25%,var(--dorado) 75%,transparent)}
+  .about__nota .ico{display:block;width:1.9rem;height:1.9rem;margin-left:58%;stroke-width:1.8}
+}
 .quote{
   position:relative;margin-top:clamp(1.2rem,2.5vw,1.8rem);
   padding:clamp(1.2rem,2.4vw,1.7rem) clamp(1.2rem,2.4vw,1.9rem);
@@ -1171,12 +1206,13 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .section--about .section__inner{max-width:1440px}
   .about{
     grid-template-columns:minmax(0,1.35fr) minmax(440px,.85fr);
-    grid-template-areas:"text media" "quote .";
+    grid-template-areas:"text media" "quote ." "cierre cierre";
     gap:clamp(1.5rem,2.5vw,2.4rem) clamp(2.5rem,4vw,4rem);
   }
   .about__text{grid-area:text}
   .about__media{grid-area:media}
   .about .quote{grid-area:quote;margin-top:0;align-self:start}
+  .about__cierre{grid-area:cierre;margin-top:clamp(1rem,3vw,2.5rem)}
   .about__media > .about__journey{
     position:absolute;z-index:1;top:calc(100% + clamp(1.25rem,2vw,1.75rem));left:0;
     width:100%;margin-top:0;
