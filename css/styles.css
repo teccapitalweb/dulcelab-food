@@ -565,12 +565,12 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
    Todo escala con el ancho de la pantalla (vw), así la composición se ve igual en 1280, 1440, 1706 o 1920. */
 @media (min-width:1280px){
   .hero--photo{min-height:min(100vh,56vw);min-height:min(100svh,56vw);padding-right:clamp(2rem,6vw,8rem)}
+  /* La foto se ajusta al ALTO del hero para verse completa (la chef, el pastel y los ingredientes de abajo);
+     solo se desvanece hacia la derecha, donde va el texto. */
   .hero__photo-bg{
-    inset:auto;top:.7vw;left:0;width:auto;height:67vw;max-width:none;object-fit:cover;
-    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 62%,transparent 100%),linear-gradient(180deg,#000 0,#000 85%,transparent 100%);
-    -webkit-mask-composite:source-in;
-            mask-image:linear-gradient(90deg,#000 0,#000 62%,transparent 100%),linear-gradient(180deg,#000 0,#000 85%,transparent 100%);
-            mask-composite:intersect;
+    inset:auto;top:0;left:0;width:auto;height:100%;max-width:none;object-fit:cover;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 52%,transparent 90%);
+            mask-image:linear-gradient(90deg,#000 0,#000 52%,transparent 90%);
   }
   .hero__wrap{max-width:none}
   .hero__copy{max-width:min(35rem,33vw)}
