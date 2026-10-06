@@ -560,6 +560,42 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .hero__pill{display:none}
 }
 
+/* Pantallas de escritorio (1280px en adelante): la foto va a la izquierda, algo más chica para que
+   se vea completa (el pastel entero), el hero llena la pantalla y el texto crece a la derecha.
+   Todo escala con el ancho de la pantalla (vw), así la composición se ve igual en 1280, 1440, 1706 o 1920. */
+@media (min-width:1280px){
+  .hero--photo{min-height:min(100vh,56vw);min-height:min(100svh,56vw);padding-right:clamp(2rem,6vw,8rem)}
+  .hero__photo-bg{
+    inset:auto;top:.7vw;left:0;width:auto;height:67vw;max-width:none;object-fit:cover;
+    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 62%,transparent 100%),linear-gradient(180deg,#000 0,#000 85%,transparent 100%);
+    -webkit-mask-composite:source-in;
+            mask-image:linear-gradient(90deg,#000 0,#000 62%,transparent 100%),linear-gradient(180deg,#000 0,#000 85%,transparent 100%);
+            mask-composite:intersect;
+  }
+  .hero__wrap{max-width:none}
+  .hero__copy{max-width:min(35rem,33vw)}
+  .hero__eyebrow{font-size:clamp(.68rem,.78vw,.82rem);letter-spacing:.04em;padding:.7em 1.35em;margin-bottom:1.6rem;color:var(--text);background:rgba(255,255,255,.8)}
+  .hero__eyebrow .ico{width:clamp(16px,1.2vw,20px);height:clamp(16px,1.2vw,20px);color:var(--frambuesa)}
+  .hero__headline{font-size:clamp(2.3rem,3.2vw,3.6rem);white-space:nowrap}
+  .hero__sub{font-size:clamp(.92rem,1.05vw,1.12rem);max-width:42ch}
+  .hero__ctas .btn{padding:clamp(.8rem,.9vw,1.05rem) clamp(1.3rem,1.5vw,2rem);font-size:clamp(.86rem,.95vw,1rem)}
+  .btn__arrow{margin-left:.35rem;vertical-align:-3px}
+  .hero__features{gap:.6rem clamp(1rem,1.2vw,2rem)}
+  .hero__features li{font-size:clamp(.72rem,.82vw,.88rem);gap:.65rem}
+  .hero__features li + li{padding-left:clamp(1rem,1.2vw,2rem);border-left:1px solid color-mix(in srgb,var(--text) 16%,transparent)}
+  .hero__features .ico{width:clamp(20px,1.5vw,26px);height:clamp(20px,1.5vw,26px)}
+  .hero__note{position:relative;display:inline-block;font-size:clamp(1.4rem,1.7vw,1.9rem);margin-top:1.8rem;transform:rotate(-2.5deg)}
+  .hero__note::after{content:"";position:absolute;left:8%;right:22%;bottom:-.55rem;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--dorado) 20%,var(--dorado) 70%,transparent)}
+  .hero--photo .scroll-cue{display:none}
+}
+@media (min-width:1500px){
+  .hero__features{flex-wrap:nowrap}
+}
+/* Con buena altura de pantalla el texto sube un poco (queda más centrado respecto a la foto) */
+@media (min-width:1280px) and (min-height:860px){
+  .hero__copy{transform:translateY(-8vh)}
+}
+
 @media (max-width:980px){
   /* La foto deja de ser fondo de pantalla completa: ahora es una franja
      (con las categorías encima) de alto fijo al principio del hero, y el
