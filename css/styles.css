@@ -540,29 +540,29 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .hero__photo-bg{
     inset:auto;top:auto;right:0;bottom:0;
     height:calc(100% - var(--nav-h) - var(--nav-gap) - .5rem);width:auto;max-width:none;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 26%),linear-gradient(180deg,transparent 0,#000 6%);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%),linear-gradient(180deg,transparent 0,#000 6%);
     -webkit-mask-composite:source-in;
-            mask-image:linear-gradient(90deg,transparent 0,#000 26%),linear-gradient(180deg,transparent 0,#000 6%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 40%),linear-gradient(180deg,transparent 0,#000 6%);
             mask-composite:intersect;
   }
   /* Velo del color de la página (crema; oscuro en modo oscuro) que asegura el contraste del texto de la izquierda */
   .hero--photo::before{
     background:linear-gradient(90deg,
       var(--bg) 0%,
-      color-mix(in srgb,var(--bg) 96%,transparent) 16%,
-      color-mix(in srgb,var(--bg) 86%,transparent) 28%,
-      color-mix(in srgb,var(--bg) 45%,transparent) 38%,
-      color-mix(in srgb,var(--bg) 10%,transparent) 46%,
-      transparent 52%);
+      color-mix(in srgb,var(--bg) 96%,transparent) 30%,
+      color-mix(in srgb,var(--bg) 86%,transparent) 38%,
+      color-mix(in srgb,var(--bg) 50%,transparent) 46%,
+      color-mix(in srgb,var(--bg) 14%,transparent) 53%,
+      transparent 59%);
   }
   :root[data-theme="dark"] .hero--photo::before{
     background:linear-gradient(90deg,
       var(--bg) 0%,
-      color-mix(in srgb,var(--bg) 96%,transparent) 16%,
-      color-mix(in srgb,var(--bg) 86%,transparent) 28%,
-      color-mix(in srgb,var(--bg) 45%,transparent) 38%,
-      color-mix(in srgb,var(--bg) 10%,transparent) 46%,
-      transparent 52%);
+      color-mix(in srgb,var(--bg) 96%,transparent) 30%,
+      color-mix(in srgb,var(--bg) 86%,transparent) 38%,
+      color-mix(in srgb,var(--bg) 50%,transparent) 46%,
+      color-mix(in srgb,var(--bg) 14%,transparent) 53%,
+      transparent 59%);
   }
   .hero--photo::after{content:none}
   .hero__wrap{display:flex;justify-content:flex-start}
@@ -577,31 +577,33 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 /* Pantallas de escritorio (1280px en adelante): el texto va a la izquierda y la foto completa a la derecha.
    Todo escala con el ancho de la pantalla (vw), así la composición se ve igual en 1280, 1440, 1706 o 1920. */
 @media (min-width:1280px){
-  .hero--photo{padding-left:clamp(2rem,6vw,8rem)}
+  /* El texto se acomoda justo a la izquierda de la chef (con un respiro), en el centro de la zona clara:
+     --woman-x es dónde empieza la chef en la foto (la foto mide (alto - barra) * 1.776 de ancho, pegada a la derecha). */
+  .hero--photo{
+    --img-w:calc((100svh - var(--nav-h) - var(--nav-gap) - .5rem) * 1.776);
+    --woman-x:calc(100vw - var(--img-w) * .52);
+    padding-left:max(2rem,calc(var(--woman-x) - 3.5rem - 38vw));
+  }
   .hero__wrap{max-width:none}
-  .hero__copy{max-width:min(40rem,38vw)}
-  .hero__eyebrow{font-size:clamp(.68rem,.78vw,.82rem);letter-spacing:.04em;padding:.7em 1.35em;margin-bottom:1.6rem;color:var(--text);background:rgba(255,255,255,.8)}
-  .hero__eyebrow .ico{width:clamp(16px,1.2vw,20px);height:clamp(16px,1.2vw,20px);color:var(--frambuesa)}
+  .hero__copy{max-width:38vw}
+  .hero__eyebrow{font-size:clamp(.72rem,.88vw,.95rem);letter-spacing:.04em;padding:.7em 1.35em;margin-bottom:1.6rem;color:var(--text);background:rgba(255,255,255,.8)}
+  .hero__eyebrow .ico{width:clamp(17px,1.35vw,23px);height:clamp(17px,1.35vw,23px);color:var(--frambuesa)}
   :root[data-theme="dark"] .hero__eyebrow{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
   :root[data-theme="dark"] .hero__eyebrow .ico{color:var(--dorado)}
-  .hero__headline{font-size:clamp(2.5rem,3.5vw,4rem);white-space:nowrap}
-  .hero__sub{font-size:clamp(.95rem,1.12vw,1.2rem);max-width:42ch}
-  .hero__ctas .btn{padding:clamp(.8rem,.9vw,1.05rem) clamp(1.3rem,1.5vw,2rem);font-size:clamp(.9rem,1vw,1.05rem)}
+  .hero__headline{font-size:clamp(2.6rem,3.85vw,4.8rem);white-space:nowrap}
+  .hero__sub{font-size:clamp(1rem,1.25vw,1.32rem);max-width:42ch}
+  .hero__ctas .btn{padding:clamp(.85rem,1vw,1.2rem) clamp(1.4rem,1.7vw,2.2rem);font-size:clamp(.95rem,1.08vw,1.15rem)}
   .btn__arrow{margin-left:.35rem;vertical-align:-3px}
   .hero__features{gap:.6rem clamp(1rem,1.2vw,2rem)}
-  .hero__features li{font-size:clamp(.72rem,.82vw,.88rem);gap:.65rem}
+  .hero__features li{font-size:clamp(.78rem,.92vw,1rem);gap:.65rem}
   .hero__features li + li{padding-left:clamp(1rem,1.2vw,2rem);border-left:1px solid color-mix(in srgb,var(--text) 16%,transparent)}
-  .hero__features .ico{width:clamp(20px,1.5vw,26px);height:clamp(20px,1.5vw,26px)}
-  .hero__note{position:relative;display:inline-block;font-size:clamp(1.4rem,1.7vw,1.9rem);margin-top:1.8rem;transform:rotate(-2.5deg)}
+  .hero__features .ico{width:clamp(22px,1.7vw,30px);height:clamp(22px,1.7vw,30px)}
+  .hero__note{position:relative;display:inline-block;font-size:clamp(1.5rem,1.95vw,2.2rem);margin-top:1.8rem;transform:rotate(-2.5deg)}
   .hero__note::after{content:"";position:absolute;left:8%;right:22%;bottom:-.55rem;height:3px;border-radius:3px;background:linear-gradient(90deg,transparent,var(--dorado) 20%,var(--dorado) 70%,transparent)}
   .hero--photo .scroll-cue{display:none}
 }
 @media (min-width:1500px){
   .hero__features{flex-wrap:nowrap}
-}
-/* Con buena altura de pantalla el texto sube un poco: queda arriba, cerca de la barra, como en la referencia */
-@media (min-width:1280px) and (min-height:860px){
-  .hero__copy{transform:translateY(-8vh)}
 }
 
 @media (max-width:980px){
