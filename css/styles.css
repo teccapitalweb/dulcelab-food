@@ -826,10 +826,13 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .section--vip::after{content:"";position:absolute;z-index:0;left:0;right:0;bottom:0;height:clamp(8rem,12vw,11rem);background:linear-gradient(180deg,rgba(250,213,220,.82),rgba(246,194,204,.96));border-radius:50% 50% 0 0 / 2.6rem 2.6rem 0 0;pointer-events:none}
 :root[data-theme="dark"] .section--vip{
   background:
-    radial-gradient(55% 50% at 62% 40%,rgba(201,75,104,.16),transparent 72%),
-    linear-gradient(115deg,#26101A 0%,#2D1320 52%,#241119 100%);
+    linear-gradient(90deg,rgba(27,10,17,.94) 0%,rgba(42,14,27,.88) 48%,rgba(53,17,32,.67) 100%),
+    url("../assets/vip-fondo-pastel.png") center / cover no-repeat;
 }
 :root[data-theme="dark"] .section--vip::after{background:linear-gradient(180deg,rgba(88,28,44,.9),rgba(52,18,29,.98))}
+:root[data-theme="dark"] .vip__band li{color:#FFF6E9}
+:root[data-theme="dark"] .vip__band .vip__band-tagline{color:#F6D38C;text-shadow:0 2px 12px rgba(0,0,0,.45)}
+:root[data-theme="dark"] .vip__band li + li{border-color:rgba(246,211,140,.22)}
 .vip{position:relative;z-index:1;display:grid;gap:clamp(2.2rem,4vw,3rem);align-items:center;padding-bottom:clamp(2rem,4vw,3rem)}
 .vip__pill{
   display:inline-block;margin:0 0 1rem;padding:.42rem .95rem;border-radius:var(--r-pill);
