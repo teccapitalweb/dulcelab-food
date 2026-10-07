@@ -817,18 +817,19 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 /* ---------- Club VIP ---------- */
 .section--vip{
-  overflow:hidden;padding-bottom:0;
+  position:relative;isolation:isolate;overflow:hidden;padding-bottom:0;
   background:
-    radial-gradient(60% 55% at 8% 12%,rgba(255,255,255,.75),transparent 70%),
-    radial-gradient(50% 50% at 62% 40%,rgba(246,201,208,.55),transparent 72%),
-    linear-gradient(115deg,#FBE9EB 0%,#F8E2E5 52%,#F7ECE6 100%);
+    linear-gradient(90deg,rgba(255,249,247,.98) 0%,rgba(255,246,244,.94) 42%,rgba(255,246,242,.68) 68%,rgba(255,246,242,.32) 100%),
+    radial-gradient(55% 65% at 28% 44%,rgba(249,208,216,.72),transparent 72%),
+    url("../assets/hero-cocina-der.webp") center right / cover no-repeat;
 }
+.section--vip::before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(247,213,218,.18));pointer-events:none}
 :root[data-theme="dark"] .section--vip{
   background:
     radial-gradient(55% 50% at 62% 40%,rgba(201,75,104,.16),transparent 72%),
     linear-gradient(115deg,#26101A 0%,#2D1320 52%,#241119 100%);
 }
-.vip{display:grid;gap:clamp(2.2rem,4vw,3rem);align-items:center;padding-bottom:clamp(2.2rem,5vw,3.5rem)}
+.vip{display:grid;gap:clamp(2.2rem,4vw,3rem);align-items:center;padding-bottom:clamp(2rem,4vw,3rem)}
 .vip__pill{
   display:inline-block;margin:0 0 1rem;padding:.42rem .95rem;border-radius:var(--r-pill);
   background:#F6C9D0;color:var(--frambuesa);
@@ -863,9 +864,9 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 :root[data-theme="dark"] .vip__checks .ico{color:var(--dorado)}
 
 /* Maqueta: pantalla de registro + celular */
-.vip__stage{position:relative;width:100%;max-width:35rem;margin-inline:auto;padding-top:1.6rem}
+.vip__stage{position:relative;width:100%;max-width:39rem;margin-inline:auto;padding-top:1.6rem}
 .vcard{
-  position:relative;z-index:2;display:flex;flex-direction:column;width:min(100%,22.5rem);margin-left:auto;
+  position:relative;z-index:2;display:flex;flex-direction:column;width:min(100%,25.5rem);margin-left:auto;
   padding:.8rem 1.4rem 1.4rem;border-radius:16px;background:#fff;color:#2A0D16;text-decoration:none;
   box-shadow:0 34px 60px -30px rgba(74,14,26,.6),0 0 0 1px rgba(42,13,22,.05);
 }
@@ -880,7 +881,9 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .vcard__f em{display:block;font-style:normal;font-size:.76rem;color:#8a7a7e;padding:.5rem .75rem;border-radius:999px;border:1px solid #E9DEDB;background:#FBF8F7}
 .vcard__btn{display:block;text-align:center;margin:.35rem 0 .7rem;padding:.7rem;border-radius:999px;background:var(--frambuesa);color:#fff;font-weight:600;font-size:.8rem}
 .vcard__o{display:block;text-align:center;font-size:.66rem;color:#8a7a7e;margin-bottom:.5rem}
+.vcard__socials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
 .vcard__g-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.6rem;border-radius:999px;border:1px solid #E3D8D5;font-size:.78rem;font-weight:600;color:#302323;background:#fff}
+.vcard__apple{font-size:.75rem}
 .vcard__g{width:1rem;height:1rem}
 .vphone{
   position:absolute;z-index:1;left:0;top:3.6rem;width:11.6rem;padding:.5rem;border-radius:26px;background:#1d1517;
@@ -901,10 +904,11 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 :root[data-theme="dark"] .vsello__bg{fill:#4A1B27}
 :root[data-theme="dark"] .vsello__in{color:var(--dorado)}
 .vip__pastel{display:none}
+.vip__tagline{display:none}
 
 /* Franja inferior con los beneficios */
 .vip__band{
-  list-style:none;margin:0 auto;padding:1.5rem max(clamp(1rem,4vw,2rem),calc((100vw - var(--wrap)) / 2)) 1.7rem;max-width:none;
+  position:relative;z-index:1;list-style:none;margin:0 auto;padding:1.5rem max(clamp(1rem,4vw,2rem),calc((100vw - var(--wrap)) / 2)) 1.7rem;max-width:none;
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.3rem 1rem;
   background:linear-gradient(180deg,rgba(246,201,208,.7),rgba(246,201,208,.95));
   border-radius:50% 50% 0 0 / 2.6rem 2.6rem 0 0;
@@ -1407,13 +1411,18 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 @media (prefers-reduced-motion:reduce){.carrusel__viewport{scroll-behavior:auto}}
 
 @media (min-width:1100px){
-  .vip{grid-template-columns:1fr 1.05fr;gap:clamp(2rem,3vw,3.5rem)}
-  .vip__stage{margin-inline:0 auto;max-width:36rem}
+  .section--vip .section__inner{max-width:1440px}
+  .vip{grid-template-columns:minmax(0,.93fr) minmax(34rem,1.07fr);gap:clamp(2rem,3vw,4rem)}
+  .vip__stage{margin-inline:0 auto;max-width:42rem;padding-top:2rem}
+  .vcard{width:26rem;padding:1rem 1.55rem 1.5rem;border-radius:18px}
+  .vphone{top:4.5rem;width:12.6rem}
+  .vsello{right:-.8rem;top:-.55rem}
   .vip__pastel{
-    display:block;position:absolute;z-index:0;right:0;bottom:7.5rem;width:clamp(9rem,13vw,14rem);height:auto;pointer-events:none;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%);
+    display:block;position:absolute;z-index:0;right:0;bottom:7rem;width:clamp(13rem,18vw,19rem);height:auto;pointer-events:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28%);mask-image:linear-gradient(90deg,transparent 0,#000 28%);
   }
   .vip__text,.vip__stage{position:relative;z-index:1}
+  .vip__tagline{display:block;position:relative;z-index:1;margin:-.4rem clamp(1rem,6vw,7rem) 1.1rem auto;width:max-content;max-width:calc(100% - 2rem);font-family:var(--ff-script, cursive);font-size:clamp(1rem,.8rem + .8vw,1.5rem);font-style:italic;color:var(--frambuesa);transform:rotate(-3deg)}
 }
 @media (min-width:1280px){
   .vip__l1{white-space:nowrap}
