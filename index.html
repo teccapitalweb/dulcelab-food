@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=20261007-8">
+<link rel="stylesheet" href="css/styles.css?v=20261007-10">
 <style>
   /* Botón de acceso al Club VIP (club.dulcelabfood.com) — mismo layout que el de WhatsApp, color propio */
   .btn--vip{background:var(--dorado);color:var(--chocolate);border:none;font-weight:700}
@@ -251,6 +251,15 @@
     </symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24">
       <path d="M4.5 12h15M13.5 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24">
+      <rect x="4" y="10" width="16" height="10.5" rx="1.5"/>
+      <rect x="3" y="7" width="18" height="3.5" rx="1"/>
+      <path d="M12 7v13.5M12 7C10.8 3.6 6.8 3.8 7 5.6 7.2 7.2 10 7 12 7Zm0 0c1.2-3.4 5.2-3.2 5-1.4-.2 1.6-3 1.4-5 1.4Z"/>
+    </symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/>
+      <path d="m7.6 12.4 3 3 5.8-6.2" stroke="#fff" stroke-width="2.2"/>
     </symbol>
   </defs>
 </svg>
@@ -707,52 +716,58 @@
 
 <!-- ============ CLUB VIP ============ -->
 <section class="section section--vip" id="club-vip">
+  <img class="vip__pastel" src="assets/vip-pastel.webp" width="560" height="938" alt="" aria-hidden="true" loading="lazy" decoding="async">
   <div class="section__inner vip">
-    <div class="vip__media rv">
-      <figure class="vip__foto">
-        <img src="assets/club-vip.webp" width="900" height="1241"
-             alt="Laptop sobre una mesa de cocina mostrando el panel del Club VIP de DulceLab Food, con el curso Decoración de pasteles y el progreso del alumno"
-             loading="lazy" decoding="async">
-      </figure>
-      <div class="vip__sello" aria-hidden="true">
-        <span class="vip__sello-t">Tu primera<br>clase gratis</span>
-        <svg class="ico" aria-hidden="true"><use href="#i-heart"></use></svg>
+    <div class="vip__text" data-rv-group>
+      <p class="vip__pill rv">Conoce DulceLab Food VIP</p>
+      <h2 class="section__title vip__title rv"><span class="vip__l1">Crea tu cuenta</span> <span class="accent">gratis</span></h2>
+      <p class="vip__sub rv">y empieza con <mark>tu primera clase gratis</mark>.</p>
+      <p class="vip__lead rv">Descubre todo lo que puedes aprender en DulceLab Food VIP. Regístrate en menos de un minuto y elige la clase que más te interese para comenzar.</p>
+      <ol class="vip__pasos rv">
+        <li><span class="vip__num">1</span><span><strong>Crea tu cuenta</strong><small>Con tu correo y forma parte del Club VIP.</small></span></li>
+        <li><span class="vip__num">2</span><span><strong>Elige tu primera clase</strong><small>Selecciona el curso que más te interese y comienza a aprender gratis.</small></span></li>
+      </ol>
+      <div class="vip__ctas rv">
+        <a class="btn btn--primary" href="https://club.dulcelabfood.com/vip-auth.html?tab=register" target="_blank" rel="noopener"><span>Crear mi cuenta gratis</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
+        <a class="btn btn--ghost" href="https://club.dulcelabfood.com/vip-auth.html" target="_blank" rel="noopener"><span>Ya tengo cuenta</span></a>
       </div>
+      <ul class="vip__checks rv">
+        <li><svg class="ico" aria-hidden="true"><use href="#i-check-circle"></use></svg><span>Solo necesitas tu correo</span></li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-check-circle"></use></svg><span>Sin tarjeta de crédito</span></li>
+      </ul>
     </div>
 
-    <div class="vip__text" data-rv-group>
-      <p class="vip__eyebrow rv">DulceLab Food VIP</p>
-      <h2 class="section__title rv">Tu formación no termina cuando <span class="accent">termina la clase</span>.</h2>
-      <p class="section__lead rv">El Club VIP concentra cursos, materiales, herramientas profesionales y comunidad en un solo lugar, para que sigas aprendiendo después de cada curso.</p>
-      <ul class="vip__bens rv">
-        <li class="vip__ben">
-          <span class="vip__ben-ico vip__ben-ico--rosa"><svg class="ico" aria-hidden="true"><use href="#i-cap"></use></svg></span>
-          <span class="vip__ben-t">Clase muestra gratuita</span>
-          <span class="vip__ben-d">Pruébalo sin costo.</span>
-        </li>
-        <li class="vip__ben">
-          <span class="vip__ben-ico vip__ben-ico--oro"><svg class="ico" aria-hidden="true"><use href="#i-doc"></use></svg></span>
-          <span class="vip__ben-t">Materiales descargables</span>
-          <span class="vip__ben-d">Recetas, guías y más.</span>
-        </li>
-        <li class="vip__ben">
-          <span class="vip__ben-ico vip__ben-ico--rosa"><svg class="ico" aria-hidden="true"><use href="#i-laptop"></use></svg></span>
-          <span class="vip__ben-t">Herramientas prácticas</span>
-          <span class="vip__ben-d">Para tu día a día.</span>
-        </li>
-        <li class="vip__ben">
-          <span class="vip__ben-ico vip__ben-ico--oro"><svg class="ico" aria-hidden="true"><use href="#i-community"></use></svg></span>
-          <span class="vip__ben-t">Comunidad de aprendizaje</span>
-          <span class="vip__ben-d">Crece acompañado.</span>
-        </li>
-      </ul>
-      <div class="vip__ctas rv">
-        <a class="btn btn--primary" href="https://club.dulcelabfood.com/vip-auth.html" target="_blank" rel="noopener"><span>Quiero mi clase gratis</span><svg class="ico" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
+    <div class="vip__stage rv" aria-hidden="true">
+      <div class="vphone">
+        <p class="vphone__t">Mis cursos</p>
+        <div class="vphone__c"><img src="assets/lineas/reposteria.webp" alt="" loading="lazy" decoding="async"><b>Decoración de pasteles</b><i>Comenzar clase</i></div>
+        <div class="vphone__c"><img src="assets/lineas/panaderia.webp" alt="" loading="lazy" decoding="async"><b>Panadería artesanal</b><i>Comenzar clase</i></div>
       </div>
-      <p class="vip__lock rv"><svg class="ico" aria-hidden="true"><use href="#i-lock"></use></svg><span>Sin compromiso. Solo necesitas crear tu cuenta.</span></p>
-      <p class="vip__nota rv" aria-hidden="true">Tu próxima receta empieza aquí.</p>
+      <a class="vcard" href="https://club.dulcelabfood.com/vip-auth.html?tab=register" target="_blank" rel="noopener" tabindex="-1">
+        <span class="vcard__dots"><i></i><i></i><i></i></span>
+        <img class="vcard__logo" src="assets/logo.png" alt="" width="900" height="484" loading="lazy" decoding="async">
+        <span class="vcard__h">Crea tu cuenta</span>
+        <span class="vcard__p">Únete al Club VIP y comienza tu primera clase gratis.</span>
+        <span class="vcard__f"><small>Nombre</small><em>María López</em></span>
+        <span class="vcard__f"><small>Correo electrónico</small><em>maria@correo.com</em></span>
+        <span class="vcard__f"><small>Contraseña</small><em>••••••••••</em></span>
+        <span class="vcard__btn">Crear cuenta gratis</span>
+        <span class="vcard__o">o regístrate con</span>
+        <span class="vcard__g-btn"><svg class="vcard__g" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Google</span>
+      </a>
+      <div class="vsello">
+        <svg class="vsello__bg" viewBox="-50 -50 100 100"><path d="M47.20,0.00 L46.97,1.23 L46.31,2.43 L45.31,3.57 L44.09,4.63 L42.80,5.64 L41.60,6.59 L40.62,7.53 L39.98,8.50 L39.71,9.53 L39.82,10.67 L40.26,11.92 L40.91,13.29 L41.63,14.74 L42.29,16.23 L42.74,17.70 L42.87,19.09 L42.60,20.32 L41.92,21.36 L40.85,22.18 L39.49,22.80 L37.94,23.25 L36.34,23.60 L34.83,23.93 L33.50,24.34 L32.46,24.90 L31.72,25.69 L31.29,26.72 L31.11,28.01 L31.08,29.50 L31.11,31.11 L31.08,32.75 L30.87,34.29 L30.43,35.63 L29.69,36.67 L28.67,37.36 L27.38,37.69 L25.91,37.70 L24.33,37.46 L22.73,37.09 L21.20,36.72 L19.81,36.48 L18.59,36.49 L17.57,36.83 L16.71,37.53 L15.97,38.56 L15.30,39.86 L14.63,41.32 L13.90,42.79 L13.07,44.12 L12.11,45.18 L11.01,45.86 L9.80,46.10 L8.51,45.90 L7.18,45.32 L5.85,44.44 L4.56,43.43 L3.34,42.42 L2.18,41.56 L1.07,41.00 L0.00,40.80 L-1.07,41.00 L-2.18,41.56 L-3.34,42.42 L-4.56,43.43 L-5.85,44.44 L-7.18,45.32 L-8.51,45.90 L-9.80,46.10 L-11.01,45.86 L-12.11,45.18 L-13.07,44.12 L-13.90,42.79 L-14.63,41.32 L-15.30,39.86 L-15.97,38.56 L-16.71,37.53 L-17.57,36.83 L-18.59,36.49 L-19.81,36.48 L-21.20,36.72 L-22.73,37.09 L-24.33,37.46 L-25.91,37.70 L-27.38,37.69 L-28.67,37.36 L-29.69,36.67 L-30.43,35.63 L-30.87,34.29 L-31.08,32.75 L-31.11,31.11 L-31.08,29.50 L-31.11,28.01 L-31.29,26.72 L-31.72,25.69 L-32.46,24.90 L-33.50,24.34 L-34.83,23.93 L-36.34,23.60 L-37.94,23.25 L-39.49,22.80 L-40.85,22.18 L-41.92,21.36 L-42.60,20.32 L-42.87,19.09 L-42.74,17.70 L-42.29,16.23 L-41.63,14.74 L-40.91,13.29 L-40.26,11.92 L-39.82,10.67 L-39.71,9.53 L-39.98,8.50 L-40.62,7.53 L-41.60,6.59 L-42.80,5.64 L-44.09,4.63 L-45.31,3.57 L-46.31,2.43 L-46.97,1.23 L-47.20,0.00 L-46.97,-1.23 L-46.31,-2.43 L-45.31,-3.57 L-44.09,-4.63 L-42.80,-5.64 L-41.60,-6.59 L-40.62,-7.53 L-39.98,-8.50 L-39.71,-9.53 L-39.82,-10.67 L-40.26,-11.92 L-40.91,-13.29 L-41.63,-14.74 L-42.29,-16.23 L-42.74,-17.70 L-42.87,-19.09 L-42.60,-20.32 L-41.92,-21.36 L-40.85,-22.18 L-39.49,-22.80 L-37.94,-23.25 L-36.34,-23.60 L-34.83,-23.93 L-33.50,-24.34 L-32.46,-24.90 L-31.72,-25.69 L-31.29,-26.72 L-31.11,-28.01 L-31.08,-29.50 L-31.11,-31.11 L-31.08,-32.75 L-30.87,-34.29 L-30.43,-35.63 L-29.69,-36.67 L-28.67,-37.36 L-27.38,-37.69 L-25.91,-37.70 L-24.33,-37.46 L-22.73,-37.09 L-21.20,-36.72 L-19.81,-36.48 L-18.59,-36.49 L-17.57,-36.83 L-16.71,-37.53 L-15.97,-38.56 L-15.30,-39.86 L-14.63,-41.32 L-13.90,-42.79 L-13.07,-44.12 L-12.11,-45.18 L-11.01,-45.86 L-9.80,-46.10 L-8.51,-45.90 L-7.18,-45.32 L-5.85,-44.44 L-4.56,-43.43 L-3.34,-42.42 L-2.18,-41.56 L-1.07,-41.00 L-0.00,-40.80 L1.07,-41.00 L2.18,-41.56 L3.34,-42.42 L4.56,-43.43 L5.85,-44.44 L7.18,-45.32 L8.51,-45.90 L9.80,-46.10 L11.01,-45.86 L12.11,-45.18 L13.07,-44.12 L13.90,-42.79 L14.63,-41.32 L15.30,-39.86 L15.97,-38.56 L16.71,-37.53 L17.57,-36.83 L18.59,-36.49 L19.81,-36.48 L21.20,-36.72 L22.73,-37.09 L24.33,-37.46 L25.91,-37.70 L27.38,-37.69 L28.67,-37.36 L29.69,-36.67 L30.43,-35.63 L30.87,-34.29 L31.08,-32.75 L31.11,-31.11 L31.08,-29.50 L31.11,-28.01 L31.29,-26.72 L31.72,-25.69 L32.46,-24.90 L33.50,-24.34 L34.83,-23.93 L36.34,-23.60 L37.94,-23.25 L39.49,-22.80 L40.85,-22.18 L41.92,-21.36 L42.60,-20.32 L42.87,-19.09 L42.74,-17.70 L42.29,-16.23 L41.63,-14.74 L40.91,-13.29 L40.26,-11.92 L39.82,-10.67 L39.71,-9.53 L39.98,-8.50 L40.62,-7.53 L41.60,-6.59 L42.80,-5.64 L44.09,-4.63 L45.31,-3.57 L46.31,-2.43 L46.97,-1.23Z"/></svg>
+        <span class="vsello__in"><svg class="ico" aria-hidden="true"><use href="#i-gift"></use></svg><b>Tu primera<br>clase gratis</b></span>
+      </div>
     </div>
   </div>
+
+  <ul class="section__inner vip__band">
+    <li><svg class="ico" aria-hidden="true"><use href="#i-live"></use></svg><span>Cursos en línea</span></li>
+    <li><svg class="ico" aria-hidden="true"><use href="#i-doc"></use></svg><span>Materiales descargables</span></li>
+    <li><svg class="ico" aria-hidden="true"><use href="#i-laptop"></use></svg><span>Herramientas prácticas</span></li>
+    <li><svg class="ico" aria-hidden="true"><use href="#i-community"></use></svg><span>Comunidad de aprendizaje</span></li>
+  </ul>
 </section>
 
 <!-- ============ CERTIFICADOS ============ -->
