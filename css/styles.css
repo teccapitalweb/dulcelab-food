@@ -1774,10 +1774,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__perfil-bloque{margin-bottom:1rem}
 .encuesta__perfil-bloque span{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:.2rem}
 .encuesta__perfil-bloque p{font-size:.96rem;color:var(--text);line-height:1.5}
-.encuesta__celebra{max-width:60ch;margin:-.75rem 0 1.1rem;font-size:1rem;line-height:1.55;color:var(--text-soft)}
+.encuesta__final-head{display:grid;grid-template-columns:8.5rem minmax(0,1fr);align-items:center;gap:1.15rem;margin:.15rem 0 1.45rem}
+.encuesta__final-head .encuesta__guia-img{height:10.5rem;margin:0}
+.encuesta__pregunta--final{font-size:clamp(1.75rem,1.2rem + 2.2vw,2.65rem);line-height:1.04;margin-bottom:.65rem;letter-spacing:-.035em}
+.encuesta__pregunta--final::first-letter{color:var(--frambuesa)}
+.encuesta__celebra{max-width:60ch;margin:0;font-size:1rem;line-height:1.55;color:var(--text-soft)}
 .encuesta__perfil{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .65rem;margin:0 0 1.15rem;padding:.7rem .85rem;border-radius:var(--r-md);background:color-mix(in srgb,var(--dorado) 11%,var(--glass-bg));border:1px solid color-mix(in srgb,var(--dorado) 28%,transparent)}
 .encuesta__perfil span{font-size:.7rem;font-weight:800;letter-spacing:.055em;text-transform:uppercase;color:var(--dorado)}
 .encuesta__perfil strong{font-size:.92rem;color:var(--text)}
+.encuesta__insights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1.3rem;margin-bottom:.2rem}
 .encuesta__ruta{
   margin:1.2rem 0 1.6rem;padding:1rem 1.1rem;border-radius:var(--r-md);
   background:var(--glass-bg);border:1px solid var(--glass-brd);
@@ -1788,10 +1793,13 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__ruta-icono{font-size:1.25rem;line-height:1}
 .encuesta__ruta-cat{display:block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-soft)}
 .encuesta__ruta-item p{font-size:.92rem;font-weight:600;color:var(--text)}
-.encuesta__vip-result{margin:-.55rem 0 1.3rem;padding:1.05rem 1.15rem;border-radius:var(--r-md);color:#fff;background:linear-gradient(135deg,#7A1028,#A51A38);box-shadow:0 16px 28px -20px rgba(74,14,26,.72)}
-.encuesta__vip-result p{margin:0 0 .35rem;font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#F6D38C}
-.encuesta__vip-result h3{margin:0 0 .35rem;font-family:var(--ff-title,'Sora',sans-serif);font-size:1.12rem;line-height:1.2}
-.encuesta__vip-result span{display:block;max-width:58ch;font-size:.87rem;line-height:1.5;color:rgba(255,255,255,.9)}
+.encuesta__vip-result{position:relative;overflow:hidden;margin:0 0 1.3rem;padding:1.25rem 1.3rem;border-radius:1.1rem;color:#fff;background:linear-gradient(135deg,#680C22,#A91436 65%,#C98A2D);box-shadow:0 20px 36px -24px rgba(74,14,26,.78)}
+.encuesta__vip-result::after{content:"✦";position:absolute;right:1rem;bottom:-2rem;font-size:8rem;line-height:1;color:rgba(255,255,255,.1);transform:rotate(12deg)}
+.encuesta__vip-result p{position:relative;z-index:1;margin:0 0 .55rem;font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#FCE8A9}
+.encuesta__vip-result h3{position:relative;z-index:1;max-width:19ch;margin:0 0 .45rem;font-family:var(--ff-title,'Sora',sans-serif);font-size:clamp(1.35rem,1rem + 1.35vw,2rem);line-height:1.05;letter-spacing:-.03em}
+.encuesta__vip-result h3 em{font-style:normal;color:#F4C250}
+.encuesta__vip-result span,.encuesta__vip-result small{position:relative;z-index:1;display:block;max-width:55ch;line-height:1.5;color:rgba(255,255,255,.92)}
+.encuesta__vip-result span{font-size:.9rem}.encuesta__vip-result small{margin-top:.75rem;font-size:.75rem;font-weight:700;color:#FCE8A9}
 @media (max-width:640px){
   .encuesta__card{padding:1.15rem 1rem}
   .encuesta__progress{padding-right:2.6rem;margin-bottom:.9rem}
@@ -1813,6 +1821,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .encuesta__lesson .encuesta__opciones:not(.encuesta__opciones--multi) .encuesta__opcion{min-height:0}
   .encuesta__ctas{flex-direction:column}
   .encuesta__ctas .btn{width:100%;text-align:center;justify-content:center}
+  .encuesta__final-head{grid-template-columns:1fr;text-align:center;gap:.25rem;margin-bottom:1.15rem}
+  .encuesta__final-head .encuesta__guia-img{height:8.4rem;margin-inline:auto}
+  .encuesta__pregunta--final{font-size:1.65rem}.encuesta__celebra{font-size:.92rem}
+  .encuesta__insights{grid-template-columns:1fr;gap:0}
 }
 @media (max-width:340px){
   .encuesta__opciones--multi{grid-template-columns:1fr}

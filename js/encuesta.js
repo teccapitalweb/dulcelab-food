@@ -644,19 +644,30 @@
     return mensajes[estado.tipo] || 'Tienes una meta clara y muchas posibilidades para hacerla crecer.';
   }
 
+  function tituloMotivacion() {
+    var titulos = {
+      estudiante: '¡Tu futuro gastronómico ya empezó!',
+      aficionado: '¡Tu pasión ya tiene dirección!',
+      profesional: '¡Tu experiencia tiene mucho valor!',
+      emprendedor: '¡Tienes visión para hacerlo crecer!'
+    };
+    return titulos[estado.tipo] || '¡Vas por muy buen camino!';
+  }
+
   function renderFin() {
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
-      imgChef(poseFinal(), 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
-      '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
-      '<h2 class="encuesta__pregunta">¡Vas por muy buen camino!</h2>' +
-      '<p class="encuesta__celebra">' + mensajeMotivacion(r) + '</p>' +
+      '<div class="encuesta__final-head">' +
+        imgChef(poseFinal(), 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
+        '<div><p class="encuesta__eyebrow">✨ Tu resultado DulceLab</p>' +
+        '<h2 class="encuesta__pregunta encuesta__pregunta--final">' + tituloMotivacion() + '</h2>' +
+        '<p class="encuesta__celebra">' + mensajeMotivacion(r) + '</p></div>' +
+      '</div>' +
+      '<section class="encuesta__vip-result"><p class="encuesta__vip-free">✨ Tu primera clase puede ser gratis</p><h3>Impulsa tu talento con <em>Club VIP</em></h3><span>Accede a cursos, práctica y materiales para avanzar con seguridad en la meta que elegiste.</span><small>Sin tarjeta de crédito · Aprende a tu ritmo</small></section>' +
       '<div class="encuesta__perfil"><span>' + r.perfil.icono + ' Tu perfil DulceLab</span><strong>' + r.perfil.texto + '</strong></div>' +
-      '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
-      '<div class="encuesta__perfil-bloque"><span>Lo que más necesitas trabajar</span><p>' + r.foco + '</p></div>' +
+      '<div class="encuesta__insights"><div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div><div class="encuesta__perfil-bloque"><span>Lo que más puedes fortalecer</span><p>' + r.foco + '</p></div></div>' +
       '<div class="encuesta__ruta" id="encuestaRuta">' + htmlRuta(r.ruta) + '</div>' +
-      '<section class="encuesta__vip-result"><p>👑 Club VIP</p><h3>Tu siguiente paso para avanzar</h3><span>Practica a tu ritmo, consulta materiales y encuentra cursos pensados para fortalecer justo lo que hoy quieres mejorar.</span></section>' +
       '<div class="encuesta__ctas">' +
       '<a class="btn btn--primary" href="https://club.dulcelabfood.com" target="_blank" rel="noopener" id="encuestaCtaCursos">Conocer la membresía Club VIP</a>' +
       '<a class="btn btn--ghost" href="' + linkWhatsApp(r) + '" target="_blank" rel="noopener" id="encuestaCtaWa">Platicar mi ruta por WhatsApp</a>' +
