@@ -647,6 +647,28 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   /* ...y solo se deja la carita del asistente (sin la burbuja) para que no tape los botones */
   .dlfbot-tip{display:none !important}
 }
+@media (max-width:767px){
+  /* En teléfono el hero termina antes para que la encuesta no quede separada por un espacio vacío. */
+  .hero--photo{min-height:84svh;padding-bottom:calc(6rem + env(safe-area-inset-bottom,0px))}
+
+  /* Valores: una lista clara, una fila por valor. */
+  .about__values{flex-direction:column;align-items:stretch;gap:.45rem}
+  .about__values li{width:100%;justify-content:flex-start}
+
+  /* Las seis líneas se recorren con el dedo como carrusel. */
+  .lineas__grid{display:flex;overflow-x:auto;gap:1rem;margin-inline:-1rem;padding:.5rem 1rem 1.25rem;scroll-snap-type:x mandatory;scroll-padding-inline:1rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .lineas__grid::-webkit-scrollbar{display:none}
+  .lineas__grid .card--line{flex:0 0 min(82vw,21rem);scroll-snap-align:start}
+  .lineas__beneficios{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem .75rem}
+  .lineas__beneficios li{flex-direction:column;gap:.45rem;text-align:center}
+
+  /* Registro VIP: un CTA centrado y beneficios finales centrados. */
+  .vip__ctas{justify-content:center}
+  .vip__ctas .btn--ghost{display:none}
+  .vip__ctas .btn--primary{margin-inline:auto}
+  .vip__checks{justify-content:center}
+  .vip__band .vip__band-tagline{grid-column:1 / -1;align-items:center;text-align:center;transform:none}
+}
 @media (prefers-reduced-motion:reduce){.hero__pill{animation:none}}
 
 /* Indicador de scroll */
