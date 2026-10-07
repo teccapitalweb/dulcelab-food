@@ -276,7 +276,23 @@
     merma: { t: '¿Qué es merma?', claves: ['merma', 'mermas', 'desperdicio', 'desperdicios'], r: 'La <b>merma</b> es la pérdida de producto o dinero por caducidad, mala conservación, porciones incorrectas, errores de producción o desperdicio. Medirla ayuda a mejorar la utilidad del negocio.' },
     inventario: { t: '¿Qué es inventario?', claves: ['inventario', 'inventarios', 'existencias', 'insumos'], r: 'El <b>inventario</b> es el control de los insumos que tienes: qué entra, qué sale, cuánto queda y qué está por caducar. Ayuda a comprar mejor, evitar faltantes y reducir mermas.' },
     estandarizacion: { t: '¿Qué es estandarizar una receta?', claves: ['estandarizar', 'estandarizacion', 'receta estandar', 'porciones'], r: '<b>Estandarizar una receta</b> es dejar definidos ingredientes, cantidades, proceso, rendimiento, porción y costo. Así el producto sale igual aunque lo prepare otra persona.' },
-    emprendimiento: { t: '¿Qué es emprender en gastronomía?', claves: ['emprender', 'emprendimiento', 'negocio', 'vender'], r: '<b>Emprender en gastronomía</b> es convertir una habilidad culinaria en un proyecto sostenible: identificar clientes, diseñar una oferta, calcular costos y precios, organizar producción y vender con claridad.' }
+    emprendimiento: { t: '¿Qué es emprender en gastronomía?', claves: ['emprender', 'emprendimiento', 'negocio', 'vender'], r: '<b>Emprender en gastronomía</b> es convertir una habilidad culinaria en un proyecto sostenible: identificar clientes, diseñar una oferta, calcular costos y precios, organizar producción y vender con claridad.' },
+    mise: { t: '¿Qué es mise en place?', claves: ['mise en place', 'mise', 'preparacion previa'], r: '<b>Mise en place</b> significa tener listos y organizados los ingredientes, utensilios y preparaciones antes de cocinar. Ayuda a trabajar con orden, rapidez y menos errores.' },
+    tecnicas: { t: '¿Qué son las técnicas culinarias?', claves: ['tecnicas culinarias', 'tecnica culinaria', 'tecnicas de cocina'], r: 'Las <b>técnicas culinarias</b> son métodos para transformar alimentos: cortar, sellar, asar, hornear, cocer, freír, saltear o cocinar al vapor. Elegir la técnica correcta mejora sabor, textura y presentación.' },
+    cuchillos: { t: '¿Qué son los cortes básicos?', claves: ['cuchillo', 'cuchillos', 'cortes basicos', 'cortar verduras', 'juliana', 'brunoise'], r: 'Los <b>cortes básicos</b> son formas estandarizadas de cortar alimentos, como juliana, brunoise, bastones y cubos. Dan cocción pareja, mejor presentación y ayudan a controlar porciones.' },
+    temperaturas: { t: '¿Por qué son importantes las temperaturas?', claves: ['temperatura', 'temperaturas', 'cadena de frio', 'cadena de frío', 'refrigeracion', 'congelacion'], r: 'Controlar <b>temperaturas</b> evita riesgos y conserva calidad. Los alimentos fríos deben mantenerse fríos y los calientes, calientes; enfriar o recalentar mal puede favorecer el crecimiento de bacterias.' },
+    conservacion: { t: '¿Cómo se conservan los alimentos?', claves: ['conservar', 'conservacion', 'caducidad', 'guardar alimentos', 'refrigerar'], r: 'La <b>conservación</b> combina higiene, envases adecuados, refrigeración o congelación, rotación de inventario y fechas claras. La regla PEPS —primero en entrar, primero en salir— ayuda a reducir pérdidas.' },
+    fermentacion: { t: '¿Qué es fermentación?', claves: ['fermentacion', 'fermentar', 'levadura', 'masa madre'], r: 'La <b>fermentación</b> es un proceso en el que microorganismos como levaduras transforman azúcares. En panadería ayuda a que la masa crezca y desarrolle sabor, aroma y textura.' },
+    salsas: { t: '¿Qué son las salsas madre?', claves: ['salsa', 'salsas', 'salsas madre'], r: 'Las <b>salsas</b> aportan sabor, humedad y personalidad a un platillo. Aprender sus bases, espesantes, emulsiones y tiempos de cocción permite adaptarlas a muchas preparaciones.' },
+    emulsiones: { t: '¿Qué es una emulsión?', claves: ['emulsion', 'emulsiones', 'mayonesa', 'vinagreta'], r: 'Una <b>emulsión</b> une temporal o establemente dos líquidos que normalmente se separan, como aceite y agua. Mayonesa y vinagretas son ejemplos; la técnica, la temperatura y el orden de mezclado son clave.' },
+    cocina_mexicana: { t: '¿Qué caracteriza a la cocina mexicana?', claves: ['cocina mexicana', 'mexicana', 'antojitos', 'mole', 'maiz', 'maíz'], r: 'La <b>cocina mexicana</b> reúne ingredientes, técnicas y tradiciones de muchas regiones. Maíz, chiles, frijoles, especias, salsas y métodos como nixtamalizar forman parte de una cocina muy diversa.' },
+    menu: { t: '¿Cómo se diseña un menú?', claves: ['menu', 'menú', 'disenar menu', 'diseñar menú', 'carta'], r: 'Diseñar un <b>menú</b> es elegir platillos que funcionen juntos por tipo de cliente, costos, operación y rentabilidad. Una buena carta es clara, fácil de producir y ayuda a vender lo que más conviene.' },
+    porcionado: { t: '¿Qué es porcionar?', claves: ['porcion', 'porciones', 'porcionado', 'rendimiento'], r: '<b>Porcionar</b> es servir siempre la cantidad definida de un producto. Da consistencia al cliente, facilita el costeo y evita mermas o pérdidas de ganancia.' },
+    chocolate: { t: '¿Qué es templar chocolate?', claves: ['chocolate', 'templar chocolate', 'temperado'], r: '<b>Templar chocolate</b> es controlar su temperatura al fundirlo y enfriarlo para lograr brillo, buen quiebre y una textura estable. Es fundamental en bombonería y decoración.' },
+    decoracion: { t: '¿Qué es decoración de pasteles?', claves: ['decoracion', 'decorar', 'betun', 'buttercream', 'fondant'], r: 'La <b>decoración de pasteles</b> combina estructura, cobertura, color y detalles. Antes de decorar conviene nivelar, rellenar y cubrir correctamente para obtener un acabado limpio y estable.' },
+    servicio: { t: '¿Qué es servicio al cliente gastronómico?', claves: ['servicio', 'cliente', 'atencion', 'atención', 'mesero'], r: 'El <b>servicio gastronómico</b> es la experiencia completa de quien compra: atención, tiempos, limpieza, explicación del producto y resolución de dudas. Un buen servicio hace que las personas regresen.' },
+    alergenos: { t: '¿Qué son los alérgenos alimentarios?', claves: ['alergeno', 'alergenos', 'alergia', 'gluten', 'lactosa'], r: 'Los <b>alérgenos</b> son ingredientes que pueden causar reacciones en algunas personas, como gluten, leche, huevo, nueces o mariscos. Informar ingredientes y evitar contaminación cruzada es parte de un servicio responsable.' },
+    barismo: { t: '¿Qué es barismo?', claves: ['barismo', 'barista', 'cafe', 'café', 'espresso'], r: 'El <b>barismo</b> es el conocimiento para preparar y servir café: molienda, extracción, leche, limpieza de equipo y atención. Busca resaltar las cualidades de cada café en la taza.' }
   };
 
   function responderConcepto(k) {
@@ -284,7 +300,8 @@
     if (!c) return;
     animar('ok', 3000);
     decir(c.r);
-    return opciones([{ t: 'Otro concepto', fn: conceptos }, { t: 'Buscar un curso', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }]);
+    decir('Si quieres llevar este tema a la práctica con cursos, materiales y guía, el <b>Club VIP</b> puede ayudarte a avanzar a tu ritmo.');
+    return opciones([{ t: 'Conocer Club VIP', fn: membresia }, { t: 'Otro concepto', fn: conceptos }, { t: 'Buscar un curso', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }]);
   }
   function conceptos() {
     decir('Claro. Elige un tema o escríbeme una pregunta como «¿qué es catering?»');
@@ -321,7 +338,8 @@
     return DUDAS[k].r().then(function (html) {
       animar('ok', 3000);
       decir(html);
-      return opciones([{ t: 'Otra duda', fn: dudas }, { t: 'Buscar un curso', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }]);
+      decir('¿Quieres seguir aprendiendo? En <b>Club VIP</b> encuentras cursos y recursos para practicar estos temas a tu ritmo.');
+      return opciones([{ t: 'Conocer Club VIP', fn: membresia }, { t: 'Otra duda', fn: dudas }, { t: 'Buscar un curso', fn: elegirArea }, { t: 'Hablar con un asesor', fn: asesor }]);
     });
   }
 
