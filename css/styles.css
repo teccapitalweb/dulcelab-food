@@ -719,11 +719,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   display:grid;gap:2.2rem;
 }
 .footer__brand{display:flex;align-items:center;gap:1rem}
-.footer__inner--simple{display:flex;justify-content:center}
-.footer__inner--simple .footer__brand{text-align:left}
-@media (max-width:520px){
-  .footer__inner--simple .footer__brand{flex-direction:column;text-align:center}
-}
 .footer__logo{height:52px;width:auto;border-radius:0}
 :root[data-theme="dark"] .footer__logo{}
 /* Igual que en el navbar: el logo ya es el wordmark. */
@@ -741,6 +736,14 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .footer__contact:hover{color:var(--frambuesa)}
 }
 .footer__contact .ico{color:var(--frambuesa)}
+.footer__nav{display:grid;align-content:start;gap:.55rem}
+.footer__nav a,.footer__info p{
+  width:max-content;max-width:100%;font-size:.9rem;color:var(--text-soft);text-decoration:none;
+}
+.footer__nav a{transition:color .2s var(--ease),transform .2s var(--ease)}
+@media (hover:hover){.footer__nav a:hover{color:var(--frambuesa);transform:translateX(3px)}}
+.footer__info{display:grid;align-content:start;justify-items:start;gap:.65rem}
+.footer__info p{margin:0}
 .footer__social{display:flex;gap:.6rem}
 .social{
   width:42px;height:42px;border-radius:50%;
@@ -756,11 +759,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   }
 }
 .footer__handle{margin-top:.7rem;font-size:.8rem;color:var(--text-faint);letter-spacing:.04em}
-.footer__legal{
+.footer__bottom{
   max-width:var(--wrap);margin:2.4rem auto 0;padding-top:1.2rem;
-  border-top:1px solid var(--line);
-  text-align:center;font-size:.78rem;color:var(--text-faint);
+  border-top:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:space-between;gap:.8rem 1.4rem;
+  font-size:.78rem;color:var(--text-faint);
 }
+.footer__bottom p{margin:0}
+.footer__legal-links{display:flex;flex-wrap:wrap;gap:1.25rem}
+.footer__legal-links a{color:var(--text-faint);text-decoration:none;transition:color .2s var(--ease)}
+@media (hover:hover){.footer__legal-links a:hover{color:var(--frambuesa)}}
 
 /* ---------- 9. Breakpoints ---------- */
 @media (min-width:768px){
@@ -777,7 +784,6 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .nav__wa{display:inline-flex}
   .burger{display:none}
   .footer__inner{grid-template-columns:1.6fr 1fr 1fr;align-items:start;gap:2rem}
-  .footer__inner--simple{grid-template-columns:1fr}
   .shape--1{width:96px;height:96px;left:8%}
   .shape--3{width:110px;height:110px;right:9%}
 }
@@ -1932,3 +1938,41 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
   .encuesta__card{transform:none !important}
   .encuesta__body.is-leaving{opacity:1;transform:none}
 }
+
+/* ---------- Ajustes finales para teléfono ---------- */
+.lineas__swipe{display:none}
+@media (max-width:767px){
+  /* Esta regla va después de la cuadrícula base para que el carrusel no se convierta en lista. */
+  .section--lines{overflow:hidden}
+  .lineas__swipe{display:block;margin:.8rem 0 0;font-size:.75rem;font-weight:700;color:var(--frambuesa);letter-spacing:.02em}
+  .lineas__swipe span{display:inline-block;margin-left:.25rem;font-size:1.1rem;animation:lineas-swipe 1.4s ease-in-out infinite}
+  .lineas__grid.grid--3{
+    display:flex;grid-template-columns:none;align-items:stretch;gap:1rem;
+    width:auto;margin:0 -1rem;padding:.6rem 1rem 1.35rem;
+    overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:1rem;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+  }
+  .lineas__grid.grid--3::-webkit-scrollbar{display:none}
+  .lineas__grid.grid--3 .card--line{flex:0 0 min(84vw,22rem);width:min(84vw,22rem);scroll-snap-align:start;scroll-snap-stop:always}
+  .lineas__grid.grid--3 .card--line:last-child{margin-right:.15rem}
+
+  .footer{padding:2.5rem 1.4rem calc(4.5rem + env(safe-area-inset-bottom,0px));text-align:center}
+  .footer__inner{grid-template-columns:1fr;gap:2rem}
+  .footer__brand{flex-direction:column;text-align:center}
+  .footer__slogan{max-width:30ch}
+  .footer__nav{justify-items:center;gap:.6rem}
+  .footer__info{justify-items:center}
+  .footer__bottom{justify-content:center;text-align:center;margin-top:2rem}
+  .footer__legal-links{justify-content:center;gap:.8rem 1.1rem}
+}
+@keyframes lineas-swipe{50%{transform:translateX(5px)}}
+
+/* Páginas legales enlazadas desde el pie de página. */
+.legal-page{min-height:100svh;padding:clamp(7rem,12vw,10rem) 1rem 4rem;background:var(--bg)}
+.legal-page__card{width:min(100%,52rem);margin:auto;padding:clamp(1.5rem,5vw,3.5rem);border:1px solid var(--glass-brd);border-radius:var(--r-card);background:var(--glass-bg);box-shadow:var(--shadow-card)}
+.legal-page__logo{display:block;width:8rem;height:auto;margin-bottom:2rem}
+.legal-page h1{font-size:clamp(2rem,5vw,3rem);margin-bottom:.5rem}
+.legal-page h2{margin:2rem 0 .55rem;font-size:1.15rem}
+.legal-page p,.legal-page li{color:var(--text-soft);line-height:1.7}
+.legal-page ul{padding-left:1.2rem}
+.legal-page__back{display:inline-flex;margin-top:2rem;color:var(--frambuesa);font-weight:700}
