@@ -12,8 +12,6 @@
   'use strict';
 
   var WEBHOOK_URL = 'https://dulcelab-webhook-production.up.railway.app';
-  var STORAGE_DONE = 'dlf-encuesta';          // localStorage: ya la contestó o dijo "ahora no" definitivo
-  var STORAGE_SKIP = 'dlf-encuesta-cerrada';  // sessionStorage: no insistir en esta misma visita
   var STEP_EMOJIS = ['👤', '🧭', '🎯', '🔎', '🎬', '🚧'];
 
   var modal = document.getElementById('encuesta');
@@ -636,25 +634,37 @@
       }).join('');
   }
 
+  function mensajeMotivacion(r) {
+    var mensajes = {
+      estudiante: 'Vas construyendo tu camino con intención. Tener claro lo que quieres aprender desde ahora es una gran ventaja.',
+      aficionado: 'Tu curiosidad y ganas de practicar son una base excelente. Cada receta que haces es experiencia que se queda contigo.',
+      profesional: 'Ya tienes experiencia y el impulso de seguir creciendo. Esa combinación es la que convierte el talento en una carrera más sólida.',
+      emprendedor: 'Tienes visión para transformar lo que sabes hacer en un proyecto propio. Con técnica y estrategia puedes llevarlo mucho más lejos.'
+    };
+    return mensajes[estado.tipo] || 'Tienes una meta clara y muchas posibilidades para hacerla crecer.';
+  }
+
   function renderFin() {
     renderProgreso();
     var r = recomendar();
     body.innerHTML =
       imgChef(poseFinal(), 'encuesta__guia-img encuesta__guia-img--chico', 'Tu guía DulceLab') +
       '<p class="encuesta__eyebrow">✨ ¡Tu receta está lista!</p>' +
-      '<h2 class="encuesta__pregunta">' + r.perfil.icono + ' ' + r.perfil.texto + '</h2>' +
+      '<h2 class="encuesta__pregunta">¡Vas por muy buen camino!</h2>' +
+      '<p class="encuesta__celebra">' + mensajeMotivacion(r) + '</p>' +
+      '<div class="encuesta__perfil"><span>' + r.perfil.icono + ' Tu perfil DulceLab</span><strong>' + r.perfil.texto + '</strong></div>' +
       '<div class="encuesta__perfil-bloque"><span>Tu principal objetivo</span><p>' + r.objetivo + '</p></div>' +
       '<div class="encuesta__perfil-bloque"><span>Lo que más necesitas trabajar</span><p>' + r.foco + '</p></div>' +
       '<div class="encuesta__ruta" id="encuestaRuta">' + htmlRuta(r.ruta) + '</div>' +
+      '<section class="encuesta__vip-result"><p>👑 Club VIP</p><h3>Tu siguiente paso para avanzar</h3><span>Practica a tu ritmo, consulta materiales y encuentra cursos pensados para fortalecer justo lo que hoy quieres mejorar.</span></section>' +
       '<div class="encuesta__ctas">' +
-      '<a class="btn btn--primary" href="https://club.dulcelabfood.com" target="_blank" rel="noopener" id="encuestaCtaCursos">Ver los cursos del Club VIP</a>' +
+      '<a class="btn btn--primary" href="https://club.dulcelabfood.com" target="_blank" rel="noopener" id="encuestaCtaCursos">Conocer la membresía Club VIP</a>' +
       '<a class="btn btn--ghost" href="' + linkWhatsApp(r) + '" target="_blank" rel="noopener" id="encuestaCtaWa">Platicar mi ruta por WhatsApp</a>' +
       '</div>';
 
     document.getElementById('encuestaCtaCursos').addEventListener('click', cerrar);
     document.getElementById('encuestaCtaWa').addEventListener('click', cerrar);
     enviarRespuesta();
-    try { localStorage.setItem(STORAGE_DONE, 'completada'); } catch (e) {}
 
     // Cambia la ruta genérica por los cursos reales de la membresía (si ya
     // se pudieron leer; si falla la red se queda la de reglas de arriba).
@@ -805,24 +815,17 @@
     wrap.hidden = false;
   }
 
-  // "Ahora no" / X: se oculta durante esta visita; si no la contestó, vuelve
-  // a aparecer en la siguiente (igual que mientras siga sin contestarse).
+  // X o "Ahora no": se oculta solo en la vista actual. Al recargar siempre
+  // se ofrece de nuevo, tanto si se dejó a medias como si ya se terminó.
   function cerrar() {
     wrap.hidden = true;
-    try {
-      if (localStorage.getItem(STORAGE_DONE) !== 'completada') sessionStorage.setItem(STORAGE_SKIP, '1');
-    } catch (e) {}
   }
   function cerrarDefinitivo() { cerrar(); }
 
   btnClose.addEventListener('click', cerrar);
 
-  /* ---------- 9. Aparece sola, mientras no se haya contestado ---------- */
-  var forzar = /[?&]encuesta=1\b/.test(location.search);
-  var completada = false, ocultaEstaVisita = false;
-  try { completada = localStorage.getItem(STORAGE_DONE) === 'completada'; } catch (e) {}
-  try { ocultaEstaVisita = sessionStorage.getItem(STORAGE_SKIP) === '1'; } catch (e) {}
-  if (forzar || (!completada && !ocultaEstaVisita)) abrir();
+  /* ---------- 9. Aparece en cada carga de página ---------- */
+  abrir();
 
   // Lo usa el asistente virtual (js/chatbot.js): comparte la lectura de cursos
   // y puede llevar a la persona a la encuesta.

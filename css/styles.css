@@ -1774,6 +1774,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__perfil-bloque{margin-bottom:1rem}
 .encuesta__perfil-bloque span{display:block;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);margin-bottom:.2rem}
 .encuesta__perfil-bloque p{font-size:.96rem;color:var(--text);line-height:1.5}
+.encuesta__celebra{max-width:60ch;margin:-.75rem 0 1.1rem;font-size:1rem;line-height:1.55;color:var(--text-soft)}
+.encuesta__perfil{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .65rem;margin:0 0 1.15rem;padding:.7rem .85rem;border-radius:var(--r-md);background:color-mix(in srgb,var(--dorado) 11%,var(--glass-bg));border:1px solid color-mix(in srgb,var(--dorado) 28%,transparent)}
+.encuesta__perfil span{font-size:.7rem;font-weight:800;letter-spacing:.055em;text-transform:uppercase;color:var(--dorado)}
+.encuesta__perfil strong{font-size:.92rem;color:var(--text)}
 .encuesta__ruta{
   margin:1.2rem 0 1.6rem;padding:1rem 1.1rem;border-radius:var(--r-md);
   background:var(--glass-bg);border:1px solid var(--glass-brd);
@@ -1784,6 +1788,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .encuesta__ruta-icono{font-size:1.25rem;line-height:1}
 .encuesta__ruta-cat{display:block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text-soft)}
 .encuesta__ruta-item p{font-size:.92rem;font-weight:600;color:var(--text)}
+.encuesta__vip-result{margin:-.55rem 0 1.3rem;padding:1.05rem 1.15rem;border-radius:var(--r-md);color:#fff;background:linear-gradient(135deg,#7A1028,#A51A38);box-shadow:0 16px 28px -20px rgba(74,14,26,.72)}
+.encuesta__vip-result p{margin:0 0 .35rem;font-size:.7rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#F6D38C}
+.encuesta__vip-result h3{margin:0 0 .35rem;font-family:var(--ff-title,'Sora',sans-serif);font-size:1.12rem;line-height:1.2}
+.encuesta__vip-result span{display:block;max-width:58ch;font-size:.87rem;line-height:1.5;color:rgba(255,255,255,.9)}
 @media (max-width:640px){
   .encuesta__card{padding:1.15rem 1rem}
   .encuesta__progress{padding-right:2.6rem;margin-bottom:.9rem}
