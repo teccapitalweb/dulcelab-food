@@ -1417,14 +1417,15 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 @media (min-width:1100px){
   .section--vip .section__inner{max-width:1440px}
-  .vip{grid-template-columns:minmax(0,.93fr) minmax(34rem,1.07fr);gap:clamp(2rem,3vw,4rem)}
-  .vip__stage{margin-inline:0 auto;max-width:46rem;padding-top:1rem;transform:translateX(-13rem)}
+  .vip{grid-template-columns:minmax(0,.93fr) minmax(34rem,1.07fr);gap:clamp(2rem,3vw,4rem);padding-bottom:0}
+  .vip__stage{margin-inline:0 auto;max-width:46rem;padding-top:1rem;transform:translateX(-17rem)}
   .vip__signup-art{width:100%}
   .vcard{width:26rem;padding:1rem 1.55rem 1.5rem;border-radius:18px}
   .vphone{top:4.5rem;width:12.6rem}
   .vsello{right:-.8rem;top:-.55rem}
   .vip__pastel{display:none}
   .vip__text,.vip__stage{position:relative;z-index:1}
+  .vip__band{margin-top:-.35rem}
 }
 @media (prefers-reduced-motion:reduce){.vip__title .vip__l1,.vip__title .accent{animation:none}}
 @media (min-width:1280px){
