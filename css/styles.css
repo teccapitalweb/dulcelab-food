@@ -819,11 +819,10 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 .section--vip{
   position:relative;isolation:isolate;overflow:hidden;padding-bottom:0;
   background:
-    linear-gradient(90deg,rgba(255,249,247,.98) 0%,rgba(255,246,244,.94) 42%,rgba(255,246,242,.68) 68%,rgba(255,246,242,.32) 100%),
-    radial-gradient(55% 65% at 28% 44%,rgba(249,208,216,.72),transparent 72%),
-    url("../assets/hero-cocina-der.webp") center right / cover no-repeat;
+    linear-gradient(90deg,rgba(255,249,247,.14),rgba(255,249,247,.04)),
+    url("../assets/vip-fondo-pastel.png") center / cover no-repeat;
 }
-.section--vip::before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(247,213,218,.18));pointer-events:none}
+.section--vip::before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(247,213,218,.1));pointer-events:none}
 :root[data-theme="dark"] .section--vip{
   background:
     radial-gradient(55% 50% at 62% 40%,rgba(201,75,104,.16),transparent 72%),
@@ -837,6 +836,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 }
 :root[data-theme="dark"] .vip__pill{background:rgba(226,185,101,.16);color:var(--dorado)}
 .vip__title{font-size:clamp(2.6rem,1.3rem + 3.7vw,4.2rem);line-height:1;letter-spacing:-.035em;text-align:left;margin-bottom:.7rem}
+.vip__title .vip__l1,.vip__title .accent{display:inline-block;animation:vip-title-rise .8s var(--ease) both}
+.vip__title .accent{animation-delay:.13s}
 .vip__sub{font-size:clamp(1.1rem,1rem + .5vw,1.4rem);font-weight:600;color:var(--text);margin:0 0 1.1rem;line-height:1.3}
 .vip__sub mark{color:inherit;font-weight:700;background:linear-gradient(transparent 68%,rgba(214,120,140,.5) 68%,rgba(214,120,140,.5) 88%,transparent 88%);padding-inline:.1em}
 .vip__lead{color:var(--text-soft);font-size:.98rem;line-height:1.65;margin:0 0 1.3rem;max-width:44ch}
@@ -865,6 +866,8 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 
 /* Maqueta: pantalla de registro + celular */
 .vip__stage{position:relative;width:100%;max-width:39rem;margin-inline:auto;padding-top:1.6rem}
+.vip__signup-art{position:relative;z-index:2;display:block;width:100%;height:auto;filter:drop-shadow(0 24px 34px rgba(74,14,26,.16))}
+.vip__stage .vphone,.vip__stage .vcard,.vip__stage .vsello{display:none}
 .vcard{
   position:relative;z-index:2;display:flex;flex-direction:column;width:min(100%,25.5rem);margin-left:auto;
   padding:.8rem 1.4rem 1.4rem;border-radius:16px;background:#fff;color:#2A0D16;text-decoration:none;
@@ -905,6 +908,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 :root[data-theme="dark"] .vsello__in{color:var(--dorado)}
 .vip__pastel{display:none}
 .vip__tagline{display:none}
+@keyframes vip-title-rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
 /* Franja inferior con los beneficios */
 .vip__band{
@@ -1413,17 +1417,16 @@ html{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track
 @media (min-width:1100px){
   .section--vip .section__inner{max-width:1440px}
   .vip{grid-template-columns:minmax(0,.93fr) minmax(34rem,1.07fr);gap:clamp(2rem,3vw,4rem)}
-  .vip__stage{margin-inline:0 auto;max-width:42rem;padding-top:2rem}
+  .vip__stage{margin-inline:0 auto;max-width:46rem;padding-top:1rem}
+  .vip__signup-art{width:100%}
   .vcard{width:26rem;padding:1rem 1.55rem 1.5rem;border-radius:18px}
   .vphone{top:4.5rem;width:12.6rem}
   .vsello{right:-.8rem;top:-.55rem}
-  .vip__pastel{
-    display:block;position:absolute;z-index:0;right:0;bottom:7rem;width:clamp(13rem,18vw,19rem);height:auto;pointer-events:none;
-    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28%);mask-image:linear-gradient(90deg,transparent 0,#000 28%);
-  }
+  .vip__pastel{display:none}
   .vip__text,.vip__stage{position:relative;z-index:1}
   .vip__tagline{display:block;position:relative;z-index:1;margin:-.4rem clamp(1rem,6vw,7rem) 1.1rem auto;width:max-content;max-width:calc(100% - 2rem);font-family:var(--ff-script, cursive);font-size:clamp(1rem,.8rem + .8vw,1.5rem);font-style:italic;color:var(--frambuesa);transform:rotate(-3deg)}
 }
+@media (prefers-reduced-motion:reduce){.vip__title .vip__l1,.vip__title .accent{animation:none}}
 @media (min-width:1280px){
   .vip__l1{white-space:nowrap}
 }
